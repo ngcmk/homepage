@@ -55,7 +55,7 @@ export default function Header() {
                     {t("nav.services")}
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="#portfolio"
                     className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
@@ -70,7 +70,7 @@ export default function Header() {
                   >
                     {t("nav.clients")}
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     href="#contact"
