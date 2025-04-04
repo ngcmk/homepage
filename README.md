@@ -16,5 +16,3 @@
   - [ ] develop innovative and cost efficient marketing solutions
   - [ ] regional pricing policy
   - [ ] non-profit work
-# homepage
-# homepage
