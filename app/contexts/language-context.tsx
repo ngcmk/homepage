@@ -10,7 +10,7 @@ export type Language = "en" | "mk" | "sr";
 type LanguageContextType = {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string>) => string;
 };
 
 // Create the context
@@ -53,6 +53,22 @@ const translations = {
     "services.poc.description": "Bring your ideas to life",
     "services.ai.title": "AI Integration",
     "services.ai.description": "Integrate AI into client workflows with on-premises and cloud solutions",
+    "services.ngo-support.title": "NGO Support",
+    "services.ngo-support.description": "Free design, development and hosting for NGOs from SEE that don't receive foreign funding",
+
+    // Service Template
+    "serviceTemplate.overview": "Service Overview",
+    "serviceTemplate.keyFeatures": "Key Features",
+    "serviceTemplate.businessBenefits": "Business Benefits",
+    "serviceTemplate.increasedEfficiency": "Increased Efficiency",
+    "serviceTemplate.competitiveAdvantage": "Competitive Advantage",
+    "serviceTemplate.customSolutions": "Customized solutions for your requirements",
+    "serviceTemplate.industryExpertise": "Industry-leading expertise and best practices",
+    "serviceTemplate.seamlessIntegration": "Seamless integration with existing systems",
+    "serviceTemplate.ongoingSupport": "Ongoing support and maintenance",
+    "serviceTemplate.comprehensiveSolutions": "Our comprehensive {service} solutions are tailored to meet your specific business needs, delivering measurable results and exceptional value.",
+    "serviceTemplate.efficiencyDescription": "Streamline your operations and reduce costs through our optimized {service} solutions.",
+    "serviceTemplate.advantageDescription": "Gain an edge over competitors with innovative {service} implementations.",
 
     // Portfolio
     "portfolio.title": "Selected Work",
@@ -140,6 +156,32 @@ const translations = {
     "project.back": "Back",
     "project.continue": "Continue",
     "project.submit": "Submit Project",
+    
+    // Initialize Project
+    "initializeProject.title": "Start Your Project",
+    "initializeProject.subtitle": "Tell us about your project and we'll get back to you within 24 hours.",
+    "initializeProject.step1": "Project Details",
+    "initializeProject.step2": "Project Type", 
+    "initializeProject.step3": "Confirmation",
+    "initializeProject.nameLabel": "Project Name",
+    "initializeProject.namePlaceholder": "e.g. Company Website Redesign",
+    "initializeProject.descriptionLabel": "Project Description",
+    "initializeProject.descriptionPlaceholder": "Tell us about your project goals and requirements...",
+    "initializeProject.typeLabel": "Project Type",
+    "initializeProject.typeRedesign": "Website Redesign",
+    "initializeProject.typeNewSite": "New Website",
+    "initializeProject.typeEcommerce": "E-commerce",
+    "initializeProject.typeWebApp": "Web Application",
+    "initializeProject.typeMobileApp": "Mobile App",
+    "initializeProject.typeBranding": "Branding",
+    "initializeProject.summaryTitle": "Project Summary",
+    "initializeProject.summaryName": "Project Name",
+    "initializeProject.summaryType": "Project Type",
+    "initializeProject.summaryDescription": "Project Description",
+    "initializeProject.terms": "By submitting this form, you agree to our terms and conditions. We'll review your project details and get back to you within 24 hours.",
+    "initializeProject.back": "Back",
+    "initializeProject.continue": "Continue",
+    "initializeProject.notSpecified": "Not specified",
   },
   mk: {
     // Навигација
@@ -174,6 +216,22 @@ const translations = {
     "services.poc.description": "Остварете ги вашите идеи",
     "services.ai.title": "Интеграција на Вештачка Интелигенција",
     "services.ai.description": "Интегрирање на вештачка интелигенција во работните текови на клиентите со локални и облачни решенија",
+    "services.ngo-support.title": "Поддршка за НВО",
+    "services.ngo-support.description": "Бесплатен дизајн, развој и хостинг за НВО од ЈИЕ кои не примаат странско финансирање",
+
+    // Service Template
+    "serviceTemplate.overview": "Преглед на Услугата",
+    "serviceTemplate.keyFeatures": "Клучни Карактеристики",
+    "serviceTemplate.businessBenefits": "Бизнис Користи",
+    "serviceTemplate.increasedEfficiency": "Зголемена Ефикасност",
+    "serviceTemplate.competitiveAdvantage": "Конкурентска Предност",
+    "serviceTemplate.customSolutions": "Прилагодени решенија за вашите потреби",
+    "serviceTemplate.industryExpertise": "Стручност и најдобри практики во индустријата",
+    "serviceTemplate.seamlessIntegration": "Беспрекорна интеграција со постоечки системи",
+    "serviceTemplate.ongoingSupport": "Континуирана поддршка и одржување",
+    "serviceTemplate.comprehensiveSolutions": "Нашите сеопфатни {service} решенија се прилагодени за да ги исполнат вашите специфични бизнис потреби, нудејќи мерливи резултати и исклучителна вредност.",
+    "serviceTemplate.efficiencyDescription": "Поедностави ги вашите операции и намали ги трошоците преку нашите оптимизирани {service} решенија.",
+    "serviceTemplate.advantageDescription": "Добијте предност над конкуренцијата со иновативни {service} имплементации.",
 
     // Портфолио
     "portfolio.title": "Избрани Проекти",
@@ -261,6 +319,32 @@ const translations = {
     "project.back": "Назад",
     "project.continue": "Продолжи",
     "project.submit": "Поднеси проект",
+    
+    // Initialize Project
+    "initializeProject.title": "Започни го твојот проект",
+    "initializeProject.subtitle": "Кажете ни повеќе за вашиот проект и ќе ви се јавиме во рок од 24 часа.",
+    "initializeProject.step1": "Детали за проектот",
+    "initializeProject.step2": "Тип на проект",
+    "initializeProject.step3": "Потврда",
+    "initializeProject.nameLabel": "Име на проектот",
+    "initializeProject.namePlaceholder": "на пр. Редизајн на веб-страница на компанија",
+    "initializeProject.descriptionLabel": "Опис на проектот",
+    "initializeProject.descriptionPlaceholder": "Кажете ни за целите и барањата на вашиот проект...",
+    "initializeProject.typeLabel": "Тип на проект",
+    "initializeProject.typeRedesign": "Редизајн на веб-страница",
+    "initializeProject.typeNewSite": "Нова веб-страница",
+    "initializeProject.typeEcommerce": "Е-трговија",
+    "initializeProject.typeWebApp": "Веб Апликација",
+    "initializeProject.typeMobileApp": "Мобилна Апликација",
+    "initializeProject.typeBranding": "Брендирање",
+    "initializeProject.summaryTitle": "Резиме на проектот",
+    "initializeProject.summaryName": "Име на проектот",
+    "initializeProject.summaryType": "Тип на проект",
+    "initializeProject.summaryDescription": "Опис на проектот",
+    "initializeProject.terms": "Со поднесување на овој формулар, се согласувате со нашите услови и правила. Ќе ги прегледаме вашите детали и ќе ви се јавиме во рок од 24 часа.",
+    "initializeProject.back": "Назад",
+    "initializeProject.continue": "Продолжи",
+    "initializeProject.notSpecified": "Не е наведено",
   },
   sr: {
     // Navigacija
@@ -295,6 +379,22 @@ const translations = {
     "services.poc.description": "Oživite svoje ideje",
     "services.ai.title": "Integracija Veštačke Inteligencije",
     "services.ai.description": "Integracija VI u klijentske radne tokove sa lokalnim i cloud rešenjima",
+    "services.ngo-support.title": "Podrška za NVO",
+    "services.ngo-support.description": "Besplatan dizajn, razvoj i hosting za NVO iz JIE koje ne primaju strana finansiranja",
+
+    // Service Template
+    "serviceTemplate.overview": "Pregled Usluge",
+    "serviceTemplate.keyFeatures": "Ključne Karakteristike",
+    "serviceTemplate.businessBenefits": "Poslovne Prednosti",
+    "serviceTemplate.increasedEfficiency": "Povećana Efikasnost",
+    "serviceTemplate.competitiveAdvantage": "Konkurentska Prednost",
+    "serviceTemplate.customSolutions": "Prilagođena rešenja za vaše potrebe",
+    "serviceTemplate.industryExpertise": "Stručnost i najbolje prakse u industriji",
+    "serviceTemplate.seamlessIntegration": "Besprekorna integracija sa postojećim sistemima",
+    "serviceTemplate.ongoingSupport": "Kontinuirana podrška i održavanje",
+    "serviceTemplate.comprehensiveSolutions": "Naša sveobuhvatna {service} rešenja su prilagođena da zadovolje specifične poslovne potrebe, pružajući merljive rezultate i izuzetnu vrednost.",
+    "serviceTemplate.efficiencyDescription": "Pojednostavite svoje operacije i smanjite troškove kroz naše optimizovane {service} rešenja.",
+    "serviceTemplate.advantageDescription": "Steknite prednost nad konkurencijom sa inovativnim {service} implementacijama.",
 
     // Portfolio
     "portfolio.title": "Izabrani Projekti",
@@ -382,6 +482,32 @@ const translations = {
     "project.back": "Nazad",
     "project.continue": "Nastavi",
     "project.submit": "Pošalji projekat",
+    
+    // Initialize Project
+    "initializeProject.title": "Započnite svoj projekat",
+    "initializeProject.subtitle": "Recite nam više o svom projektu i javićemo vam se u roku od 24 sata.",
+    "initializeProject.step1": "Detalji projekta",
+    "initializeProject.step2": "Vrsta projekta",
+    "initializeProject.step3": "Potvrda",
+    "initializeProject.nameLabel": "Naziv projekta",
+    "initializeProject.namePlaceholder": "npr. Redizajn sajta kompanije",
+    "initializeProject.descriptionLabel": "Opis projekta",
+    "initializeProject.descriptionPlaceholder": "Recite nam o ciljevima i zahtevima vašeg projekta...",
+    "initializeProject.typeLabel": "Vrsta projekta",
+    "initializeProject.typeRedesign": "Redizajn veb-sajta",
+    "initializeProject.typeNewSite": "Novi veb-sajt",
+    "initializeProject.typeEcommerce": "E-trgovina",
+    "initializeProject.typeWebApp": "Veb Aplikacija",
+    "initializeProject.typeMobileApp": "Mobilna Aplikacija",
+    "initializeProject.typeBranding": "Brendiranje",
+    "initializeProject.summaryTitle": "Rezime projekta",
+    "initializeProject.summaryName": "Naziv projekta",
+    "initializeProject.summaryType": "Vrsta projekta",
+    "initializeProject.summaryDescription": "Opis projekta",
+    "initializeProject.terms": "Slanjem ovog formulara, slažete se s našim uslovima i pravilima. Pregledaćemo detalje vašeg projekta i kontaktirati vas u roku od 24 sata.",
+    "initializeProject.back": "Nazad",
+    "initializeProject.continue": "Nastavi",
+    "initializeProject.notSpecified": "Nije navedeno",
   },
 };
 
@@ -402,12 +528,17 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", language);
   }, [language]);
 
-  // Translation function
-  const t = (key: string): string => {
-    return (
-      translations[language][key as keyof (typeof translations)[Language]] ||
-      key
-    );
+  // Translation function with interpolation support
+  const t = (key: string, params?: Record<string, string>): string => {
+    let translation = translations[language][key as keyof (typeof translations)[Language]] || key;
+    
+    if (params) {
+      Object.entries(params).forEach(([param, value]) => {
+        translation = translation.replace(`{${param}}`, value);
+      });
+    }
+
+    return translation;
   };
 
   return (
