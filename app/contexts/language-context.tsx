@@ -49,6 +49,10 @@ const translations = {
     "services.mobile.title": "Mobile Apps",
     "services.mobile.description":
       "Native and cross-platform applications that deliver consistent experiences across all devices.",
+    "services.poc.title": "Proof of Concept",
+    "services.poc.description": "Bring your ideas to life",
+    "services.ai.title": "AI Integration",
+    "services.ai.description": "Integrate AI into client workflows with on-premises and cloud solutions",
 
     // Portfolio
     "portfolio.title": "Selected Work",
@@ -166,6 +170,10 @@ const translations = {
     "services.mobile.title": "Мобилни Апликации",
     "services.mobile.description":
       "Нативни и крос-платформски апликации што нудат конзистентно искуство на сите уреди.",
+    "services.poc.title": "Доказ за Концепт",
+    "services.poc.description": "Остварете ги вашите идеи",
+    "services.ai.title": "Интеграција на Вештачка Интелигенција",
+    "services.ai.description": "Интегрирање на вештачка интелигенција во работните текови на клиентите со локални и облачни решенија",
 
     // Портфолио
     "portfolio.title": "Избрани Проекти",
@@ -283,6 +291,10 @@ const translations = {
     "services.mobile.title": "Mobilne Aplikacije",
     "services.mobile.description":
       "Native i cross-platform aplikacije koje pružaju dosledno iskustvo na svim uređajima.",
+    "services.poc.title": "Dokaz Koncepta",
+    "services.poc.description": "Oživite svoje ideje",
+    "services.ai.title": "Integracija Veštačke Inteligencije",
+    "services.ai.description": "Integracija VI u klijentske radne tokove sa lokalnim i cloud rešenjima",
 
     // Portfolio
     "portfolio.title": "Izabrani Projekti",
