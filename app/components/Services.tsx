@@ -9,28 +9,30 @@ export default function Services() {
 
   const services = [
     {
+      icon: <Code className="w-10 h-10" />,
+      id: "development",
+      title: t("services.development.title"),
+      description: t("services.development.description"),
+     
+    },
+
+    {
+      icon: <Layout className="w-10 h-10" />,
+      id: "design",
+      title: t("services.design.title"),
+      description: t("services.design.description"),
+    },
+    {
+      icon: <Smartphone className="w-10 h-10" />,
+      id: "mobile",
+      title: t("services.mobile.title"),
+      description: t("services.mobile.description"),
+    },
+    {
       icon: <BrainCircuit className="w-10 h-10" />,
       id: "ai",
       title: t("services.ai.title"),
       description: t("services.ai.description"),
-    },
-    {
-      icon: <HeartHandshake className="w-10 h-10" />,
-      id: "ngo-support",
-      title: t("services.ngo-support.title"),
-      description: t("services.ngo-support.description"),
-    },
-    {
-      id: "development",
-      icon: <Code className="w-10 h-10" />,
-      title: t("services.development.title"),
-      description: t("services.development.description"),
-    },
-    {
-      id: "mobile",
-      icon: <Smartphone className="w-10 h-10" />,
-      title: t("services.mobile.title"),
-      description: t("services.mobile.description"),
     },
     {
       id: "poc",
@@ -39,10 +41,10 @@ export default function Services() {
       description: t("services.poc.description"),
     },
     {
-      id: "ai",
-      icon: <BrainCircuit className="w-10 h-10" />,
-      title: t("services.ai.title"),
-      description: t("services.ai.description"),
+      icon: <HeartHandshake className="w-10 h-10" />,
+      id: "ngo-support",
+      title: t("services.ngo-support.title"),
+      description: t("services.ngo-support.description"),
     },
   ]
 

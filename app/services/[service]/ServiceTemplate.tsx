@@ -1,83 +1,169 @@
-"use client"
+"use client";
 
-import { useLanguage } from "@/app/contexts/language-context"
-import { notFound } from "next/navigation"
-import { servicesData, Service } from "@/app/data/services"
+import { useLanguage } from "@/app/contexts/language-context";
+import { notFound } from "next/navigation";
+import { servicesData, Service } from "@/app/data/services";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import Link from "next/link";
 
-export default function ServiceTemplate({ params }: { params: { service: string } }) {
-  const { t } = useLanguage()
-  const service = servicesData.find((s: Service) => s.id === params.service)
-  
+interface ServiceTemplateProps {
+  params: { service: string };
+}
+
+interface FeatureListProps {
+  features: string[];
+}
+
+interface BenefitCardProps {
+  title: string;
+  description: string;
+}
+
+const FeatureList: React.FC<FeatureListProps> = ({ features }) => (
+  <ul className="space-y-3 text-muted-foreground">
+    {features.map((feature, index) => (
+      <li key={index} className="flex items-start gap-2">
+        <span className="text-primary font-semibold mt-1">•</span>
+        <span>{feature}</span>
+      </li>
+    ))}
+  </ul>
+);
+
+const BenefitCard: React.FC<BenefitCardProps> = ({ title, description }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">{title}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-muted-foreground leading-relaxed">{description}</p>
+    </CardContent>
+  </Card>
+);
+
+export default function ServiceTemplate({ params }: ServiceTemplateProps) {
+  const { t } = useLanguage();
+  const service: Service | undefined = servicesData.find(
+    (s: Service) => s.id === params.service,
+  );
+
   if (!service) {
-    return notFound()
+    return notFound();
   }
 
+  const serviceTitle = t(`services.${service.id}.title`);
+  const serviceDescription = t(`services.${service.id}.description`);
+
+  const keyFeatures = [
+    t("serviceTemplate.customSolutions"),
+    t("serviceTemplate.industryExpertise"),
+    t("serviceTemplate.seamlessIntegration"),
+    t("serviceTemplate.ongoingSupport"),
+  ];
+
   return (
-    <section className="py-12 md:py-20">
+    <main className="py-12 md:py-20">
       <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-6">{t(`services.${service.id}.title`)}</h1>
-          
-          {/* Hero Image */}
-          <div className="mb-12 rounded-xl overflow-hidden">
-            <img 
-              src={`https://source.unsplash.com/random/800x400/?${service.id},technology`}
-              alt={t(`services.${service.id}.title`)}
-              className="w-full h-auto object-cover"
-            />
-          </div>
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Page Header */}
+          <header className="text-center md:text-left space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+              {serviceTitle}
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl">
+              {serviceDescription}
+            </p>
+          </header>
 
           {/* Service Overview */}
-          <div className="bg-white p-8 rounded-xl shadow-sm mb-8">
-            <h2 className="text-2xl font-semibold mb-4">{t('serviceTemplate.overview')}</h2>
-            <p className="text-neutral-600 mb-4">
-              {t(`services.${service.id}.description`)}
-            </p>
-            <p className="text-neutral-600">
-              {t('serviceTemplate.comprehensiveSolutions', { service: t(`services.${service.id}.title`) })}
-            </p>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">
+                {t("serviceTemplate.overview")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                {serviceDescription}
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                {t("serviceTemplate.comprehensiveSolutions", {
+                  service: serviceTitle,
+                })}
+              </p>
+            </CardContent>
+          </Card>
 
           {/* Key Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-xl font-semibold mb-3">{t('serviceTemplate.keyFeatures')}</h3>
-              <ul className="space-y-2 text-neutral-600">
-                <li>• {t('serviceTemplate.customSolutions')}</li>
-                <li>• {t('serviceTemplate.industryExpertise')}</li>
-                <li>• {t('serviceTemplate.seamlessIntegration')}</li>
-                <li>• {t('serviceTemplate.ongoingSupport')}</li>
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <img 
-                src={`https://source.unsplash.com/random/400x300/?${service.id},process`}
-                alt={`${t(`services.${service.id}.title`)} process`}
-                className="w-full h-auto rounded-lg"
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">
+                {t("serviceTemplate.keyFeatures")}
+              </CardTitle>
+              <CardDescription>
+                What sets our {serviceTitle.toLowerCase()} services apart
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <FeatureList features={keyFeatures} />
+            </CardContent>
+          </Card>
+
+          {/* Business Benefits */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-foreground">
+              {t("serviceTemplate.businessBenefits")}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BenefitCard
+                title={t("serviceTemplate.increasedEfficiency")}
+                description={t("serviceTemplate.efficiencyDescription", {
+                  service: serviceTitle,
+                })}
+              />
+              <BenefitCard
+                title={t("serviceTemplate.competitiveAdvantage")}
+                description={t("serviceTemplate.advantageDescription", {
+                  service: serviceTitle,
+                })}
               />
             </div>
           </div>
 
-          {/* Benefits */}
-          <div className="bg-white p-8 rounded-xl shadow-sm">
-            <h2 className="text-2xl font-semibold mb-4">{t('serviceTemplate.businessBenefits')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-medium mb-2">{t('serviceTemplate.increasedEfficiency')}</h3>
-                <p className="text-neutral-600">
-                  {t('serviceTemplate.efficiencyDescription', { service: t(`services.${service.id}.title`) })}
-                </p>
+          {/* Call to Action */}
+          <Card className="bg-primary/5 border-primary/20">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">Ready to get started?</CardTitle>
+              <CardDescription className="text-base max-w-2xl mx-auto">
+                Let's discuss how our {serviceTitle.toLowerCase()} services can
+                help transform your business.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/initialize-project"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                >
+                  Start Your Project
+                </Link>
+                <Link
+                  href="/#contact"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+                >
+                  Get in Touch
+                </Link>
               </div>
-              <div>
-                <h3 className="text-lg font-medium mb-2">{t('serviceTemplate.competitiveAdvantage')}</h3>
-                <p className="text-neutral-600">
-                  {t('serviceTemplate.advantageDescription', { service: t(`services.${service.id}.title`) })}
-                </p>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </section>
-  )
+    </main>
+  );
 }

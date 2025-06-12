@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Quote } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
 
@@ -13,13 +12,11 @@ export default function Testimonials() {
       name: t("testimonials.client1.name"),
       role: t("testimonials.client1.role"),
       content: t("testimonials.client1.quote"),
-      avatar: "/placeholder.svg?height=100&width=100",
     },
     {
       name: t("testimonials.client2.name"),
       role: t("testimonials.client2.role"),
       content: t("testimonials.client2.quote"),
-      avatar: "/placeholder.svg?height=100&width=100",
     },
   ];
 
@@ -41,13 +38,6 @@ export default function Testimonials() {
                   {testimonial.content}
                 </p>
                 <div className="flex items-center">
-                  <Image
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    alt={testimonial.name}
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
                   <div>
                     <h3 className="font-semibold">{testimonial.name}</h3>
                     <p className="text-neutral-500 text-sm">

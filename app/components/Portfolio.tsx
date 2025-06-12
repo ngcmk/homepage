@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useLanguage } from "../contexts/language-context";
 
 export default function Portfolio() {
@@ -9,19 +8,16 @@ export default function Portfolio() {
 
   const projects = [
     {
-      image: "/placeholder.svg?height=600&width=800",
       title: t("portfolio.project1.title"),
       category: t("portfolio.project1.category"),
       description: t("portfolio.project1.description"),
     },
     {
-      image: "/placeholder.svg?height=600&width=800",
       title: t("portfolio.project2.title"),
       category: t("portfolio.project2.category"),
       description: t("portfolio.project2.description"),
     },
     {
-      image: "/placeholder.svg?height=600&width=800",
       title: t("portfolio.project3.title"),
       category: t("portfolio.project3.category"),
       description: t("portfolio.project3.description"),
@@ -44,13 +40,6 @@ export default function Portfolio() {
               className="group hover-lift bg-white rounded-lg overflow-hidden"
             >
               <div className="relative h-64 overflow-hidden">
-                <Image
-                  src={project.image || "/placeholder.svg"}
-                  alt={project.title}
-                  width={800}
-                  height={600}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
               </div>
               <div className="p-6">
                 <div className="text-sm text-[rgb(var(--accent))] font-medium mb-2">
