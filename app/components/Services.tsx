@@ -1,6 +1,6 @@
 "use client"
 
-import { Layout, Code, Smartphone, Rocket, BrainCircuit } from "lucide-react"
+import { Layout, Code, Smartphone, Rocket, BrainCircuit, HeartHandshake } from "lucide-react"
 import { useLanguage } from "../contexts/language-context"
 import Link from "next/link"
 
@@ -9,10 +9,16 @@ export default function Services() {
 
   const services = [
     {
-      id: "design",
-      icon: <Layout className="w-10 h-10" />,
-      title: t("services.design.title"),
-      description: t("services.design.description"),
+      icon: <BrainCircuit className="w-10 h-10" />,
+      id: "ai",
+      title: t("services.ai.title"),
+      description: t("services.ai.description"),
+    },
+    {
+      icon: <HeartHandshake className="w-10 h-10" />,
+      id: "ngo-support",
+      title: t("services.ngo-support.title"),
+      description: t("services.ngo-support.description"),
     },
     {
       id: "development",

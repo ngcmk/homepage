@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check } from "lucide-react";
+import { useLanguage } from "@/app/contexts/language-context";
 
 export default function InitializeProject() {
   const [step, setStep] = useState(1);
@@ -20,13 +21,14 @@ export default function InitializeProject() {
     if (step > 1) setStep(step - 1);
   };
 
+  const { t } = useLanguage();
   const projectTypes = [
-    "Website Redesign",
-    "New Website",
-    "E-commerce",
-    "Web Application",
-    "Mobile App",
-    "Branding",
+    t("initializeProject.typeRedesign"),
+    t("initializeProject.typeNewSite"),
+    t("initializeProject.typeEcommerce"),
+    t("initializeProject.typeWebApp"),
+    t("initializeProject.typeMobileApp"),
+    t("initializeProject.typeBranding"),
   ];
 
   return (
@@ -34,10 +36,9 @@ export default function InitializeProject() {
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold mb-4">Start Your Project</h1>
+            <h1 className="text-3xl font-bold mb-4">{t("initializeProject.title")}</h1>
             <p className="text-neutral-600">
-              Tell us about your project and we'll get back to you within 24
-              hours.
+              {t("initializeProject.subtitle")}
             </p>
           </div>
 
@@ -46,17 +47,17 @@ export default function InitializeProject() {
               <div
                 className={`flex-1 py-4 text-center font-medium ${step === 1 ? "text-neutral-900 border-b-2 border-[rgb(var(--accent))]" : "text-neutral-500"}`}
               >
-                Project Details
+                {t("initializeProject.step1")}
               </div>
               <div
                 className={`flex-1 py-4 text-center font-medium ${step === 2 ? "text-neutral-900 border-b-2 border-[rgb(var(--accent))]" : "text-neutral-500"}`}
               >
-                Project Type
+                {t("initializeProject.step2")}
               </div>
               <div
                 className={`flex-1 py-4 text-center font-medium ${step === 3 ? "text-neutral-900 border-b-2 border-[rgb(var(--accent))]" : "text-neutral-500"}`}
               >
-                Confirmation
+                {t("initializeProject.step3")}
               </div>
             </div>
 
@@ -68,14 +69,14 @@ export default function InitializeProject() {
                       htmlFor="projectName"
                       className="block mb-2 text-sm font-medium text-neutral-700"
                     >
-                      Project Name
+                      {t("initializeProject.nameLabel")}
                     </label>
                     <Input
                       id="projectName"
                       value={projectName}
                       onChange={(e) => setProjectName(e.target.value)}
                       className="w-full"
-                      placeholder="e.g. Company Website Redesign"
+                      placeholder={t("initializeProject.namePlaceholder")}
                     />
                   </div>
                   <div>
@@ -83,14 +84,14 @@ export default function InitializeProject() {
                       htmlFor="projectDescription"
                       className="block mb-2 text-sm font-medium text-neutral-700"
                     >
-                      Project Description
+                      {t("initializeProject.descriptionLabel")}
                     </label>
                     <Textarea
                       id="projectDescription"
                       value={projectDescription}
                       onChange={(e) => setProjectDescription(e.target.value)}
                       className="w-full"
-                      placeholder="Tell us about your project goals and requirements..."
+                      placeholder={t("initializeProject.descriptionPlaceholder")}
                       rows={5}
                     />
                   </div>
@@ -100,7 +101,7 @@ export default function InitializeProject() {
               {step === 2 && (
                 <div>
                   <label className="block mb-4 text-sm font-medium text-neutral-700">
-                    Project Type
+                    {t("initializeProject.typeLabel")}
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {projectTypes.map((type) => (
@@ -136,38 +137,36 @@ export default function InitializeProject() {
               {step === 3 && (
                 <div>
                   <h2 className="text-xl font-semibold mb-6">
-                    Project Summary
+                    {t("initializeProject.summaryTitle")}
                   </h2>
                   <div className="bg-neutral-50 p-6 rounded-lg mb-6">
                     <div className="mb-4">
                       <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                        Project Name
+                        {t("initializeProject.summaryName")}
                       </h3>
                       <p className="text-neutral-900">
-                        {projectName || "Not specified"}
+                        {projectName || t("initializeProject.notSpecified")}
                       </p>
                     </div>
                     <div className="mb-4">
                       <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                        Project Type
+                        {t("initializeProject.summaryType")}
                       </h3>
                       <p className="text-neutral-900">
-                        {projectType || "Not specified"}
+                        {projectType || t("initializeProject.notSpecified")}
                       </p>
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                        Project Description
+                        {t("initializeProject.summaryDescription")}
                       </h3>
                       <p className="text-neutral-900">
-                        {projectDescription || "Not specified"}
+                        {projectDescription || t("initializeProject.notSpecified")}
                       </p>
                     </div>
                   </div>
                   <p className="text-sm text-neutral-600">
-                    By submitting this form, you agree to our terms and
-                    conditions. We'll review your project details and get back
-                    to you within 24 hours.
+                    {t("initializeProject.terms")}
                   </p>
                 </div>
               )}
@@ -179,7 +178,7 @@ export default function InitializeProject() {
                     variant="outline"
                     className="border-neutral-200 text-neutral-700 hover:bg-neutral-50"
                   >
-                    Back
+                    {t("initializeProject.back")}
                   </Button>
                 )}
                 {step < 3 ? (
@@ -187,11 +186,11 @@ export default function InitializeProject() {
                     onClick={handleNext}
                     className="bg-neutral-900 hover:bg-neutral-800 text-white ml-auto"
                   >
-                    Continue
+                    {t("initializeProject.continue")}
                   </Button>
                 ) : (
                   <Button className="bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent-light))] text-white ml-auto">
-                    Submit Project
+                    {t("project.submit")}
                   </Button>
                 )}
               </div>

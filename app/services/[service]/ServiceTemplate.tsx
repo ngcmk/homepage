@@ -29,24 +29,24 @@ export default function ServiceTemplate({ params }: { params: { service: string 
 
           {/* Service Overview */}
           <div className="bg-white p-8 rounded-xl shadow-sm mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Service Overview</h2>
+            <h2 className="text-2xl font-semibold mb-4">{t('serviceTemplate.overview')}</h2>
             <p className="text-neutral-600 mb-4">
               {t(`services.${service.id}.description`)}
             </p>
             <p className="text-neutral-600">
-              Our comprehensive {t(`services.${service.id}.title`)} solutions are tailored to meet your specific business needs, delivering measurable results and exceptional value.
+              {t('serviceTemplate.comprehensiveSolutions', { service: t(`services.${service.id}.title`) })}
             </p>
           </div>
 
           {/* Key Features */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-xl font-semibold mb-3">Key Features</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('serviceTemplate.keyFeatures')}</h3>
               <ul className="space-y-2 text-neutral-600">
-                <li>• Customized solutions for your requirements</li>
-                <li>• Industry-leading expertise and best practices</li>
-                <li>• Seamless integration with existing systems</li>
-                <li>• Ongoing support and maintenance</li>
+                <li>• {t('serviceTemplate.customSolutions')}</li>
+                <li>• {t('serviceTemplate.industryExpertise')}</li>
+                <li>• {t('serviceTemplate.seamlessIntegration')}</li>
+                <li>• {t('serviceTemplate.ongoingSupport')}</li>
               </ul>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm">
@@ -60,18 +60,18 @@ export default function ServiceTemplate({ params }: { params: { service: string 
 
           {/* Benefits */}
           <div className="bg-white p-8 rounded-xl shadow-sm">
-            <h2 className="text-2xl font-semibold mb-4">Business Benefits</h2>
+            <h2 className="text-2xl font-semibold mb-4">{t('serviceTemplate.businessBenefits')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-lg font-medium mb-2">Increased Efficiency</h3>
+                <h3 className="text-lg font-medium mb-2">{t('serviceTemplate.increasedEfficiency')}</h3>
                 <p className="text-neutral-600">
-                  Streamline your operations and reduce costs through our optimized {t(`services.${service.id}.title`)} solutions.
+                  {t('serviceTemplate.efficiencyDescription', { service: t(`services.${service.id}.title`) })}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-medium mb-2">Competitive Advantage</h3>
+                <h3 className="text-lg font-medium mb-2">{t('serviceTemplate.competitiveAdvantage')}</h3>
                 <p className="text-neutral-600">
-                  Gain an edge over competitors with innovative {t(`services.${service.id}.title`)} implementations.
+                  {t('serviceTemplate.advantageDescription', { service: t(`services.${service.id}.title`) })}
                 </p>
               </div>
             </div>
