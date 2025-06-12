@@ -12,7 +12,7 @@ export default function Hero() {
     <section className="md:pt-10 md:pb-32">
       <div className="container mx-auto px-6 md:flex items-center min-h-screen">
         <Card className="max-w-3xl mx-auto p-6 md:p-8 text-center bg-background/50 backdrop-blur-sm">
-          <CardContent className="">
+          <CardContent className="mt-32">
             <h1 className="text-4xl gradient-text md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-foreground">
               <span className="">{t("hero.title")}</span>
             </h1>
