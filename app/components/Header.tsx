@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
@@ -17,7 +17,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -52,7 +51,7 @@ export default function Header() {
               {t("nav.services")}
             </NavigationMenuLink>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuLink
               href="#portfolio"
               className={navigationMenuTriggerStyle()}
@@ -67,7 +66,7 @@ export default function Header() {
             >
               {t("nav.clients")}
             </NavigationMenuLink>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
           <NavigationMenuItem>
             <NavigationMenuLink
               href="#contact"
@@ -182,9 +181,6 @@ export default function Header() {
                     <SheetTitle className="text-left text-xl font-bold">
                       <span className="gradient-text">ngc</span>
                     </SheetTitle>
-                    {/* <SheetDescription className="text-left text-sm text-gray-600">
-                      {t("nav.menuDescription") || "Navigation menu"}
-                    </SheetDescription> */}
                   </SheetHeader>
 
                   <div className="flex-1 px-6 py-6 bg-background">
