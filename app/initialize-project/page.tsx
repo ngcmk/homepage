@@ -40,6 +40,10 @@ import {
   Upload,
   X,
   File,
+  Mail,
+  Phone,
+  AlertCircle,
+  RefreshCcw,
 } from "lucide-react";
 
 // Validation schema
