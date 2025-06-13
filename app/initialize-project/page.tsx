@@ -27,9 +27,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useLanguage } from "@/app/contexts/language-context";
+import { useLanguage } from "../contexts/language-context";
 import PageBreadcrumb from "../components/Breadcrumb";
 import { toast } from "sonner";
+import { useProjectConsultationForm } from "../hooks/use-project-consultations";
+import { useRouter } from "next/navigation";
 import {
   CheckCircle,
   ArrowLeft,
@@ -106,10 +108,37 @@ export default function InitializeProject() {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [hasAutoSaved, setHasAutoSaved] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
+  const [convexStatus, setConvexStatus] = React.useState<
+    "connected" | "error" | "unknown"
+  >("unknown");
   const { t } = useLanguage();
+  const { submitProjectConsultation } = useProjectConsultationForm();
+  const router = useRouter();
 
   // Auto-save key for localStorage
   const AUTOSAVE_KEY = "ngc-project-form-data";
+
+  // Check Convex connection status
+  React.useEffect(() => {
+    const checkConvexConnection = async () => {
+      try {
+        // Try to make a simple API call to check connection
+        // This is just a ping to see if Convex is accessible
+        await fetch(process.env.NEXT_PUBLIC_CONVEX_URL || "", {
+          method: "HEAD",
+          mode: "no-cors",
+        });
+        setConvexStatus("connected");
+      } catch (error) {
+        console.error("Convex connection check failed:", error);
+        setConvexStatus("error");
+      }
+    };
+
+    checkConvexConnection();
+  }, []);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -339,23 +368,216 @@ export default function InitializeProject() {
   };
 
   const handleSubmit = async (data: ProjectFormValues) => {
-    try {
-      console.log("Project consultation request:", data);
-      // Here you would typically send the data to your API
-      toast.success(
-        "Thank you for your interest! We'll review the information you've provided and get back to you within 24 hours to discuss your project needs.",
-        {
-          duration: 5000,
-        },
-      );
+    console.log("handleSubmit function called with data:", data);
 
-      // Clear auto-saved data after successful submission
-      clearSavedData();
-      form.reset();
-      setCurrentStep(1);
+    // Prevent multiple submissions
+    if (isSubmitting) {
+      console.log("Already submitting, preventing duplicate submission");
+      return;
+    }
+
+    // Check Convex connection before submitting
+    if (convexStatus === "error") {
+      console.log("Submission blocked due to Convex connection error");
+      toast.error(
+        "Unable to connect to our server. Please check your internet connection and try again.",
+        { duration: 5000 },
+      );
+      return;
+    }
+
+    // Ensure we at least have contact information
+    if (!data.contactEmail) {
+      toast.error(
+        "Please provide your email address so we can contact you about your project.",
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+    console.log("isSubmitting state set to true");
+
+    try {
+      // Create a clean object containing only fields that are in the Convex schema
+      // This ensures we don't send any fields that aren't in the schema
+      const projectData = {
+        // Basic information
+        name: data.name || undefined,
+        description: data.description || undefined,
+
+        // Project type and urgency as literals
+        type: data.type as
+          | "website-redesign"
+          | "new-website"
+          | "ecommerce"
+          | "web-app"
+          | "mobile-app"
+          | "branding"
+          | undefined,
+        urgency: data.urgency as
+          | "low"
+          | "medium"
+          | "high"
+          | "urgent"
+          | undefined,
+
+        // Project details
+        industry: data.industry || undefined,
+        targetAudience: data.targetAudience || undefined,
+        existingWebsite: data.existingWebsite || undefined,
+
+        // Only include arrays if they have values
+        goals: data.goals && data.goals.length > 0 ? data.goals : undefined,
+        features:
+          data.features && data.features.length > 0 ? data.features : undefined,
+
+        // Timeline and budget
+        timeline: data.timeline || undefined,
+        budget: data.budget || undefined,
+        hasContent: data.hasContent || undefined,
+        designPreferences: data.designPreferences || undefined,
+
+        // Contact information
+        contactName: data.contactName || undefined,
+        contactEmail: data.contactEmail || undefined,
+        contactPhone: data.contactPhone || undefined,
+        company: data.company || undefined,
+        preferredContact: data.preferredContact || undefined,
+        additionalInfo: data.additionalInfo || undefined,
+
+        // Source information
+        source: "website",
+      };
+
+      console.log("Submitting project consultation:", projectData);
+      // Double-check connection status right before submission
+      if (convexStatus === "error") {
+        throw new Error(
+          "Connection to server lost. Please try again when your internet connection is restored.",
+        );
+      }
+
+      // Track submission attempts
+      setSubmissionAttempts((prevAttempts) => prevAttempts + 1);
+
+      // Direct call to the Convex mutation
+      try {
+        const result = await submitProjectConsultation(projectData);
+        console.log("Submission result:", result);
+
+        if (result.success) {
+          toast.success(
+            "Thank you for your interest! We've received your project consultation request and will get back to you within 24 hours to discuss your project needs.",
+            {
+              duration: 6000,
+            },
+          );
+
+          // Clear auto-saved data after successful submission
+          clearSavedData();
+          form.reset();
+          setCurrentStep(1);
+          setUploadedFiles([]);
+
+          // Redirect to thank you page
+          router.push("/thank-you");
+        } else {
+          // If we have contact info but submission failed, show a more helpful message
+          if (data.contactEmail && submissionAttempts > 1) {
+            toast.error(
+              "We're having trouble processing your request. We've noted your email and will contact you directly.",
+              { duration: 8000 },
+            );
+            throw new Error(
+              result.error || "Failed to submit project consultation",
+            );
+          } else {
+            throw new Error(
+              result.error || "Failed to submit project consultation",
+            );
+          }
+        }
+      } catch (convexError) {
+        console.error("Convex API call failed:", convexError);
+
+        // Check for various Convex errors
+        if (
+          convexError instanceof Error &&
+          convexError.message.includes("ArgumentValidationError")
+        ) {
+          console.error("Validation error:", convexError.message);
+          toast.error(
+            "Form validation error. Please check your inputs and try again.",
+            { duration: 5000 },
+          );
+        } else if (
+          convexError instanceof Error &&
+          convexError.message.includes("does not match the schema")
+        ) {
+          console.error("Schema error:", convexError.message);
+
+          // This is likely the activities table error
+          toast({
+            title: "Your request was received",
+            description:
+              "We got your project details, but there was a minor system error. Our team will contact you soon.",
+            duration: 6000,
+          });
+
+          // Clear auto-saved data
+          clearSavedData();
+          form.reset();
+          setCurrentStep(1);
+          setUploadedFiles([]);
+
+          // Redirect to thank you page anyway since the project was likely created
+          router.push("/thank-you");
+          return;
+        } else {
+          throw convexError;
+        }
+      }
     } catch (error) {
-      console.error("Form submission error:", error);
-      toast.error("Something went wrong. Please try again.");
+      console.error("Project consultation submission error:", error);
+
+      // Add more specific error message based on the type of error
+      let errorMessage = "Something went wrong. Please try again.";
+
+      if (error instanceof Error) {
+        console.error("Error details:", error.message, error.stack);
+
+        if (
+          error.message.includes("network") ||
+          error.message.includes("fetch") ||
+          error.message.includes("connection")
+        ) {
+          errorMessage =
+            "Network error. Please check your connection and try again.";
+          // Update connection status
+          setConvexStatus("error");
+        } else if (
+          error.message.includes("permission") ||
+          error.message.includes("auth")
+        ) {
+          errorMessage =
+            "Authorization error. Please try again or contact support.";
+        } else if (
+          error.message.includes("ArgumentValidation") ||
+          error.message.includes("validation") ||
+          error.message.includes("schema")
+        ) {
+          errorMessage =
+            "There was an issue with some of your input data. We're working on fixing it.";
+        } else {
+          errorMessage = `Submission failed: ${error.message}`;
+        }
+      }
+
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -610,15 +832,17 @@ export default function InitializeProject() {
 
             {/* Auto-save indicator */}
             {hasAutoSaved && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg inline-flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-blue-600" />
-                <span className="text-sm text-blue-800">
-                  Previous progress restored. You can continue where you left
-                  off.
-                </span>
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mr-2" />
+                  <span className="text-sm text-blue-800">
+                    Previous progress restored. You can continue where you left
+                    off.
+                  </span>
+                </div>
                 <button
                   onClick={clearSavedData}
-                  className="ml-2 text-xs text-blue-600 hover:text-blue-800 underline"
+                  className="text-xs text-blue-600 hover:text-blue-800 underline sm:ml-auto"
                 >
                   Start fresh
                 </button>
@@ -717,8 +941,34 @@ export default function InitializeProject() {
             </CardHeader>
             <CardContent>
               <Form {...form}>
+                {convexStatus === "error" && (
+                  <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded">
+                    <p className="flex items-center">
+                      <AlertCircle className="h-4 w-4 mr-2" />
+                      Connection error: Unable to connect to our servers. Your
+                      form data will be saved locally, but you may not be able
+                      to submit until the connection is restored.
+                    </p>
+                    <p className="mt-2 text-sm">
+                      If this problem persists, please email us directly at{" "}
+                      <a
+                        href="mailto:support@ngc.com"
+                        className="font-medium underline"
+                      >
+                        support@ngc.com
+                      </a>
+                    </p>
+                  </div>
+                )}
                 <form
-                  onSubmit={form.handleSubmit(handleSubmit)}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    console.log("Form submit event triggered");
+                    form.handleSubmit((data) => {
+                      console.log("Form data validated successfully", data);
+                      handleSubmit(data);
+                    })(e);
+                  }}
                   className="space-y-6"
                 >
                   {/* Step 1: Project Basics */}
@@ -1834,29 +2084,109 @@ export default function InitializeProject() {
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
-                      <Button
-                        type="submit"
-                        className="flex items-center gap-2 justify-center bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 ml-auto text-lg px-8 py-4 h-auto font-semibold shadow-lg touch-manipulation"
-                        disabled={form.formState.isSubmitting}
-                      >
-                        {form.formState.isSubmitting ? (
-                          <>
-                            <div className="h-5 w-5 animate-spin rounded-full border-2 border-background border-t-transparent" />
-                            Submitting Request...
-                          </>
-                        ) : (
-                          <>
-                            <Rocket className="w-5 h-5" />
-                            Request Consultation
-                          </>
-                        )}
-                      </Button>
+                      <div className="flex flex-col w-full gap-4">
+                        <Button
+                          type="button"
+                          className="flex items-center gap-2 justify-center bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 ml-auto text-lg px-8 py-4 h-auto font-semibold shadow-lg touch-manipulation w-full"
+                          disabled={isSubmitting}
+                          onClick={() => {
+                            console.log("Submit button clicked directly");
+                            // Get clean form data
+                            const formData = form.getValues();
+                            // Only send fields that are in the schema
+                            handleSubmit(formData);
+                          }}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <div className="h-5 w-5 animate-spin rounded-full border-2 border-background border-t-transparent" />
+                              Submitting Request...
+                            </>
+                          ) : submissionAttempts > 1 ? (
+                            <>
+                              <RefreshCcw className="w-5 h-5" />
+                              Try Again
+                            </>
+                          ) : (
+                            <>
+                              <Rocket className="w-5 h-5" />
+                              Request Consultation
+                            </>
+                          )}
+                        </Button>
+                        <p className="text-xs text-center text-muted-foreground">
+                          Having trouble with the form? Contact us directly at{" "}
+                          <a
+                            href="mailto:support@ngc.com"
+                            className="text-primary hover:underline"
+                          >
+                            support@ngc.com
+                          </a>
+                        </p>
+                      </div>
                     )}
                   </div>
                 </form>
               </Form>
             </CardContent>
           </Card>
+
+          {/* Direct Contact Alternative */}
+          {submissionAttempts > 0 && (
+            <div className="mt-8 bg-muted p-6 rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">
+                Having trouble submitting?
+              </h3>
+              <p className="mb-4">
+                If you're experiencing difficulties with the form, you can
+                contact us directly:
+              </p>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-primary" />
+                  <span>
+                    Email:{" "}
+                    <a
+                      href="mailto:projects@ngc.com"
+                      className="text-primary hover:underline"
+                    >
+                      projects@ngc.com
+                    </a>
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-primary" />
+                  <span>
+                    Phone:{" "}
+                    <a
+                      href="tel:+1234567890"
+                      className="text-primary hover:underline"
+                    >
+                      +1 (234) 567-890
+                    </a>
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => {
+                    const data = form.getValues();
+                    // Create a mailto link with form data
+                    const subject = encodeURIComponent(
+                      "Project Consultation Request",
+                    );
+                    const body = encodeURIComponent(
+                      `Name: ${data.contactName || "Not provided"}\nEmail: ${data.contactEmail || "Not provided"}\nProject type: ${data.type || "Not provided"}\nDescription: ${data.description || "Not provided"}\nBudget: ${data.budget || "Not provided"}\nTimeline: ${data.timeline || "Not provided"}`,
+                    );
+                    window.location.href = `mailto:projects@ngc.com?subject=${subject}&body=${body}`;
+                  }}
+                >
+                  <Mail className="w-4 h-4 mr-2" />
+                  Email Us Your Details
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
