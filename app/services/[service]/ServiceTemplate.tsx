@@ -11,6 +11,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import Link from "next/link";
+import PageBreadcrumb from "../../components/Breadcrumb";
 
 interface ServiceTemplateProps {
   params: { service: string };
@@ -68,8 +69,9 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
   ];
 
   return (
-    <main className="py-12 md:py-20">
-      <div className="container mx-auto px-6">
+    <main className="pt-4 pb-12 md:pb-20">
+      <PageBreadcrumb />
+      <div className="container mx-auto px-6 pt-8">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Page Header */}
           <header className="text-center md:text-left space-y-4">
