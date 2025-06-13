@@ -114,9 +114,10 @@ export default function InitializeProject() {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
-  const [convexStatus, setConvexStatus] = React.useState<
-    "connected" | "error" | "unknown"
-  >("unknown");
+  // Explicitly define status type to fix TypeScript errors
+  type ConvexStatus = "connected" | "error" | "unknown";
+  const [convexStatus, setConvexStatus] =
+    React.useState<ConvexStatus>("unknown");
   const { t } = useLanguage();
   const { submitProjectConsultation } = useProjectConsultationForm();
   const router = useRouter();
@@ -134,7 +135,7 @@ export default function InitializeProject() {
           method: "HEAD",
           mode: "no-cors",
         });
-        setConvexStatus("connected");
+        setConvexStatus("connected" as ConvexStatus);
       } catch (error) {
         console.error("Convex connection check failed:", error);
         setConvexStatus("error");
@@ -381,8 +382,7 @@ export default function InitializeProject() {
     }
 
     // Check Convex connection before submitting
-    if (convexStatus === "error") {
-      console.log("Submission blocked due to Convex connection error");
+    if (convexStatus === ("error" as ConvexStatus)) {
       toast.error(
         "Unable to connect to our server. Please check your internet connection and try again.",
         { duration: 5000 },
@@ -455,7 +455,7 @@ export default function InitializeProject() {
 
       console.log("Submitting project consultation:", projectData);
       // Double-check connection status right before submission
-      if (convexStatus === "error") {
+      if (convexStatus === ("error" as ConvexStatus)) {
         throw new Error(
           "Connection to server lost. Please try again when your internet connection is restored.",
         );
@@ -521,12 +521,12 @@ export default function InitializeProject() {
           console.error("Schema error:", convexError.message);
 
           // This is likely the activities table error
-          toast({
-            title: "Your request was received",
-            description:
-              "We got your project details, but there was a minor system error. Our team will contact you soon.",
-            duration: 6000,
-          });
+          toast.success(
+            "We got your project details, but there was a minor system error. Our team will contact you soon.",
+            {
+              duration: 6000,
+            },
+          );
 
           // Clear auto-saved data
           clearSavedData();
@@ -558,7 +558,7 @@ export default function InitializeProject() {
           errorMessage =
             "Network error. Please check your connection and try again.";
           // Update connection status
-          setConvexStatus("error");
+          setConvexStatus("error" as ConvexStatus);
         } else if (
           error.message.includes("permission") ||
           error.message.includes("auth")

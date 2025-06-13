@@ -26,7 +26,10 @@ export function useProjectConsultations(filters?: {
   assignedTo?: Id<"users">;
   limit?: number;
 }) {
-  return useQuery(
+  type ProjectConsultationsQuery =
+    typeof api.projectConsultations.getProjectConsultations;
+
+  return useQuery<ProjectConsultationsQuery>(
     api.projectConsultations.getProjectConsultations,
     filters || {},
   );
@@ -34,35 +37,59 @@ export function useProjectConsultations(filters?: {
 
 // Hook for fetching a single project consultation
 export function useProjectConsultation(id: Id<"projectConsultations">) {
-  return useQuery(api.projectConsultations.getProjectConsultation, { id });
+  type ProjectConsultationQuery =
+    typeof api.projectConsultations.getProjectConsultation;
+
+  return useQuery<ProjectConsultationQuery>(
+    api.projectConsultations.getProjectConsultation,
+    { id },
+  );
 }
 
 // Hook for creating a new project consultation
 export function useCreateProjectConsultation() {
+  type ProjectConsultationMutation =
+    typeof api.projectConsultations.createProjectConsultation;
+
   try {
-    return useMutation(api.projectConsultations.createProjectConsultation);
+    return useMutation<ProjectConsultationMutation>(
+      api.projectConsultations.createProjectConsultation,
+    );
   } catch (error) {
     console.error("Failed to initialize Convex mutation:", error);
     // Return a function that will gracefully fail
-    return async () => {
+    return (async () => {
       throw new Error("Convex API not properly initialized");
-    };
+    }) as unknown as ReturnType<
+      typeof useMutation<ProjectConsultationMutation>
+    >;
   }
 }
 
 // Hook for updating project status
 export function useUpdateProjectStatus() {
-  return useMutation(api.projectConsultations.updateProjectStatus);
+  type UpdateStatusMutation =
+    typeof api.projectConsultations.updateProjectStatus;
+
+  return useMutation<UpdateStatusMutation>(
+    api.projectConsultations.updateProjectStatus,
+  );
 }
 
 // Hook for assigning a project to a user
 export function useAssignProject() {
-  return useMutation(api.projectConsultations.assignProject);
+  type AssignProjectMutation = typeof api.projectConsultations.assignProject;
+
+  return useMutation<AssignProjectMutation>(
+    api.projectConsultations.assignProject,
+  );
 }
 
 // Hook for adding notes to a project
 export function useAddProjectNote() {
-  return useMutation(api.projectConsultations.addProjectNote);
+  type AddNoteMutation = typeof api.projectConsultations.addProjectNote;
+
+  return useMutation<AddNoteMutation>(api.projectConsultations.addProjectNote);
 }
 
 // Hook for searching project consultations
@@ -88,7 +115,10 @@ export function useSearchProjectConsultations(
     limit?: number;
   },
 ) {
-  return useQuery(
+  type SearchProjectsQuery =
+    typeof api.projectConsultations.searchProjectConsultations;
+
+  return useQuery<SearchProjectsQuery>(
     api.projectConsultations.searchProjectConsultations,
     searchTerm.trim() ? { searchTerm, ...filters } : "skip",
   );
@@ -96,12 +126,22 @@ export function useSearchProjectConsultations(
 
 // Hook for getting project consultation statistics
 export function useProjectStats() {
-  return useQuery(api.projectConsultations.getProjectStats, {});
+  type ProjectStatsQuery = typeof api.projectConsultations.getProjectStats;
+
+  return useQuery<ProjectStatsQuery>(
+    api.projectConsultations.getProjectStats,
+    {},
+  );
 }
 
 // Hook for deleting a project consultation
 export function useDeleteProjectConsultation() {
-  return useMutation(api.projectConsultations.deleteProjectConsultation);
+  type DeleteProjectMutation =
+    typeof api.projectConsultations.deleteProjectConsultation;
+
+  return useMutation<DeleteProjectMutation>(
+    api.projectConsultations.deleteProjectConsultation,
+  );
 }
 
 // Hook for getting project activities
@@ -109,28 +149,45 @@ export function useProjectActivities(
   projectId: Id<"projectConsultations">,
   limit?: number,
 ) {
-  return useQuery(api.projectConsultations.getProjectActivities, {
-    projectId,
-    limit,
-  });
+  type ProjectActivitiesQuery =
+    typeof api.projectConsultations.getProjectActivities;
+
+  return useQuery<ProjectActivitiesQuery>(
+    api.projectConsultations.getProjectActivities,
+    {
+      projectId,
+      limit,
+    },
+  );
 }
 
 // Hook for updating project estimates
 export function useUpdateProjectEstimates() {
-  return useMutation(api.projectConsultations.updateProjectEstimates);
+  type UpdateEstimatesMutation =
+    typeof api.projectConsultations.updateProjectEstimates;
+
+  return useMutation<UpdateEstimatesMutation>(
+    api.projectConsultations.updateProjectEstimates,
+  );
 }
 
 // Custom hook for project consultation form submission
 export function useProjectConsultationForm() {
-  let createProject;
+  // Define the type for the mutation function
+  let createProject:
+    | ReturnType<typeof useCreateProjectConsultation>
+    | undefined;
+
+  // Initialize the mutation in a try-catch block
   try {
     createProject = useCreateProjectConsultation();
     console.log("Convex mutation initialized successfully");
   } catch (error) {
     console.error("Failed to initialize project consultation form:", error);
+    createProject = undefined;
   }
 
-  const submitProjectConsultation = async (data: {
+  type ProjectConsultationData = {
     name?: string;
     description?: string;
     type?:
@@ -156,13 +213,21 @@ export function useProjectConsultationForm() {
     company?: string;
     preferredContact?: string;
     additionalInfo?: string;
-  }) => {
+  };
+
+  type SubmissionResult =
+    | { success: true; projectId: Id<"projectConsultations"> }
+    | { success: false; error: string; originalError?: unknown };
+
+  const submitProjectConsultation = async (
+    data: ProjectConsultationData,
+  ): Promise<SubmissionResult> => {
     if (!createProject) {
       console.error("Convex mutation not available");
       return {
         success: false,
         error: "Server connection not available. Please try again later.",
-      };
+      } as SubmissionResult;
     }
 
     try {
@@ -173,7 +238,7 @@ export function useProjectConsultationForm() {
         return {
           success: false,
           error: "Email address is required",
-        };
+        } as SubmissionResult;
       }
 
       const projectData = {
@@ -192,7 +257,7 @@ export function useProjectConsultationForm() {
       try {
         const projectId = await createProject(projectData);
         console.log("Project submitted successfully, ID:", projectId);
-        return { success: true, projectId };
+        return { success: true, projectId } as SubmissionResult;
       } catch (error) {
         // Check specifically for ArgumentValidationError
         if (
@@ -232,7 +297,7 @@ export function useProjectConsultationForm() {
             "Project submitted successfully after cleaning, ID:",
             projectId,
           );
-          return { success: true, projectId };
+          return { success: true, projectId } as SubmissionResult;
         }
         throw error; // Re-throw if not a validation error
       }
@@ -271,7 +336,7 @@ export function useProjectConsultationForm() {
         success: false,
         error: errorMessage,
         originalError: error,
-      };
+      } as SubmissionResult;
     }
   };
 
