@@ -116,3 +116,167 @@
 .dark .hover-lift:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
+
+/* 3D Perspective Utilities */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+.perspective-2000 {
+    perspective: 2000px;
+}
+
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+/* Enhanced Animations */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(var(--primary), 0.1);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(var(--primary), 0.3);
+    }
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* Glass Morphism */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Card Hover Effects */
+.card-hover-3d {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-3d:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(20px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.dark .card-hover-3d:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+.bg-gradient-conic {
+    background: conic-gradient(
+        from 180deg at 50% 50%,
+        var(--tw-gradient-stops)
+    );
+}
+
+/* Text Effects */
+.text-glow {
+    text-shadow: 0 0 20px rgba(var(--primary), 0.5);
+}
+
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(var(--foreground), 0.3);
+    text-stroke: 1px rgba(var(--foreground), 0.3);
+}
+
+/* Loading Animations */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background: linear-gradient(
+        90deg,
+        hsl(var(--muted)) 0%,
+        hsl(var(--muted-foreground) / 0.1) 20%,
+        hsl(var(--muted-foreground) / 0.1) 60%,
+        hsl(var(--muted))
+    );
+    background-size: 200px 100%;
+}
+
+/* Geometric Shapes */
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid currentColor;
+}
+
+.hexagon {
+    width: 20px;
+    height: 20px;
+    background: currentColor;
+    position: relative;
+}
+
+.hexagon:before,
+.hexagon:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.hexagon:before {
+    bottom: 100%;
+    border-bottom: 6px solid currentColor;
+}
+
+.hexagon:after {
+    top: 100%;
+    border-top: 6px solid currentColor;
+}
