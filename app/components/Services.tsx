@@ -75,7 +75,7 @@ export default function Services() {
           <h2 className="text-3xl font-bold mb-6 accent-border inline-block">
             {t("services.title")}
           </h2>
-          <p className="text-neutral-600">{t("services.subtitle")}</p>
+          <p className="text-muted-foreground">{t("services.subtitle")}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {services.map((service, index) => (
@@ -86,7 +86,7 @@ export default function Services() {
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-neutral-900 group-hover:text-[rgb(var(--accent))] transition-colors">
+                  <div className="text-foreground group-hover:text-[rgb(var(--accent))] transition-colors">
                     {service.icon}
                   </div>
                   <Badge
@@ -107,7 +107,7 @@ export default function Services() {
 
                 <Separator className="mb-3" />
 
-                <p className="text-neutral-600 leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {service.description}
                 </p>
               </div>

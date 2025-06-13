@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -92,28 +93,28 @@ export default function Header() {
         <>
           <a
             href="#services"
-            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.services")}
           </a>
           <a
             href="#portfolio"
-            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.work")}
           </a>
           <a
             href="#testimonials"
-            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.clients")}
           </a>
           <a
             href="#contact"
-            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.contact")}
@@ -122,7 +123,7 @@ export default function Header() {
       ) : (
         <Link
           href="/"
-          className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+          className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           {t("nav.home")}
@@ -135,7 +136,7 @@ export default function Header() {
     <header
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm py-3"
+          ? "bg-background/95 backdrop-blur-sm shadow-sm border-b py-3"
           : "bg-transparent py-6"
       }`}
     >
@@ -160,26 +161,24 @@ export default function Header() {
               <Link href="/initialize-project">{t("nav.startProject")}</Link>
             </Button>
 
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
             <LanguageSwitcher />
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:bg-gray-100"
-                >
+                <Button variant="ghost" size="icon" className="hover:bg-muted">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 p-0">
                 <div className="flex flex-col h-full">
-                  <SheetHeader className="px-6 py-6 border-b bg-white">
+                  <SheetHeader className="px-6 py-6 border-b bg-background">
                     <SheetTitle className="text-left text-xl font-bold">
                       <span className="gradient-text">ngc</span>
                     </SheetTitle>
@@ -188,11 +187,11 @@ export default function Header() {
                     </SheetDescription> */}
                   </SheetHeader>
 
-                  <div className="flex-1 px-6 py-6 bg-white">
+                  <div className="flex-1 px-6 py-6 bg-background">
                     <MobileNavigationItems />
                   </div>
 
-                  <div className="px-6 py-6 border-t bg-gray-50">
+                  <div className="px-6 py-6 border-t bg-muted/50">
                     <Button
                       asChild
                       className="w-full h-12 text-base font-medium"

@@ -41,6 +41,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import SkeletonLoader from "../components/SkeletonLoader";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { toast } from "sonner";
 import {
   Star,
@@ -58,6 +59,8 @@ import {
   AlertCircle,
   Info,
   Menu,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 export default function UIShowcase() {
@@ -110,19 +113,23 @@ export default function UIShowcase() {
 
       <main className="container mx-auto px-6 py-12">
         <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">shadcn/ui Components Showcase</h2>
+          <h2 className="text-3xl font-bold mb-4">
+            shadcn/ui Components Showcase
+          </h2>
           <p className="text-muted-foreground text-lg">
-            Demonstrating all the implemented UI improvements with shadcn/ui components.
+            Demonstrating all the implemented UI improvements with shadcn/ui
+            components.
           </p>
         </div>
 
         <Tabs defaultValue="buttons" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="buttons">Buttons & Badges</TabsTrigger>
             <TabsTrigger value="forms">Forms</TabsTrigger>
             <TabsTrigger value="data">Data Display</TabsTrigger>
             <TabsTrigger value="navigation">Navigation</TabsTrigger>
             <TabsTrigger value="feedback">Feedback</TabsTrigger>
+            <TabsTrigger value="theme">Dark Mode</TabsTrigger>
             <TabsTrigger value="layout">Layout</TabsTrigger>
           </TabsList>
 
@@ -166,7 +173,10 @@ export default function UIShowcase() {
                       <Star className="h-3 w-3" />
                       Featured
                     </Badge>
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
                       <Heart className="h-3 w-3" />
                       Favorite
                     </Badge>
@@ -190,7 +200,11 @@ export default function UIShowcase() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="Enter your email" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
@@ -222,7 +236,9 @@ export default function UIShowcase() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => setProgress(Math.min(100, progress + 10))}
+                        onClick={() =>
+                          setProgress(Math.min(100, progress + 10))
+                        }
                       >
                         +10%
                       </Button>
@@ -260,7 +276,9 @@ export default function UIShowcase() {
                         </Avatar>
                         <div>
                           <p className="text-sm font-medium">{avatar.name}</p>
-                          <p className="text-xs text-muted-foreground">Online</p>
+                          <p className="text-xs text-muted-foreground">
+                            Online
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -292,22 +310,28 @@ export default function UIShowcase() {
                     <AccordionItem value="item-1">
                       <AccordionTrigger>What is ngc?</AccordionTrigger>
                       <AccordionContent>
-                        ngc is a creative web solutions company specializing in modern
-                        web development, mobile apps, and AI integration.
+                        ngc is a creative web solutions company specializing in
+                        modern web development, mobile apps, and AI integration.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
-                      <AccordionTrigger>What services do you offer?</AccordionTrigger>
+                      <AccordionTrigger>
+                        What services do you offer?
+                      </AccordionTrigger>
                       <AccordionContent>
-                        We offer web development, mobile app development, UI/UX design,
-                        AI integration, and digital transformation services.
+                        We offer web development, mobile app development, UI/UX
+                        design, AI integration, and digital transformation
+                        services.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
-                      <AccordionTrigger>How can I get started?</AccordionTrigger>
+                      <AccordionTrigger>
+                        How can I get started?
+                      </AccordionTrigger>
                       <AccordionContent>
-                        You can get started by contacting us through our contact form
-                        or by initializing a new project through our project setup wizard.
+                        You can get started by contacting us through our contact
+                        form or by initializing a new project through our
+                        project setup wizard.
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -332,8 +356,8 @@ export default function UIShowcase() {
                       <DialogHeader>
                         <DialogTitle>Example Dialog</DialogTitle>
                         <DialogDescription>
-                          This is an example of a dialog component. It can be used
-                          for modals, confirmations, and detailed views.
+                          This is an example of a dialog component. It can be
+                          used for modals, confirmations, and detailed views.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4">
@@ -364,20 +388,33 @@ export default function UIShowcase() {
                       <SheetHeader>
                         <SheetTitle>Navigation Menu</SheetTitle>
                         <SheetDescription>
-                          This is an example of a sheet component used for mobile navigation.
+                          This is an example of a sheet component used for
+                          mobile navigation.
                         </SheetDescription>
                       </SheetHeader>
                       <div className="space-y-4 mt-6">
-                        <a href="#" className="block p-2 hover:bg-gray-100 rounded">
+                        <a
+                          href="#"
+                          className="block p-2 hover:bg-gray-100 rounded"
+                        >
                           Home
                         </a>
-                        <a href="#" className="block p-2 hover:bg-gray-100 rounded">
+                        <a
+                          href="#"
+                          className="block p-2 hover:bg-gray-100 rounded"
+                        >
                           Services
                         </a>
-                        <a href="#" className="block p-2 hover:bg-gray-100 rounded">
+                        <a
+                          href="#"
+                          className="block p-2 hover:bg-gray-100 rounded"
+                        >
                           Portfolio
                         </a>
-                        <a href="#" className="block p-2 hover:bg-gray-100 rounded">
+                        <a
+                          href="#"
+                          className="block p-2 hover:bg-gray-100 rounded"
+                        >
                           Contact
                         </a>
                       </div>
@@ -397,7 +434,9 @@ export default function UIShowcase() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button
-                    onClick={() => toast.success("Success! Operation completed.")}
+                    onClick={() =>
+                      toast.success("Success! Operation completed.")
+                    }
                   >
                     Success Toast
                   </Button>
@@ -409,7 +448,9 @@ export default function UIShowcase() {
                   </Button>
                   <Button
                     variant="secondary"
-                    onClick={() => toast.info("Info: This is an information message.")}
+                    onClick={() =>
+                      toast.info("Info: This is an information message.")
+                    }
                   >
                     Info Toast
                   </Button>
@@ -448,6 +489,169 @@ export default function UIShowcase() {
             </div>
           </TabsContent>
 
+          {/* Dark Mode */}
+          <TabsContent value="theme" className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Theme Toggle</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div>
+                      <h4 className="font-medium">Dark Mode Toggle</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Switch between light and dark themes
+                      </p>
+                    </div>
+                    <ThemeToggle />
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Theme Features:</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Automatic system theme detection</li>
+                      <li>• Smooth transitions between themes</li>
+                      <li>• Persistent theme preference</li>
+                      <li>• All components support dark mode</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Color Palette</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Background Colors</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-background border rounded"></div>
+                          <span className="text-sm">Background</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-card border rounded"></div>
+                          <span className="text-sm">Card</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-muted rounded"></div>
+                          <span className="text-sm">Muted</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Text Colors</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-foreground rounded"></div>
+                          <span className="text-sm">Foreground</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-muted-foreground rounded"></div>
+                          <span className="text-sm">Muted Text</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-primary rounded"></div>
+                          <span className="text-sm">Primary</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Dark Mode Examples</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="border-2">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center space-x-2">
+                        <Sun className="h-5 w-5" />
+                        <span>Light Theme</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0 space-y-3">
+                      <div className="flex space-x-2">
+                        <Badge>Primary</Badge>
+                        <Badge variant="secondary">Secondary</Badge>
+                      </div>
+                      <Separator />
+                      <div className="flex items-center space-x-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>LT</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">Light Mode</p>
+                          <p className="text-xs text-muted-foreground">
+                            Active
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-2">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center space-x-2">
+                        <Moon className="h-5 w-5" />
+                        <span>Dark Theme</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0 space-y-3">
+                      <div className="flex space-x-2">
+                        <Badge>Primary</Badge>
+                        <Badge variant="secondary">Secondary</Badge>
+                      </div>
+                      <Separator />
+                      <div className="flex items-center space-x-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>DT</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">Dark Mode</p>
+                          <p className="text-xs text-muted-foreground">
+                            Active
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-2">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center space-x-2">
+                        <Settings className="h-5 w-5" />
+                        <span>System</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0 space-y-3">
+                      <div className="flex space-x-2">
+                        <Badge variant="outline">Auto</Badge>
+                        <Badge variant="secondary">Adaptive</Badge>
+                      </div>
+                      <Separator />
+                      <div className="flex items-center space-x-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>SY</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">System Theme</p>
+                          <p className="text-xs text-muted-foreground">Auto</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Layout */}
           <TabsContent value="layout" className="space-y-8">
             <div className="space-y-8">
@@ -475,7 +679,10 @@ export default function UIShowcase() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[1, 2, 3].map((item) => (
-                      <Card key={item} className="hover:shadow-lg transition-shadow">
+                      <Card
+                        key={item}
+                        className="hover:shadow-lg transition-shadow"
+                      >
                         <CardHeader className="pb-3">
                           <CardTitle className="text-lg">Card {item}</CardTitle>
                         </CardHeader>
@@ -485,13 +692,16 @@ export default function UIShowcase() {
                             <Badge variant="outline">Tag</Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            This is an example card with badges and proper spacing.
+                            This is an example card with badges and proper
+                            spacing.
                           </p>
                           <Separator className="my-3" />
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                               <Avatar className="h-6 w-6">
-                                <AvatarFallback className="text-xs">U{item}</AvatarFallback>
+                                <AvatarFallback className="text-xs">
+                                  U{item}
+                                </AvatarFallback>
                               </Avatar>
                               <span className="text-sm">User {item}</span>
                             </div>
@@ -517,12 +727,15 @@ export default function UIShowcase() {
           <CardContent>
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                This showcase demonstrates all the UI improvements implemented based on the
-                recommendations in the UI_IMPROVEMENT_SUGGESTIONS.md document:
+                This showcase demonstrates all the UI improvements implemented
+                based on the recommendations in the
+                UI_IMPROVEMENT_SUGGESTIONS.md document:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold mb-2">✅ Completed High Priority</h4>
+                  <h4 className="font-semibold mb-2">
+                    ✅ Completed High Priority
+                  </h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     <li>• Form Components with validation</li>
                     <li>• NavigationMenu implementation</li>
@@ -531,7 +744,9 @@ export default function UIShowcase() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">✅ Completed Medium Priority</h4>
+                  <h4 className="font-semibold mb-2">
+                    ✅ Completed Medium Priority
+                  </h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     <li>• Badge components for categorization</li>
                     <li>• Avatar components for testimonials</li>
@@ -541,12 +756,15 @@ export default function UIShowcase() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">✅ Completed Advanced Features</h4>
+                <h4 className="font-semibold mb-2">
+                  ✅ Completed Advanced Features
+                </h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
                   <li>• Accordion for expandable content</li>
                   <li>• Tabs for content organization</li>
                   <li>• Dialog components for modals</li>
                   <li>• Separator for visual content division</li>
+                  <li>• Dark mode with theme switching</li>
                 </ul>
               </div>
             </div>

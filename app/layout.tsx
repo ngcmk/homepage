@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import type React from "react";
 import { LanguageProvider } from "./contexts/language-context";
+import { ThemeProvider } from "./components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({
@@ -21,12 +22,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} font-sans bg-neutral-50 text-neutral-900`}
+        className={`${montserrat.variable} font-sans bg-background text-foreground`}
       >
-        <LanguageProvider>{children}</LanguageProvider>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider>{children}</LanguageProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
