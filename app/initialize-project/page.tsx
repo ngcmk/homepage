@@ -28,6 +28,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/app/contexts/language-context";
 import PageBreadcrumb from "../components/Breadcrumb";
+import { toast } from "sonner";
 import {
   CheckCircle,
   ArrowLeft,
@@ -340,8 +341,11 @@ export default function InitializeProject() {
     try {
       console.log("Project consultation request:", data);
       // Here you would typically send the data to your API
-      alert(
+      toast.success(
         "Thank you for your interest! We'll review the information you've provided and get back to you within 24 hours to discuss your project needs.",
+        {
+          duration: 5000,
+        },
       );
 
       // Clear auto-saved data after successful submission
@@ -350,6 +354,7 @@ export default function InitializeProject() {
       setCurrentStep(1);
     } catch (error) {
       console.error("Form submission error:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 

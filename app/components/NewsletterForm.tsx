@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "../contexts/language-context";
 import { Mail, Bell, CheckCircle, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 // Validation schema
 const newsletterFormSchema = z.object({
@@ -77,6 +78,9 @@ export default function NewsletterForm({
       } else {
         // Default behavior
         setIsSubmitted(true);
+        toast.success("Successfully subscribed to our newsletter!", {
+          duration: 4000,
+        });
         form.reset();
 
         // Reset success state after 5 seconds
@@ -86,6 +90,7 @@ export default function NewsletterForm({
       }
     } catch (error) {
       console.error("Newsletter subscription error:", error);
+      toast.error("Failed to subscribe. Please try again.");
     }
   };
 
@@ -111,7 +116,8 @@ export default function NewsletterForm({
                 Successfully Subscribed!
               </h3>
               <p className="text-green-600 text-sm">
-                Thank you for subscribing to our newsletter. You'll receive a confirmation email shortly.
+                Thank you for subscribing to our newsletter. You'll receive a
+                confirmation email shortly.
               </p>
             </div>
           </div>
@@ -125,7 +131,10 @@ export default function NewsletterForm({
     return (
       <div className={className}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -227,7 +236,8 @@ export default function NewsletterForm({
           {title || "Stay Updated"}
         </CardTitle>
         <p className="text-muted-foreground">
-          {description || "Get the latest insights on web design, development, and digital strategy delivered to your inbox."}
+          {description ||
+            "Get the latest insights on web design, development, and digital strategy delivered to your inbox."}
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -248,7 +258,10 @@ export default function NewsletterForm({
         )}
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="firstName"

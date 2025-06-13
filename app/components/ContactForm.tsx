@@ -26,6 +26,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "../contexts/language-context";
 import { Mail, Phone, User, MessageSquare, Briefcase } from "lucide-react";
+import { toast } from "sonner";
 
 // Validation schema
 const contactFormSchema = z.object({
@@ -42,7 +43,7 @@ const contactFormSchema = z.object({
     .optional()
     .refine(
       (val) => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
-      "Please enter a valid phone number"
+      "Please enter a valid phone number",
     ),
   company: z.string().optional(),
   subject: z
@@ -88,11 +89,14 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         onSubmit(data);
       } else {
         // Default behavior - could integrate with an API
-        alert("Thank you for your message! We'll get back to you soon.");
+        toast.success(
+          "Thank you for your message! We'll get back to you soon.",
+        );
         form.reset();
       }
     } catch (error) {
       console.error("Form submission error:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -129,7 +133,10 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
             {/* Name Field */}
             <FormField
               control={form.control}
@@ -233,7 +240,10 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subject *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
                         <SelectValue placeholder="Select the topic of your inquiry" />
@@ -259,7 +269,10 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Project Budget</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
                         <SelectValue placeholder="Select your approximate budget range" />
@@ -326,7 +339,9 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
 
             {/* Privacy Notice */}
             <p className="text-xs text-muted-foreground text-center mt-4">
-              By submitting this form, you agree to our privacy policy. We'll only use your information to respond to your inquiry and provide relevant project updates.
+              By submitting this form, you agree to our privacy policy. We'll
+              only use your information to respond to your inquiry and provide
+              relevant project updates.
             </p>
           </form>
         </Form>
