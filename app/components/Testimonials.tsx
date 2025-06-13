@@ -2,6 +2,7 @@
 
 import { Quote } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Testimonials() {
   // TODO: Replace or remove testimonial
@@ -12,11 +13,15 @@ export default function Testimonials() {
       name: t("testimonials.client1.name"),
       role: t("testimonials.client1.role"),
       content: t("testimonials.client1.quote"),
+      avatar: "/avatars/client1.jpg",
+      initials: "JD",
     },
     {
       name: t("testimonials.client2.name"),
       role: t("testimonials.client2.role"),
       content: t("testimonials.client2.quote"),
+      avatar: "/avatars/client2.jpg",
+      initials: "SM",
     },
   ];
 
@@ -37,7 +42,16 @@ export default function Testimonials() {
                 <p className="text-neutral-600 mb-6 relative z-10">
                   {testimonial.content}
                 </p>
-                <div className="flex items-center">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                      {testimonial.initials}
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
                     <h3 className="font-semibold">{testimonial.name}</h3>
                     <p className="text-neutral-500 text-sm">

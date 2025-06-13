@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/app/contexts/language-context";
 import PageBreadcrumb from "../components/Breadcrumb";
 import { toast } from "sonner";
@@ -625,30 +626,62 @@ export default function InitializeProject() {
             )}
           </div>
 
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-4 overflow-x-auto pb-2">
+          {/* Progress Section */}
+          <div className="mb-12">
+            {/* Step Progress Bar */}
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-sm font-medium text-gray-600">
+                  Step {currentStep} of {steps.length}
+                </span>
+                <span className="text-sm font-medium text-primary">
+                  {Math.round(getStepProgress())}% Complete
+                </span>
+              </div>
+              <Progress value={getStepProgress()} className="h-3 mb-2" />
+              <div className="text-center">
+                <span className="text-lg font-semibold text-gray-900">
+                  {steps[currentStep - 1].title}
+                </span>
+              </div>
+            </div>
+
+            {/* Step Indicators */}
+            <div className="hidden md:flex justify-between items-center overflow-x-auto pb-2">
               {steps.map((step, index) => (
                 <div
                   key={step.number}
                   className={`flex items-center ${index < steps.length - 1 ? "flex-1 min-w-0" : "shrink-0"}`}
                 >
-                  <div
-                    className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200 text-xs md:text-sm font-medium ${
-                      currentStep >= step.number
-                        ? "bg-primary border-primary text-primary-foreground"
-                        : "border-neutral-300 text-neutral-500"
-                    }`}
-                  >
-                    {currentStep > step.number ? (
-                      <CheckCircle className="w-4 h-4 md:w-6 md:h-6" />
-                    ) : (
-                      step.number
-                    )}
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 text-sm font-medium mb-2 ${
+                        currentStep >= step.number
+                          ? "bg-primary border-primary text-primary-foreground shadow-lg"
+                          : currentStep === step.number - 1
+                            ? "border-primary text-primary bg-primary/10"
+                            : "border-neutral-300 text-neutral-500"
+                      }`}
+                    >
+                      {currentStep > step.number ? (
+                        <CheckCircle className="w-6 h-6" />
+                      ) : (
+                        step.number
+                      )}
+                    </div>
+                    <span
+                      className={`text-xs text-center font-medium px-2 ${
+                        currentStep >= step.number
+                          ? "text-primary"
+                          : "text-neutral-500"
+                      }`}
+                    >
+                      {step.title}
+                    </span>
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`flex-1 h-1 mx-2 md:mx-4 rounded transition-all duration-200 ${
+                      className={`flex-1 h-0.5 mx-4 rounded transition-all duration-300 ${
                         currentStep > step.number
                           ? "bg-primary"
                           : "bg-neutral-200"
@@ -658,11 +691,17 @@ export default function InitializeProject() {
                 </div>
               ))}
             </div>
-            <div className="text-center">
-              <span className="text-sm text-neutral-600">
-                Step {currentStep} of {steps.length}:{" "}
-                {steps[currentStep - 1].title}
-              </span>
+
+            {/* Mobile Step Indicators */}
+            <div className="md:hidden flex justify-center space-x-2 mt-4">
+              {steps.map((step, index) => (
+                <div
+                  key={step.number}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    currentStep >= step.number ? "bg-primary" : "bg-neutral-200"
+                  }`}
+                />
+              ))}
             </div>
           </div>
 
@@ -1770,21 +1809,6 @@ export default function InitializeProject() {
                       </div>
                     </div>
                   )}
-
-                  {/* Progress Indicator */}
-                  <div className="mb-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${getStepProgress()}%` }}
-                      />
-                    </div>
-                    <div className="text-center mt-2">
-                      <span className="text-sm text-gray-600">
-                        {Math.round(getStepProgress())}% Complete
-                      </span>
-                    </div>
-                  </div>
 
                   {/* Navigation Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6 border-t">
