@@ -37,7 +37,7 @@ yarn-error.log*
 .vercel
 
 # convex
-/convex/_generated/
+#/convex/_generated/
 .convex/
 
 # typescript

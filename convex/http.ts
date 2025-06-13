@@ -9,10 +9,12 @@ const http = httpRouter();
 const corsHeaders = {
   "Access-Control-Allow-Origin":
     process.env.NODE_ENV === "production"
-      ? "https://your-domain.com" // Replace with your actual domain
+      ? process.env.NEXT_PUBLIC_DOMAIN || "*" // Uses environment variable
       : "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Headers":
+    "Content-Type, Authorization, X-Requested-With",
+  "Access-Control-Allow-Credentials": "true",
   "Access-Control-Max-Age": "86400",
 };
 
