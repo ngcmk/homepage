@@ -6,10 +6,26 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
 import LanguageSwitcher from "./LanguageSwitcher";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const { t } = useLanguage();
@@ -23,85 +39,176 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const NavigationItems = () => (
+    <>
+      {isHomePage ? (
+        <>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#services"
+              className={navigationMenuTriggerStyle()}
+            >
+              {t("nav.services")}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#portfolio"
+              className={navigationMenuTriggerStyle()}
+            >
+              {t("nav.work")}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#testimonials"
+              className={navigationMenuTriggerStyle()}
+            >
+              {t("nav.clients")}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#contact"
+              className={navigationMenuTriggerStyle()}
+            >
+              {t("nav.contact")}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </>
+      ) : (
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/">{t("nav.home")}</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      )}
+    </>
+  );
+
+  const MobileNavigationItems = () => (
+    <nav className="flex flex-col space-y-3">
+      {isHomePage ? (
+        <>
+          <a
+            href="#services"
+            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t("nav.services")}
+          </a>
+          <a
+            href="#portfolio"
+            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t("nav.work")}
+          </a>
+          <a
+            href="#testimonials"
+            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t("nav.clients")}
+          </a>
+          <a
+            href="#contact"
+            className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t("nav.contact")}
+          </a>
+        </>
+      ) : (
+        <Link
+          href="/"
+          className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-all duration-200 text-base font-medium"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {t("nav.home")}
+        </Link>
+      )}
+    </nav>
+  );
+
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white shadow-sm py-3" : "bg-transparent py-6"}`}
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-sm shadow-sm py-3"
+          : "bg-transparent py-6"
+      }`}
     >
       <nav className="container mx-auto px-6">
         <div className="flex justify-between items-center">
+          {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-xl font-bold tracking-tight">
               <span className="gradient-text">ngc</span>
             </span>
           </Link>
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-neutral-700 hover:text-neutral-900"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationItems />
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <Button asChild size="sm" className="ml-4">
+              <Link href="/initialize-project">{t("nav.startProject")}</Link>
+            </Button>
+
+            <LanguageSwitcher />
           </div>
-          <ul
-            className={`md:flex items-center space-y-6 md:space-y-0 md:space-x-8 ${isMenuOpen ? "absolute left-0 right-0 top-full bg-white shadow-lg p-6" : "hidden"} md:relative md:bg-transparent md:shadow-none md:p-0`}
-          >
-            {isHomePage ? (
-              <>
-                <li>
-                  <a
-                    href="#services"
-                    className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
-                  >
-                    {t("nav.services")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#portfolio"
-                    className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
-                  >
-                    {t("nav.work")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#testimonials"
-                    className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
-                  >
-                    {t("nav.clients")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#contact"
-                    className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
-                  >
-                    {t("nav.contact")}
-                  </a>
-                </li>
-              </>
-            ) : (
-              <li>
-                <Link
-                  href="/"
-                  className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm uppercase tracking-wide font-medium"
+
+          {/* Mobile Navigation */}
+          <div className="md:hidden flex items-center space-x-4">
+            <LanguageSwitcher />
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-gray-100"
                 >
-                  {t("nav.home")}
-                </Link>
-              </li>
-            )}
-            <li className="md:ml-4">
-              <Link
-                href="/initialize-project"
-                className="inline-block px-5 py-2 bg-neutral-900 text-white text-sm uppercase tracking-wide font-medium hover:bg-neutral-800 transition-colors"
-              >
-                {t("nav.startProject")}
-              </Link>
-            </li>
-            <li className="md:ml-4">
-              <LanguageSwitcher />
-            </li>
-          </ul>
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 p-0">
+                <div className="flex flex-col h-full">
+                  <SheetHeader className="px-6 py-6 border-b bg-white">
+                    <SheetTitle className="text-left text-xl font-bold">
+                      <span className="gradient-text">ngc</span>
+                    </SheetTitle>
+                    {/* <SheetDescription className="text-left text-sm text-gray-600">
+                      {t("nav.menuDescription") || "Navigation menu"}
+                    </SheetDescription> */}
+                  </SheetHeader>
+
+                  <div className="flex-1 px-6 py-6 bg-white">
+                    <MobileNavigationItems />
+                  </div>
+
+                  <div className="px-6 py-6 border-t bg-gray-50">
+                    <Button
+                      asChild
+                      className="w-full h-12 text-base font-medium"
+                    >
+                      <Link
+                        href="/initialize-project"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {t("nav.startProject")}
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </nav>
     </header>

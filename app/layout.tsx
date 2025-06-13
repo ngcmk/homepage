@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import type React from "react";
 import { LanguageProvider } from "./contexts/language-context";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
         className={`${montserrat.variable} font-sans bg-neutral-50 text-neutral-900`}
       >
         <LanguageProvider>{children}</LanguageProvider>
+        <Toaster />
       </body>
     </html>
   );

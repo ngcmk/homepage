@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "../contexts/language-context";
 
 export default function Hero() {
@@ -9,36 +10,30 @@ export default function Hero() {
 
   return (
     <section className="md:pt-10 md:pb-32">
-      <div className="container mx-auto px-6 md: flex items-center min-h-screen">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            <span className="gradient-text">{t("hero.title")}</span>
-          </h1>
-          <p className="text-lg md:text-xl mb-10 text-neutral-600 max-w-2xl mx-auto">
-            {t("hero.subtitle")}
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/initialize-project">
-              <Button
-                size="lg"
-                className="bg-neutral-900 hover:bg-neutral-800 text-white px-8"
-              >
-                {t("hero.startProject")}
-              </Button>
-            </Link>
-            <Link href="#portfolio">
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-neutral-300 text-neutral-700 hover:bg-neutral-100 px-8"
-              >
-                {t("hero.viewWork")}
-              </Button>
-            </Link>
-          </div>
-        </div>
+      <div className="container mx-auto px-6 md:flex items-center min-h-screen">
+        <Card className="max-w-3xl mx-auto p-6 md:p-8 text-center bg-background/50 backdrop-blur-sm">
+          <CardContent className="mt-32">
+            <h1 className="text-4xl gradient-text md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-foreground">
+              <span className="">{t("hero.title")}</span>
+            </h1>
+            <p className="text-lg md:text-xl mb-10 text-muted-foreground max-w-2xl mx-auto">
+              {t("hero.subtitle")}
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link href="/initialize-project">
+                <Button size="lg" variant="default" className="px-8">
+                  {t("hero.startProject")}
+                </Button>
+              </Link>
+              <Link href="#portfolio">
+                <Button size="lg" variant="outline" className="px-8">
+                  {t("hero.viewWork")}
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-50 to-transparent -z-10"></div>
     </section>
   );
 }
