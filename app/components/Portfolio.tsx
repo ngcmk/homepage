@@ -88,13 +88,13 @@ export default function Portfolio() {
   };
 
   return (
-    <section id="portfolio" className="py-20 md:py-32 bg-neutral-100">
+    <section id="portfolio" className="py-20 md:py-32 bg-muted/50">
       <div className="container mx-auto px-6">
         <div className="mb-16 max-w-xl">
           <h2 className="text-3xl font-bold mb-6 accent-border inline-block">
             {t("portfolio.title")}
           </h2>
-          <p className="text-neutral-600">{t("portfolio.subtitle")}</p>
+          <p className="text-muted-foreground">{t("portfolio.subtitle")}</p>
         </div>
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8">
@@ -111,7 +111,7 @@ export default function Portfolio() {
                 {getFilteredProjects(type.value).map((project, index) => (
                   <Dialog key={index}>
                     <DialogTrigger asChild>
-                      <div className="group hover-lift bg-white rounded-lg overflow-hidden cursor-pointer">
+                      <div className="group hover-lift bg-card rounded-lg overflow-hidden cursor-pointer">
                         <div className="relative h-64 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="text-primary/30 text-6xl font-bold">
@@ -131,7 +131,7 @@ export default function Portfolio() {
                           <h3 className="text-xl font-semibold mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
                             {project.title}
                           </h3>
-                          <p className="text-neutral-600 mb-4">
+                          <p className="text-muted-foreground mb-4">
                             {project.description}
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -168,7 +168,7 @@ export default function Portfolio() {
                           <h4 className="font-semibold mb-2">
                             Project Overview
                           </h4>
-                          <p className="text-neutral-600">
+                          <p className="text-muted-foreground">
                             {project.fullDescription}
                           </p>
                         </div>

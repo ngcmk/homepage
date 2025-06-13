@@ -32,14 +32,14 @@ export default function Testimonials() {
           <h2 className="text-3xl font-bold mb-6 accent-border inline-block">
             {t("testimonials.title")}
           </h2>
-          <p className="text-neutral-600">{t("testimonials.subtitle")}</p>
+          <p className="text-muted-foreground">{t("testimonials.subtitle")}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="relative">
-              <Quote className="absolute -top-6 -left-6 w-12 h-12 text-neutral-200" />
-              <div className="bg-white p-8 rounded-lg shadow-sm relative z-10">
-                <p className="text-neutral-600 mb-6 relative z-10">
+              <Quote className="absolute -top-6 -left-6 w-12 h-12 text-muted/40" />
+              <div className="bg-card p-8 rounded-lg shadow-sm relative z-10">
+                <p className="text-muted-foreground mb-6 relative z-10">
                   {testimonial.content}
                 </p>
                 <div className="flex items-center space-x-4">
@@ -54,7 +54,7 @@ export default function Testimonials() {
                   </Avatar>
                   <div>
                     <h3 className="font-semibold">{testimonial.name}</h3>
-                    <p className="text-neutral-500 text-sm">
+                    <p className="text-muted-foreground text-sm">
                       {testimonial.role}
                     </p>
                   </div>
