@@ -86,10 +86,10 @@ When building your Next.js application for production:
 
 ```bash
 # Build with production environment variables
-npm run build
+npm run build:prod
 
-# Or explicitly
-NODE_ENV=production npm run build
+# Or explicitly (using cross-env for cross-platform compatibility)
+npx cross-env NODE_ENV=production npm run build
 ```
 
 ### CORS Configuration
@@ -113,10 +113,11 @@ const corsHeaders = {
 
 ### Common Issues
 
-1. **CORS Errors**:
+2. **CORS Errors**:
    - Check your CORS configuration in `http.ts`
-   - Verify the `NEXT_PUBLIC_DOMAIN` environment variable is set correctly
+   - Verify the `NEXT_PUBLIC_DOMAIN` environment variable is set correctly (without quotes)
    - Ensure your frontend is using the correct Convex URL
+   - Make sure your hosting provider has CORS headers configured correctly
 
 2. **Authentication Issues**:
    - Make sure you're logged in with `npx convex login`
@@ -156,6 +157,7 @@ URL: https://dashboard.convex.dev
 1. **Keep dependencies updated**:
    ```bash
    npm update convex
+   npm update cross-env # For cross-platform builds
    ```
 
 2. **Run regular backups**:

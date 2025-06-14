@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:prod": "node scripts/build-production.js",
     "start": "next start",
+    "start:prod": "cross-env NODE_ENV=production next start",
     "lint": "next lint",
     "convex:dev": "npx convex dev",
     "convex:deploy": "npx convex deploy",
@@ -49,6 +51,7 @@
     "@types/node": "^20.19.0",
     "@types/react": "^18.2.14",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-next": "15.3.3",
     "postcss": "^8.5.5",
