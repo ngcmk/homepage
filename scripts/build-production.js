@@ -69,7 +69,7 @@ async function main() {
     // Step 2: Read the production environment file
     const envContent = fs.readFileSync(envProdPath, "utf8");
 
-    // Step 3: Extract Convex URL
+    // Step 3: Extract Convex URLs
     let convexUrl = "";
     const urlMatch = envContent.match(/NEXT_PUBLIC_CONVEX_URL=([^\n]+)/);
     if (urlMatch && urlMatch[1]) {
@@ -78,9 +78,21 @@ async function main() {
       throw new Error("NEXT_PUBLIC_CONVEX_URL not found in .env.production");
     }
 
+    // Generate HTTP Actions URL from the main Convex URL
+    let convexSiteUrl = "";
+    if (convexUrl.includes("convex.cloud")) {
+      // Example: https://grateful-ant-828.convex.cloud -> https://grateful-ant-828-site.convex.cloud
+      convexSiteUrl = convexUrl.replace(/\/\/([^.]+)\./, "//$1-site.");
+    }
+
     console.log(
       `${colors.bright}Found Convex URL:${colors.reset} ${convexUrl}`,
     );
+    if (convexSiteUrl) {
+      console.log(
+        `${colors.bright}Generated HTTP Actions URL:${colors.reset} ${convexSiteUrl}`,
+      );
+    }
 
     // Step 4: Ask for confirmation before building
     console.log(
@@ -128,10 +140,34 @@ async function main() {
       `\n${colors.bright}${colors.cyan}Building for production...${colors.reset}`,
     );
 
-    // Copy .env.production to .env.local to ensure it's used during the build
-    fs.copyFileSync(envProdPath, path.join(process.cwd(), ".env.local"));
+    // Copy .env.production to .env.local with updated HTTP Actions URL if needed
+    let envLocalContent = fs.readFileSync(envProdPath, "utf8");
+
+    // Update or add CONVEX_SITE_URL if we have a valid HTTP Actions URL
+    if (convexSiteUrl) {
+      if (envLocalContent.includes("CONVEX_SITE_URL=")) {
+        envLocalContent = envLocalContent.replace(
+          /CONVEX_SITE_URL=.*/,
+          `CONVEX_SITE_URL=${convexSiteUrl}`,
+        );
+      } else {
+        envLocalContent += `\n# HTTP Actions URL\nCONVEX_SITE_URL=${convexSiteUrl}\n`;
+      }
+
+      // Also update NEXT_PUBLIC_CONVEX_HTTP_URL
+      if (envLocalContent.includes("NEXT_PUBLIC_CONVEX_HTTP_URL=")) {
+        envLocalContent = envLocalContent.replace(
+          /NEXT_PUBLIC_CONVEX_HTTP_URL=.*/,
+          `NEXT_PUBLIC_CONVEX_HTTP_URL=${convexSiteUrl}`,
+        );
+      } else {
+        envLocalContent += `NEXT_PUBLIC_CONVEX_HTTP_URL=${convexSiteUrl}\n`;
+      }
+    }
+
+    fs.writeFileSync(path.join(process.cwd(), ".env.local"), envLocalContent);
     console.log(
-      `${colors.green}✓ Copied .env.production to .env.local for build${colors.reset}`,
+      `${colors.green}✓ Created .env.local with updated HTTP Actions URL for build${colors.reset}`,
     );
 
     // Set NODE_ENV explicitly and run the build
@@ -172,7 +208,15 @@ async function main() {
       console.log(
         `   ${colors.cyan}NEXT_PUBLIC_CONVEX_URL=${convexUrl}${colors.reset}`,
       );
-      console.log(`   ${colors.cyan}NODE_ENV: "production"${colors.reset}`);
+      if (convexSiteUrl) {
+        console.log(
+          `   ${colors.cyan}CONVEX_SITE_URL=${convexSiteUrl}${colors.reset}`,
+        );
+        console.log(
+          `   ${colors.cyan}NEXT_PUBLIC_CONVEX_HTTP_URL=${convexSiteUrl}${colors.reset}`,
+        );
+      }
+      console.log(`   ${colors.cyan}NODE_ENV=production${colors.reset}`);
     } else {
       throw new Error("Build directory not found. The build may have failed.");
     }

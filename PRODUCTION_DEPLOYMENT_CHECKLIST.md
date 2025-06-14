@@ -28,6 +28,8 @@ This checklist ensures a smooth and successful production deployment of the NGC 
 - [ ] `.env.production` created with correct values:
 - [ ] `NEXT_PUBLIC_CONVEX_URL` set to production deployment URL
 - [ ] `CONVEX_URL` set to production deployment URL
+- [ ] `CONVEX_SITE_URL` set to HTTP Actions URL (your-deployment-id-site.convex.cloud)
+- [ ] `NEXT_PUBLIC_CONVEX_HTTP_URL` set to same HTTP Actions URL for client-side use
 - [ ] `NODE_ENV=production` (without quotes)
 - [ ] `NEXT_PUBLIC_DOMAIN` set to production domain
 - [ ] Sensitive variables secured and not committed to Git
@@ -49,6 +51,8 @@ This checklist ensures a smooth and successful production deployment of the NGC 
 - [ ] Deploy to hosting provider (Vercel, Netlify, etc.)
 - [ ] Set environment variables on hosting platform:
   - [ ] `NEXT_PUBLIC_CONVEX_URL=https://your-deployment-id.convex.cloud`
+  - [ ] `CONVEX_SITE_URL=https://your-deployment-id-site.convex.cloud`
+  - [ ] `NEXT_PUBLIC_CONVEX_HTTP_URL=https://your-deployment-id-site.convex.cloud`
   - [ ] `NODE_ENV=production` (without quotes)
   - [ ] Any other required variables
 
@@ -59,6 +63,7 @@ This checklist ensures a smooth and successful production deployment of the NGC 
 - [ ] Verify Convex connection in browser console
 - [ ] Test project consultation form submission
 - [ ] Confirm data is being saved to production database
+- [ ] Test HTTP Actions endpoints if your app uses them
 - [ ] Validate form error handling
 - [ ] Check "thank you" page redirection
 - [ ] Verify any other critical functionality
@@ -85,8 +90,10 @@ In case of deployment issues:
 1. Identify the problem - frontend or backend
 2. For Convex issues:
    - Roll back to previous deployment: `npx convex deploy --deploymentName=<previous-name>`
+   - Update environment variables to match the previous deployment URLs
 3. For frontend issues:
    - Revert to previous frontend deployment in hosting provider dashboard
+   - Ensure environment variables match the active Convex deployment
 
 ## Final Checklist
 

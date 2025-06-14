@@ -67,6 +67,8 @@ Create or update your `.env.production` file with:
 # Convex Production Configuration
 NEXT_PUBLIC_CONVEX_URL=https://your-deployment-id.convex.cloud
 CONVEX_URL=https://your-deployment-id.convex.cloud
+CONVEX_SITE_URL=https://your-deployment-id-site.convex.cloud
+NEXT_PUBLIC_CONVEX_HTTP_URL=https://your-deployment-id-site.convex.cloud
 NODE_ENV=production
 ```
 
@@ -76,7 +78,9 @@ Configure these environment variables in your hosting provider's dashboard:
 
 1. **NEXT_PUBLIC_CONVEX_URL**: Your production Convex deployment URL
 2. **CONVEX_URL**: Same as above (used for server-side operations)
-3. **NEXT_PUBLIC_DOMAIN**: Your frontend domain (e.g., `https://yourdomain.com`)
+3. **CONVEX_SITE_URL**: Your HTTP Actions URL (available as `process.env.CONVEX_SITE_URL` in Convex functions)
+4. **NEXT_PUBLIC_CONVEX_HTTP_URL**: Same as CONVEX_SITE_URL, but available in client-side code
+5. **NEXT_PUBLIC_DOMAIN**: Your frontend domain (e.g., `https://yourdomain.com`)
 
 ## Frontend Integration
 
@@ -166,6 +170,22 @@ URL: https://dashboard.convex.dev
 3. **Monitor performance**:
    - Check function execution times
    - Monitor database query performance
+
+### HTTP Actions
+
+HTTP Actions provide external access to your Convex functions. After deployment, you'll see:
+
+```
+This production Convex deployment hosts HTTP Actions at the following URL:
+https://your-deployment-id-site.convex.cloud
+
+In Convex functions, this is available as process.env.CONVEX_SITE_URL.
+```
+
+This URL should be:
+1. Added to your environment variables as `CONVEX_SITE_URL`
+2. Added to frontend environment as `NEXT_PUBLIC_CONVEX_HTTP_URL` if needed by client code
+3. Used for any external API calls to your Convex functions
 
 ### Rollback Process
 
