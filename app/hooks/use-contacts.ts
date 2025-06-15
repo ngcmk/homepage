@@ -110,12 +110,9 @@ export function useContactForm() {
     priority?: "low" | "medium" | "high" | "urgent";
     gdprConsent?: boolean;
     marketingConsent?: boolean;
-  }): Promise<{
-    success: boolean;
-    contactId?: any;
-    error?: string;
-    originalError?: any;
-  }> => {
+    // Explicitly document fields that should NOT be included
+    timestamp?: never; // This signals that timestamp should never be included
+  }) => {
     console.log("[Convex] submitContact called with data:", {
       name: data.name,
       email: data.email,
@@ -123,207 +120,156 @@ export function useContactForm() {
       contactType: data.contactType,
     });
 
-    // Add timestamp for tracking submission duration
-    const startTime = Date.now();
-    console.log(
-      `[Convex] Form submission started at ${new Date().toISOString()}`,
-    );
+    // Simple check for createContact function
+    if (!createContact || typeof createContact !== "function") {
+      console.error("[Convex] createContact function not available");
+      return {
+        success: false,
+        error: "Server connection not available. Please try again later.",
+      };
+    }
+
+    // Create submission data without timestamp
+    // Use a clean approach that only picks the fields we want
+    const allowedFields = [
+      "name",
+      "email",
+      "phone",
+      "company",
+      "subject",
+      "message",
+      "contactType",
+      "priority",
+      "gdprConsent",
+      "marketingConsent",
+      "source",
+      "userAgent",
+      "referrer",
+      "ipAddress",
+    ];
+
+    // Start with a clean object
+    const submissionData: Record<string, any> = {
+      // Set required fields with defaults
+      name: data.name || "Unknown",
+      email: data.email || "unknown@example.com",
+      message: data.message || "No message provided",
+      contactType: data.contactType || "general",
+      priority: data.priority || "medium",
+      source: "website",
+    };
+
+    // Only add allowed optional fields if they exist in data
+    for (const field of allowedFields) {
+      if (field in data && !submissionData[field]) {
+        submissionData[field] = (data as any)[field];
+      }
+    }
+
+    // Add browser metadata
+    if (typeof navigator !== "undefined") {
+      submissionData.userAgent = navigator.userAgent;
+    }
+
+    if (typeof document !== "undefined") {
+      submissionData.referrer = document.referrer || undefined;
+    }
+
+    console.log("[Convex] Cleaned submission data:", submissionData);
 
     try {
-      if (!createContact) {
-        console.error(
-          "[Convex] Contact mutation not available - createContact is null or undefined",
-        );
-        return {
-          success: false,
-          error: "Server connection not available. Please try again later.",
-        };
-      }
-
-      if (typeof createContact !== "function") {
-        console.error(
-          `[Convex] Contact mutation not available - createContact is not a function but a ${typeof createContact}`,
-        );
-        return {
-          success: false,
-          error:
-            "Server connection error. Please refresh the page and try again.",
-        };
-      }
-
-      // Prepare submission data with required defaults for any missing fields
-      const submissionData = {
-        ...data,
-        // Ensure required fields have defaults
-        name: data.name || "Unknown",
-        email: data.email || "unknown@example.com",
-        message: data.message || "No message provided",
-        contactType: data.contactType || "general",
-        priority: data.priority || "medium",
-        // Add metadata
-        source: "website",
-        userAgent:
-          typeof navigator !== "undefined" ? navigator.userAgent : undefined,
-        referrer:
-          typeof document !== "undefined"
-            ? document.referrer || undefined
-            : undefined,
-      };
-
-      console.log("[Convex] Submitting contact with data:", submissionData);
-
-      try {
-        // Log before attempting to call the function
-        console.log("[Convex] Calling createContact function...");
-
-        // Create a timeout promise to prevent hanging
-        let timeoutId: NodeJS.Timeout | null = null;
-        const timeoutPromise = new Promise<never>((_, reject) => {
-          timeoutId = setTimeout(() => {
-            reject(new Error("Request timed out after 15 seconds"));
-          }, 15000); // 15 second timeout
-        });
-
-        // Create the API call promise
-        const apiCallPromise = createContact(submissionData);
-
-        // Race the API call against the timeout
-        const contactId = await Promise.race([
-          apiCallPromise,
-          timeoutPromise,
-        ]).finally(() => {
-          if (timeoutId) clearTimeout(timeoutId);
-        });
-
-        const endTime = Date.now();
-        console.log(
-          `[Convex] Contact created successfully in ${endTime - startTime}ms, ID:`,
-          contactId,
-        );
-        return { success: true, contactId };
-      } catch (convexError) {
-        console.error("[Convex] Error creating contact:", convexError);
-
-        // More detailed error logging
-        if (convexError instanceof Error) {
-          console.error("[Convex] Error name:", convexError.name);
-          console.error("[Convex] Error message:", convexError.message);
-          console.error("[Convex] Error stack:", convexError.stack);
-        } else {
-          console.error("[Convex] Non-Error object thrown:", convexError);
-        }
-
-        // Handle timeout errors specially
-        if (
-          convexError instanceof Error &&
-          convexError.message.includes("timed out")
-        ) {
-          return {
-            success: false,
-            error: "Request timed out. Please try again later.",
-            originalError: convexError,
-          };
-        }
-
-        // Instead of re-throwing, return an error object to prevent loading state from hanging
-        return {
-          success: false,
-          error:
-            convexError instanceof Error
-              ? convexError.message
-              : "Error creating contact",
-          originalError: convexError,
-        };
-      }
-    } catch (error) {
-      const endTime = Date.now();
-      console.error(
-        `[Convex] Error submitting contact form after ${endTime - startTime}ms:`,
-        error,
+      // Add verbose diagnostic logging before submission
+      console.log(
+        "[Convex] DIAGNOSTIC: Submission data structure:",
+        JSON.stringify(submissionData, null, 2),
+      );
+      console.log(
+        "[Convex] DIAGNOSTIC: Fields being sent:",
+        Object.keys(submissionData),
       );
 
-      // Provide more specific error messages
-      let errorMessage = "Unknown error occurred";
+      // Check for potentially problematic fields
+      if ("timestamp" in submissionData) {
+        console.error(
+          "[Convex] DIAGNOSTIC WARNING: 'timestamp' field detected in submission data!",
+        );
+      }
+
+      // Direct call to createContact without Promise.race
+      const contactId = await createContact(submissionData);
+      console.log("[Convex] Contact created successfully, ID:", contactId);
+
+      // Check for direct Convex response format
+      if (typeof contactId === "object" && contactId !== null) {
+        if ("success" in contactId && contactId.success === true) {
+          console.log("[Convex] Detected direct Convex response format");
+          return { success: true, contactId: contactId.result || contactId };
+        }
+      }
+
+      return { success: true, contactId };
+    } catch (error) {
+      console.error("[Convex] Error creating contact:", error);
+
+      let errorMessage = "Failed to submit contact form";
 
       if (error instanceof Error) {
         errorMessage = error.message;
-        console.error("[Convex] Error stack:", error.stack);
 
-        // Check for specific error types
-        if (
-          errorMessage.includes("network") ||
-          errorMessage.includes("connection") ||
-          errorMessage.includes("fetch")
-        ) {
-          errorMessage =
-            "Network error. Please check your connection and try again.";
-        } else if (errorMessage.includes("timeout")) {
-          errorMessage = "Request timed out. Please try again.";
-        } else if (
-          errorMessage.includes("permission") ||
-          errorMessage.includes("access")
-        ) {
-          errorMessage = "Permission error. Please contact support.";
-        } else if (
-          errorMessage.includes("undefined") ||
-          errorMessage.includes("null")
-        ) {
-          errorMessage = "System error. Please refresh the page and try again.";
-        } else if (errorMessage.includes("extra field")) {
-          errorMessage =
-            "Form submission error: Invalid form data. Please try again.";
-        }
-      }
+        // Log detailed error information
+        console.error(
+          "[Convex] DIAGNOSTIC: Error type:",
+          error.constructor.name,
+        );
+        console.error(
+          "[Convex] DIAGNOSTIC: Full error message:",
+          error.message,
+        );
+        console.error("[Convex] DIAGNOSTIC: Error stack:", error.stack);
 
-      // Try to send a fallback analytics event if possible
-      try {
-        if (typeof window !== "undefined") {
-          console.log(
-            "[Convex] Attempting to log fallback analytics for failed submission",
+        // More specific error messages
+        if (error.message.includes("extra field")) {
+          console.error(
+            "[Convex] DIAGNOSTIC: Field validation error detected!",
           );
-          // This could be expanded to actually send analytics
-
-          // Check if the error is due to network issues and provide recovery instructions
-          if (
-            error instanceof Error &&
-            (error.message.includes("network") ||
-              error.message.includes("connection") ||
-              error.message.includes("timeout"))
-          ) {
-            console.log(
-              "[Convex] Network-related error detected, adding recovery instructions",
-            );
-          }
+          errorMessage = "Form validation error: Invalid form data";
+        } else if (
+          error.message.includes("network") ||
+          error.message.includes("connection")
+        ) {
+          errorMessage = "Network error: Please check your connection";
+        } else if (error.message.includes("timeout")) {
+          errorMessage = "Request timed out: Server might be busy";
         }
-      } catch (analyticsError) {
-        console.error("[Convex] Failed to log analytics:", analyticsError);
+      } else {
+        // Log non-Error objects
+        console.error("[Convex] DIAGNOSTIC: Non-Error object thrown:", error);
       }
 
       return {
         success: false,
         error: errorMessage,
-        originalError: error,
       };
     }
   };
 
-  // Helper function to check if the contact was actually created despite errors
-  const verifyContactCreation = async (email: string): Promise<boolean> => {
-    try {
-      // This would need to be implemented if we want to verify if a contact was created
-      // despite errors in the response. For now, it's just a placeholder.
-      return false;
-    } catch (error) {
-      console.error("[Convex] Error verifying contact creation:", error);
-      return false;
+  // Helper to parse response formats
+  const parseConvexResponse = (response: any) => {
+    // Handle standard responses
+    if (response && typeof response === "object") {
+      // Direct Convex format: {type: "MutationResponse", success: true, result: "id"}
+      if (response.type === "MutationResponse" && response.success === true) {
+        return { success: true, contactId: response.result };
+      }
     }
+    return response;
   };
 
   return {
     submitContact,
     isInitialized,
     createContactAvailable: typeof createContact === "function",
-    verifyContactCreation,
+    parseConvexResponse,
   };
 }
 

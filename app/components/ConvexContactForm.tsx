@@ -12,11 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface ContactFormData {
@@ -46,12 +49,14 @@ const initialFormData: ContactFormData = {
 };
 
 export function ConvexContactForm() {
-  const [formData, setFormData] = useState<ContactFormData>(initialFormData);
+  const router = useRouter();
+  const isMounted = useRef(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
+  const [redirecting, setRedirecting] = useState(false);
 
   // For tracking component mounting status
   const isMounted = useRef(true);
@@ -62,6 +67,18 @@ export function ConvexContactForm() {
       isMounted.current = false;
     };
   }, []);
+
+  // Handle redirection when submission is successful
+  useEffect(() => {
+    if (submitStatus.type === "success" && !redirecting) {
+      setRedirecting(true);
+      setTimeout(() => {
+        if (isMounted.current) {
+          router.push("/thank-you");
+        }
+      }, 1500);
+    }
+  }, [submitStatus.type, redirecting, router]);
 
   const { submitContact, isInitialized, createContactAvailable } =
     useContactForm();
@@ -177,43 +194,44 @@ export function ConvexContactForm() {
       console.log("[ConvexContactForm] *** FORM SUBMISSION STARTED ***");
       console.log("[ConvexContactForm] Preparing to submit contact form...");
 
+      // Destructure to explicitly exclude timestamp field if it exists
+      const { timestamp, ...validFields } = formData;
+
       // Prepare the data with trimmed values
       const submissionData = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim() || undefined,
-        company: formData.company.trim() || undefined,
-        subject: formData.subject.trim() || undefined,
-        message: formData.message.trim(),
-        contactType: formData.contactType,
-        priority: formData.priority,
-        gdprConsent: formData.gdprConsent,
-        marketingConsent: formData.marketingConsent,
+        name: validFields.name.trim(),
+        email: validFields.email.trim(),
+        phone: validFields.phone.trim() || undefined,
+        company: validFields.company.trim() || undefined,
+        subject: validFields.subject.trim() || undefined,
+        message: validFields.message.trim(),
+        contactType: validFields.contactType,
+        priority: validFields.priority,
+        gdprConsent: validFields.gdprConsent,
+        marketingConsent: validFields.marketingConsent,
       };
 
       console.log("[ConvexContactForm] Submission data:", submissionData);
 
+      // Log timestamp separately for debugging only
+      console.log("[ConvexContactForm] Form submission time:", Date.now());
+
       // Start timer to track submission time
       const startTime = Date.now();
 
-      // Add timeout to prevent hanging
-      let timeoutId: NodeJS.Timeout | null = null;
-      const submissionPromise = submitContact(submissionData);
+      // Direct call without timeout handling
+      let result = await submitContact(submissionData);
 
-      // Create a timeout promise that rejects after 10 seconds
-      const timeoutPromise = new Promise<any>((_, reject) => {
-        timeoutId = setTimeout(() => {
-          reject(new Error("Submission timed out. Please try again."));
-        }, 10000); // 10 second timeout
-      });
-
-      // Race the submission against the timeout
-      const result = await Promise.race([
-        submissionPromise,
-        timeoutPromise,
-      ]).finally(() => {
-        if (timeoutId) clearTimeout(timeoutId);
-      });
+      // Check for direct Convex response format
+      if (typeof result === "object" && result !== null) {
+        if (result.type === "MutationResponse" && result.success === true) {
+          console.log(
+            "[ConvexContactForm] Detected direct Convex response format",
+            result,
+          );
+          result = { success: true, contactId: result.result };
+        }
+      }
 
       // Calculate submission time
       const endTime = Date.now();
@@ -222,7 +240,13 @@ export function ConvexContactForm() {
       );
 
       console.log("[ConvexContactForm] Submission result:", result);
-      if (result && result.success) {
+      if (
+        result &&
+        (result.success === true ||
+          (typeof result === "object" &&
+            result.type === "MutationResponse" &&
+            result.success === true))
+      ) {
         console.log("[ConvexContactForm] Submission successful!");
         setSubmitStatus({
           type: "success",
@@ -238,6 +262,17 @@ export function ConvexContactForm() {
             checkbox.checked = false;
           });
         toast.success("Contact form submitted successfully!");
+
+        // Set redirecting state
+        setRedirecting(true);
+
+        // Use a timeout to ensure loading state is resolved before redirect
+        setTimeout(() => {
+          if (isMounted.current) {
+            // Redirect to thank you page
+            router.push("/thank-you");
+          }
+        }, 1000); // 1-second delay for better UX and to ensure state updates complete
       } else {
         console.error("[ConvexContactForm] Submission failed:", result?.error);
         setSubmitStatus({
@@ -256,16 +291,19 @@ export function ConvexContactForm() {
         console.error("[ConvexContactForm] Error stack:", error.stack);
       }
 
+      // Handle submission errors directly
+      setIsSubmitting(false);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please try again.";
+
       setSubmitStatus({
         type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred. Please try again.",
+        message: errorMessage,
       });
-      toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred",
-      );
+      toast.error(errorMessage);
+      return; // Stop execution here
     } finally {
       if (isMounted.current) {
         setIsSubmitting(false);

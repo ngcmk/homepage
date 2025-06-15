@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useContactForm } from "../hooks/use-contacts";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -58,9 +59,11 @@ interface ContactFormProps {
 
 export default function ContactForm({ onSubmit, className }: ContactFormProps) {
   const { t } = useLanguage();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const isMounted = useRef(true);
   const { submitContact, isInitialized, createContactAvailable } =
     useContactForm();
@@ -71,6 +74,18 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       isMounted.current = false;
     };
   }, []);
+
+  // Handle redirection when submission is successful
+  useEffect(() => {
+    if (isSuccess && !redirecting) {
+      setRedirecting(true);
+      setTimeout(() => {
+        if (isMounted.current) {
+          router.push("/thank-you");
+        }
+      }, 1500);
+    }
+  }, [isSuccess, redirecting, router]);
 
   const form = useForm<ContactFormValues>({
     defaultValues: {
@@ -149,6 +164,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       setIsSubmitting(true);
       setSubmitError(null);
       setIsSuccess(false);
+      setRedirecting(false);
 
       console.log("[ContactForm] Starting submission with data:", data);
 
@@ -196,8 +212,12 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         return;
       }
 
+      // Destructure to explicitly exclude timestamp field
+      const { budget, timestamp, ...validFields } = data;
+
       // Prepare submission data with defaults for missing values - only include fields valid for Convex
       const submissionData = {
+        ...validFields,
         name: data.name,
         email: data.email,
         phone: data.phone || "",
@@ -217,7 +237,8 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       console.log("[ContactForm] Complete form data:", {
         ...submissionData,
         budget: data.budget || "discuss", // Budget shown in logs but not sent to Convex
-        timestamp: Date.now(), // Timestamp for logging only, not sent to Convex
+        // Log timestamp for debugging only, don't include it in the actual submission
+        logTimestamp: Date.now(),
       });
 
       // Log only the data that will be sent to Convex
@@ -227,24 +248,26 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       const startTime = Date.now();
 
       try {
-        // Add timeout to prevent hanging
-        let timeoutId: NodeJS.Timeout | null = null;
-        const submissionPromise = submitContact(submissionData);
+        // Direct call without timeout handling
+        let directResult = await submitContact(submissionData);
 
-        // Create a timeout promise that rejects after 10 seconds
-        const timeoutPromise = new Promise<any>((_, reject) => {
-          timeoutId = setTimeout(() => {
-            reject(new Error("Submission timed out. Please try again."));
-          }, 10000); // 10 second timeout
-        });
-
-        // Race the submission against the timeout
-        result = await Promise.race([
-          submissionPromise,
-          timeoutPromise,
-        ]).finally(() => {
-          if (timeoutId) clearTimeout(timeoutId);
-        });
+        // Check for direct Convex response format
+        if (typeof directResult === "object" && directResult !== null) {
+          if (
+            directResult.type === "MutationResponse" &&
+            directResult.success === true
+          ) {
+            console.log(
+              "[ContactForm] Detected direct Convex response format:",
+              directResult,
+            );
+            result = { success: true, contactId: directResult.result };
+          } else {
+            result = directResult;
+          }
+        } else {
+          result = directResult;
+        }
 
         const endTime = Date.now();
         console.log(
@@ -277,7 +300,13 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
 
       if (!isMounted.current) return;
 
-      if (result && result.success === true) {
+      if (
+        result &&
+        (result.success === true ||
+          (typeof result === "object" &&
+            result.type === "MutationResponse" &&
+            result.success === true))
+      ) {
         console.log("[ContactForm] Submission successful!");
         setIsSuccess(true);
         toast.success(
@@ -294,6 +323,47 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
           message: "",
           budget: "discuss",
         });
+
+        // Set redirecting state
+        setRedirecting(true);
+
+        // Use a timeout to ensure loading state is resolved before redirect
+        setTimeout(() => {
+          if (isMounted.current) {
+            // Redirect to thank you page
+            router.push("/thank-you");
+          }
+        }, 1000); // 1-second delay for better UX and to ensure state updates complete
+      } else if (
+        typeof result === "string" &&
+        result.includes('success":true')
+      ) {
+        // Handle string response that might be JSON
+        console.log("[ContactForm] Received string success response");
+        setIsSuccess(true);
+        toast.success(
+          "Thank you for your message! We've received your inquiry and will get back to you within 24 hours.",
+          { duration: 6000 },
+        );
+        form.reset({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          subject: "general",
+          message: "",
+          budget: "discuss",
+        });
+
+        // Set redirecting state
+        setRedirecting(true);
+
+        // Redirect to thank you page after a short delay
+        setTimeout(() => {
+          if (isMounted.current) {
+            router.push("/thank-you");
+          }
+        }, 1000);
       } else {
         const errorMessage = result?.error || "Failed to submit form";
         console.error("[ContactForm] Submission failed:", errorMessage);
@@ -304,22 +374,14 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       }
     } catch (error) {
       console.error("[ContactForm] Form submission error:", error);
-      let errorMessage = "Something went wrong. Please try again.";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-        console.error("[ContactForm] Error name:", error.name);
-        console.error("[ContactForm] Error stack:", error.stack);
-      }
-
-      // Special error handling for timeout
-      if (errorMessage.includes("timed out")) {
-        errorMessage =
-          "Request timed out. The form may still have been submitted. Please check before submitting again.";
-      }
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.";
 
       setSubmitError(errorMessage);
       toast.error(errorMessage);
+      setIsSubmitting(false);
     } finally {
       if (isMounted.current) {
         setIsSubmitting(false);
