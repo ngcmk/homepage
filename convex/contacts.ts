@@ -10,11 +10,22 @@ async function logActivity(
   details?: string,
   metadata?: any,
 ) {
+  // Extract only the allowed fields from metadata
+  const safeMetadata = metadata
+    ? {
+        // Only include the exact fields allowed by the schema
+        field: metadata.field || null,
+        newValue: metadata.newValue !== undefined ? metadata.newValue : null,
+        previousValue:
+          metadata.previousValue !== undefined ? metadata.previousValue : null,
+      }
+    : undefined;
+
   await ctx.db.insert("activities", {
     contactId,
     action,
     details,
-    metadata,
+    metadata: safeMetadata,
     timestamp: Date.now(),
   });
 }
@@ -66,8 +77,12 @@ export const createContact = mutation({
       ctx,
       contactId,
       "contact_created",
-      `Contact created by ${args.name}`,
-      { email: args.email, contactType: args.contactType },
+      `Contact created by ${args.name} (${args.email}, type: ${args.contactType})`,
+      {
+        newValue: args.email,
+        previousValue: null,
+        field: "contact",
+      },
     );
 
     return contactId;
@@ -312,7 +327,11 @@ export const addNote = mutation({
       args.contactId,
       "note_added",
       `${args.type} note added by ${args.author}`,
-      { noteType: args.type },
+      {
+        newValue: args.content,
+        previousValue: null,
+        field: "notes",
+      },
     );
 
     return args.contactId;
@@ -430,8 +449,12 @@ export const deleteContact = mutation({
         ctx,
         args.id,
         "contact_deleted",
-        `Contact permanently deleted`,
-        { email: contact.email, deletedBy: args.userId },
+        `Contact permanently deleted (${contact.email})`,
+        {
+          newValue: null,
+          previousValue: contact.email,
+          field: "contact",
+        },
       );
     } else {
       // Soft delete by marking as spam
@@ -445,8 +468,12 @@ export const deleteContact = mutation({
         ctx,
         args.id,
         "contact_marked_spam",
-        `Contact marked as spam`,
-        { email: contact.email, markedBy: args.userId },
+        `Contact marked as spam (${contact.email})`,
+        {
+          newValue: "spam",
+          previousValue: contact.status,
+          field: "status",
+        },
       );
     }
 

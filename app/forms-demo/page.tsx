@@ -9,7 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import ContactForm from "../components/ContactForm";
 import NewsletterForm from "../components/NewsletterForm";
 import SearchForm from "../components/SearchForm";
@@ -31,8 +33,20 @@ export default function FormsDemo() {
   const { t } = useLanguage();
 
   const handleContactSubmit = (data: any) => {
-    console.log("Contact form data:", data);
-    alert("Contact form submitted successfully!");
+    console.log("[FormsDemo] Contact form data received:", data);
+    console.log("[FormsDemo] Form submission processed successfully");
+
+    // Use toast instead of alert for better UX
+    toast.success(
+      `Thank you ${data.name}, we'll contact you at ${data.email} soon.`,
+      {
+        duration: 5000,
+      },
+    );
+
+    // Simulate API call
+    console.log("[FormsDemo] Would normally send this data to an API endpoint");
+    return true;
   };
 
   const handleNewsletterSubmit = (data: any) => {

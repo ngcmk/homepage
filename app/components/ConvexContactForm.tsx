@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useContactForm } from "../hooks/use-contacts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,55 +53,132 @@ export function ConvexContactForm() {
     message: string;
   }>({ type: null, message: "" });
 
-  const { submitContact } = useContactForm();
+  // For tracking component mounting status
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const { submitContact, isInitialized, createContactAvailable } =
+    useContactForm();
+
+  // Log initial form state for debugging
+  useEffect(() => {
+    console.log("[ConvexContactForm] Initial form state:", formData);
+    console.log("[ConvexContactForm] Convex initialized:", isInitialized);
+    console.log(
+      "[ConvexContactForm] submitContact available:",
+      typeof submitContact === "function",
+    );
+    console.log(
+      "[ConvexContactForm] createContact available:",
+      createContactAvailable,
+    );
+  }, [isInitialized, createContactAvailable]);
 
   const handleInputChange = (
     field: keyof ContactFormData,
     value: string | boolean,
   ) => {
+    console.log(`[ConvexContactForm] Setting ${field} to:`, value);
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
+  // Clear form data completely
+  const resetForm = () => {
+    setFormData({ ...initialFormData });
+    setSubmitStatus({ type: null, message: "" });
+    // Reset checkbox UI state
+    document
+      .querySelectorAll('input[type="checkbox"]')
+      .forEach((checkbox: any) => {
+        checkbox.checked = false;
+      });
+  };
+
   const validateForm = (): boolean => {
+    console.log("[ConvexContactForm] Validating form...");
+
     if (!formData.name.trim()) {
+      console.log("[ConvexContactForm] Validation failed: Name is required");
       setSubmitStatus({ type: "error", message: "Name is required" });
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim() || !emailRegex.test(formData.email)) {
+      console.log(
+        "[ConvexContactForm] Validation failed: Valid email is required",
+      );
       setSubmitStatus({ type: "error", message: "Valid email is required" });
       return false;
     }
 
     if (!formData.message.trim()) {
+      console.log("[ConvexContactForm] Validation failed: Message is required");
       setSubmitStatus({ type: "error", message: "Message is required" });
       return false;
     }
 
     if (!formData.gdprConsent) {
+      console.log(
+        "[ConvexContactForm] Validation failed: GDPR consent is required",
+      );
       setSubmitStatus({ type: "error", message: "GDPR consent is required" });
       return false;
     }
 
+    // Check if Convex is available
+    if (!isInitialized || !createContactAvailable) {
+      console.log("[ConvexContactForm] Validation failed: System unavailable");
+      setSubmitStatus({
+        type: "error",
+        message: "System is currently unavailable. Please try again later.",
+      });
+      return false;
+    }
+
+    console.log("[ConvexContactForm] Form validation passed");
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[ConvexContactForm] Form submitted with data:", formData);
 
     if (!validateForm()) {
+      console.log("[ConvexContactForm] Form validation failed");
       return;
     }
 
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
+    // Verify submission function is available
+    if (typeof submitContact !== "function") {
+      console.error("[ConvexContactForm] submitContact is not a function");
+      setSubmitStatus({
+        type: "error",
+        message:
+          "System error: Contact submission is not available. Please try again later.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const result = await submitContact({
+      console.log("[ConvexContactForm] *** FORM SUBMISSION STARTED ***");
+      console.log("[ConvexContactForm] Preparing to submit contact form...");
+
+      // Prepare the data with trimmed values
+      const submissionData = {
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || undefined,
@@ -112,33 +189,117 @@ export function ConvexContactForm() {
         priority: formData.priority,
         gdprConsent: formData.gdprConsent,
         marketingConsent: formData.marketingConsent,
+      };
+
+      console.log("[ConvexContactForm] Submission data:", submissionData);
+
+      // Start timer to track submission time
+      const startTime = Date.now();
+
+      // Add timeout to prevent hanging
+      let timeoutId: NodeJS.Timeout | null = null;
+      const submissionPromise = submitContact(submissionData);
+
+      // Create a timeout promise that rejects after 10 seconds
+      const timeoutPromise = new Promise<any>((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error("Submission timed out. Please try again."));
+        }, 10000); // 10 second timeout
       });
 
-      if (result.success) {
+      // Race the submission against the timeout
+      const result = await Promise.race([
+        submissionPromise,
+        timeoutPromise,
+      ]).finally(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+      });
+
+      // Calculate submission time
+      const endTime = Date.now();
+      console.log(
+        `[ConvexContactForm] Submission took ${endTime - startTime}ms`,
+      );
+
+      console.log("[ConvexContactForm] Submission result:", result);
+      if (result && result.success) {
+        console.log("[ConvexContactForm] Submission successful!");
         setSubmitStatus({
           type: "success",
           message:
             "Thank you! Your message has been sent successfully. We'll get back to you soon.",
         });
-        setFormData(initialFormData);
+        // Reset the form completely with initial values
+        setFormData({ ...initialFormData });
+        // Clear any checkboxes and reset focus
+        document
+          .querySelectorAll('input[type="checkbox"]')
+          .forEach((checkbox: any) => {
+            checkbox.checked = false;
+          });
         toast.success("Contact form submitted successfully!");
       } else {
+        console.error("[ConvexContactForm] Submission failed:", result?.error);
         setSubmitStatus({
           type: "error",
-          message: result.error || "Failed to send message. Please try again.",
+          message: result?.error || "Failed to send message. Please try again.",
         });
         toast.error("Failed to submit contact form");
       }
     } catch (error) {
+      console.error("[ConvexContactForm] Submission exception:", error);
+
+      // More detailed error logging
+      if (error instanceof Error) {
+        console.error("[ConvexContactForm] Error name:", error.name);
+        console.error("[ConvexContactForm] Error message:", error.message);
+        console.error("[ConvexContactForm] Error stack:", error.stack);
+      }
+
       setSubmitStatus({
         type: "error",
-        message: "An unexpected error occurred. Please try again.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please try again.",
       });
-      toast.error("An unexpected error occurred");
+      toast.error(
+        error instanceof Error ? error.message : "An unexpected error occurred",
+      );
     } finally {
-      setIsSubmitting(false);
+      if (isMounted.current) {
+        setIsSubmitting(false);
+      }
     }
   };
+
+  // If submission was successful, show success message with option to submit another
+  if (submitStatus.type === "success") {
+    return (
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardContent className="pt-6 text-center">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mb-2">
+              <CheckCircle className="h-10 w-10 text-green-600" />
+            </div>
+            <h3 className="text-2xl font-bold">Message Sent!</h3>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              {submitStatus.message}
+            </p>
+            <Button
+              onClick={() => {
+                resetForm();
+              }}
+              variant="outline"
+              className="mt-4"
+            >
+              Send Another Message
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -149,27 +310,11 @@ export function ConvexContactForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Status Alert */}
-          {submitStatus.type && (
-            <Alert
-              className={
-                submitStatus.type === "success"
-                  ? "border-green-500"
-                  : "border-red-500"
-              }
-            >
-              {submitStatus.type === "success" ? (
-                <CheckCircle className="h-4 w-4 text-green-500" />
-              ) : (
-                <AlertCircle className="h-4 w-4 text-red-500" />
-              )}
-              <AlertDescription
-                className={
-                  submitStatus.type === "success"
-                    ? "text-green-700"
-                    : "text-red-700"
-                }
-              >
+          {/* Status Alert - only show errors, success has its own view */}
+          {submitStatus.type === "error" && (
+            <Alert className="border-red-500">
+              <AlertCircle className="h-4 w-4 text-red-500" />
+              <AlertDescription className="text-red-700">
                 {submitStatus.message}
               </AlertDescription>
             </Alert>
@@ -228,14 +373,27 @@ export function ConvexContactForm() {
               <Label htmlFor="contactType">Contact Type</Label>
               <Select
                 value={formData.contactType}
-                onValueChange={(value) =>
-                  handleInputChange("contactType", value)
-                }
+                defaultValue={formData.contactType}
+                onValueChange={(value) => {
+                  console.log(
+                    "[ConvexContactForm] Contact type selected:",
+                    value,
+                  );
+                  handleInputChange(
+                    "contactType",
+                    value as
+                      | "general"
+                      | "business"
+                      | "support"
+                      | "partnership"
+                      | "careers",
+                  );
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select contact type" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="general">General Inquiry</SelectItem>
                   <SelectItem value="business">Business</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
@@ -248,12 +406,19 @@ export function ConvexContactForm() {
               <Label htmlFor="priority">Priority</Label>
               <Select
                 value={formData.priority}
-                onValueChange={(value) => handleInputChange("priority", value)}
+                defaultValue={formData.priority}
+                onValueChange={(value) => {
+                  console.log("[ConvexContactForm] Priority selected:", value);
+                  handleInputChange(
+                    "priority",
+                    value as "low" | "medium" | "high" | "urgent",
+                  );
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="low">Low</SelectItem>
                   <SelectItem value="medium">Medium</SelectItem>
                   <SelectItem value="high">High</SelectItem>
@@ -319,11 +484,32 @@ export function ConvexContactForm() {
           </div>
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isSubmitting || !isInitialized || !createContactAvailable}
+            onClick={() => {
+              console.log("[ConvexContactForm] Submit button clicked");
+              console.log("[ConvexContactForm] Current form state:", formData);
+              console.log(
+                "[ConvexContactForm] Convex initialized:",
+                isInitialized,
+              );
+              console.log(
+                "[ConvexContactForm] createContact available:",
+                createContactAvailable,
+              );
+            }}
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Sending...
+              </>
+            ) : !isInitialized || !createContactAvailable ? (
+              <>
+                <AlertCircle className="mr-2 h-4 w-4" />
+                System Unavailable
               </>
             ) : (
               "Send Message"

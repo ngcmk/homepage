@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:prod": "node scripts/build-production.js",
+    "clean-build": "rm -rf .next && rm -rf tsconfig.tsbuildinfo && next build",
     "start": "next start",
-    "start:prod": "cross-env NODE_ENV=production next start",
     "lint": "next lint",
     "convex:dev": "npx convex dev",
     "convex:deploy": "npx convex deploy",
     "convex:reinit": "npx convex reinit",
-    "convex:prod": "node scripts/deploy-production.js"
+    "convex:prod": "node scripts/deploy-production.js",
+    "convex:diagnose": "node scripts/diagnose-convex.js",
+    "convex:test-form": "node scripts/test-form-submission.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -51,6 +52,7 @@
     "@types/node": "^20.19.0",
     "@types/react": "^18.2.14",
     "autoprefixer": "^10.4.21",
+    "chalk": "^5.3.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-next": "15.3.3",

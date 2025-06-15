@@ -22,6 +22,7 @@ This checklist ensures a smooth and successful production deployment of the NGC 
 - [ ] Ensure no development-only code in production build
 - [ ] Responsive design tested across devices
 - [ ] Cross-browser compatibility verified
+- [ ] Form components tested, especially Select dropdowns (see `FORM_COMPONENT_TROUBLESHOOTING.md`)
 
 ### Environment Configuration
 
@@ -62,6 +63,7 @@ This checklist ensures a smooth and successful production deployment of the NGC 
 
 - [ ] Verify Convex connection in browser console
 - [ ] Test project consultation form submission
+- [ ] Test contact form with all dropdown selections
 - [ ] Confirm data is being saved to production database
 - [ ] Test HTTP Actions endpoints if your app uses them
 - [ ] Validate form error handling
@@ -111,3 +113,4 @@ In case of deployment issues:
 2. Keep the development environment available during initial production rollout
 3. Monitor error rates closely for the first 24-48 hours after deployment
 4. Have a support team member ready to respond to critical issues
+5. Refer to `FORM_COMPONENT_TROUBLESHOOTING.md` for resolving form component issues

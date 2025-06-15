@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,10 +24,14 @@ import {
   Linkedin,
   Github,
   Twitter,
+  AlertCircle,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "../../contexts/language-context";
 import ContactForm from "../ContactForm";
+import { useCreateContact } from "../../hooks/use-contacts";
 
 interface ContactHubProps {
   className?: string;
@@ -38,11 +42,38 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
   const [selectedContactMethod, setSelectedContactMethod] = useState<
     string | null
   >(null);
+  const [convexStatus, setConvexStatus] = useState<
+    "connected" | "error" | "unknown"
+  >("unknown");
 
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  // Initialize Convex hook outside useEffect
+  const createContact = useCreateContact();
+
+  // Check Convex connection on component mount
+  useEffect(() => {
+    const checkConvexConnection = () => {
+      try {
+        // Try to use a Convex hook to check if connection is available
+        if (createContact !== undefined) {
+          console.log("[ContactHub] Convex connection available");
+          setConvexStatus("connected");
+        } else {
+          console.error("[ContactHub] Convex not available");
+          setConvexStatus("error");
+        }
+      } catch (error) {
+        console.error("[ContactHub] Convex connection error:", error);
+        setConvexStatus("error");
+      }
+    };
+
+    checkConvexConnection();
+  }, [createContact]);
 
   const contactMethods = [
     {
@@ -71,19 +102,19 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       badge: "Free",
       stats: "Available Mon-Fri",
     },
-    {
-      id: "chat",
-      icon: MessageSquare,
-      title: "Live Chat",
-      subtitle: "Instant support during business hours",
-      description: "Chat with our team for quick questions and quotes",
-      action: "Start Chat",
-      href: "#chat",
-      color: "from-purple-500/20 to-pink-500/20",
-      borderColor: "border-purple-500/30",
-      badge: "Online Now",
-      stats: "Avg. 2min response",
-    },
+    // {
+    //   id: "chat",
+    //   icon: MessageSquare,
+    //   title: "Live Chat",
+    //   subtitle: "Instant support during business hours",
+    //   description: "Chat with our team for quick questions and quotes",
+    //   action: "Start Chat",
+    //   href: "#chat",
+    //   color: "from-purple-500/20 to-pink-500/20",
+    //   borderColor: "border-purple-500/30",
+    //   badge: "Online Now",
+    //   stats: "Avg. 2min response",
+    // },
     {
       id: "project",
       icon: Zap,
@@ -216,7 +247,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
         >
           {contactMethods.map((method, index) => {
             const Icon = method.icon;
@@ -298,6 +329,22 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
                   Fill out the form below and we'll get back to you within 24
                   hours.
                 </p>
+
+                {/* Connection status indicator */}
+                {convexStatus === "connected" && (
+                  <div className="mt-2 flex items-center gap-2 text-xs text-green-600 bg-green-50 p-1.5 px-2 rounded-md">
+                    <Wifi className="h-3.5 w-3.5" />
+                    <span>Connected to database</span>
+                  </div>
+                )}
+                {convexStatus === "error" && (
+                  <div className="mt-2 flex items-center gap-2 text-xs text-amber-600 bg-amber-50 p-1.5 px-2 rounded-md">
+                    <WifiOff className="h-3.5 w-3.5" />
+                    <span>
+                      Using offline mode - messages will be sent via email
+                    </span>
+                  </div>
+                )}
               </CardHeader>
               <CardContent>
                 <ContactForm />
@@ -375,7 +422,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
             </Card>
 
             {/* Quick Testimonials */}
-            <Card className="border border-border/50 bg-card/60 backdrop-blur-sm">
+            {/* <Card className="border border-border/50 bg-card/60 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
                   <Star className="w-5 h-5 text-yellow-500" />
@@ -409,7 +456,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
                   </div>
                 ))}
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Quick Start CTA */}
             <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-secondary/10">

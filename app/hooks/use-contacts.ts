@@ -41,14 +41,22 @@ export function useAddNote() {
 }
 
 // Hook for searching contacts
-export function useSearchContacts(searchTerm: string, filters?: {
-  contactType?: "general" | "business" | "support" | "partnership" | "careers";
-  status?: "new" | "in_progress" | "resolved" | "closed" | "spam";
-  limit?: number;
-}) {
+export function useSearchContacts(
+  searchTerm: string,
+  filters?: {
+    contactType?:
+      | "general"
+      | "business"
+      | "support"
+      | "partnership"
+      | "careers";
+    status?: "new" | "in_progress" | "resolved" | "closed" | "spam";
+    limit?: number;
+  },
+) {
   return useQuery(
     api.contacts.searchContacts,
-    searchTerm.trim() ? { searchTerm, ...filters } : "skip"
+    searchTerm.trim() ? { searchTerm, ...filters } : "skip",
   );
 }
 
@@ -63,7 +71,10 @@ export function useDeleteContact() {
 }
 
 // Hook for getting contact activities
-export function useContactActivities(contactId: Id<"contacts">, limit?: number) {
+export function useContactActivities(
+  contactId: Id<"contacts">,
+  limit?: number,
+) {
   return useQuery(api.contacts.getContactActivities, {
     contactId,
     limit,
@@ -72,7 +83,21 @@ export function useContactActivities(contactId: Id<"contacts">, limit?: number) 
 
 // Custom hook for contact form submission
 export function useContactForm() {
+  // Use createContact directly to avoid initialization errors
   const createContact = useCreateContact();
+  console.log("[Convex] Contact form hook initialized");
+
+  // Track initialization state
+  const isInitialized = createContact !== undefined && createContact !== null;
+  console.log("[Convex] Hook initialized status:", isInitialized);
+
+  // Add detailed function info for debugging
+  if (typeof createContact === "function") {
+    console.log(
+      "[Convex] createContact function details:",
+      createContact.toString().substring(0, 100) + "...",
+    );
+  }
 
   const submitContact = async (data: {
     name: string;
@@ -85,22 +110,221 @@ export function useContactForm() {
     priority?: "low" | "medium" | "high" | "urgent";
     gdprConsent?: boolean;
     marketingConsent?: boolean;
-  }) => {
+  }): Promise<{
+    success: boolean;
+    contactId?: any;
+    error?: string;
+    originalError?: any;
+  }> => {
+    console.log("[Convex] submitContact called with data:", {
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      contactType: data.contactType,
+    });
+
+    // Add timestamp for tracking submission duration
+    const startTime = Date.now();
+    console.log(
+      `[Convex] Form submission started at ${new Date().toISOString()}`,
+    );
+
     try {
-      const contactId = await createContact({
+      if (!createContact) {
+        console.error(
+          "[Convex] Contact mutation not available - createContact is null or undefined",
+        );
+        return {
+          success: false,
+          error: "Server connection not available. Please try again later.",
+        };
+      }
+
+      if (typeof createContact !== "function") {
+        console.error(
+          `[Convex] Contact mutation not available - createContact is not a function but a ${typeof createContact}`,
+        );
+        return {
+          success: false,
+          error:
+            "Server connection error. Please refresh the page and try again.",
+        };
+      }
+
+      // Prepare submission data with required defaults for any missing fields
+      const submissionData = {
         ...data,
+        // Ensure required fields have defaults
+        name: data.name || "Unknown",
+        email: data.email || "unknown@example.com",
+        message: data.message || "No message provided",
+        contactType: data.contactType || "general",
+        priority: data.priority || "medium",
+        // Add metadata
         source: "website",
-        userAgent: navigator.userAgent,
-        referrer: document.referrer || undefined,
-      });
-      return { success: true, contactId };
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : undefined,
+        referrer:
+          typeof document !== "undefined"
+            ? document.referrer || undefined
+            : undefined,
+      };
+
+      console.log("[Convex] Submitting contact with data:", submissionData);
+
+      try {
+        // Log before attempting to call the function
+        console.log("[Convex] Calling createContact function...");
+
+        // Create a timeout promise to prevent hanging
+        let timeoutId: NodeJS.Timeout | null = null;
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          timeoutId = setTimeout(() => {
+            reject(new Error("Request timed out after 15 seconds"));
+          }, 15000); // 15 second timeout
+        });
+
+        // Create the API call promise
+        const apiCallPromise = createContact(submissionData);
+
+        // Race the API call against the timeout
+        const contactId = await Promise.race([
+          apiCallPromise,
+          timeoutPromise,
+        ]).finally(() => {
+          if (timeoutId) clearTimeout(timeoutId);
+        });
+
+        const endTime = Date.now();
+        console.log(
+          `[Convex] Contact created successfully in ${endTime - startTime}ms, ID:`,
+          contactId,
+        );
+        return { success: true, contactId };
+      } catch (convexError) {
+        console.error("[Convex] Error creating contact:", convexError);
+
+        // More detailed error logging
+        if (convexError instanceof Error) {
+          console.error("[Convex] Error name:", convexError.name);
+          console.error("[Convex] Error message:", convexError.message);
+          console.error("[Convex] Error stack:", convexError.stack);
+        } else {
+          console.error("[Convex] Non-Error object thrown:", convexError);
+        }
+
+        // Handle timeout errors specially
+        if (
+          convexError instanceof Error &&
+          convexError.message.includes("timed out")
+        ) {
+          return {
+            success: false,
+            error: "Request timed out. Please try again later.",
+            originalError: convexError,
+          };
+        }
+
+        // Instead of re-throwing, return an error object to prevent loading state from hanging
+        return {
+          success: false,
+          error:
+            convexError instanceof Error
+              ? convexError.message
+              : "Error creating contact",
+          originalError: convexError,
+        };
+      }
     } catch (error) {
-      console.error("Error submitting contact form:", error);
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      const endTime = Date.now();
+      console.error(
+        `[Convex] Error submitting contact form after ${endTime - startTime}ms:`,
+        error,
+      );
+
+      // Provide more specific error messages
+      let errorMessage = "Unknown error occurred";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        console.error("[Convex] Error stack:", error.stack);
+
+        // Check for specific error types
+        if (
+          errorMessage.includes("network") ||
+          errorMessage.includes("connection") ||
+          errorMessage.includes("fetch")
+        ) {
+          errorMessage =
+            "Network error. Please check your connection and try again.";
+        } else if (errorMessage.includes("timeout")) {
+          errorMessage = "Request timed out. Please try again.";
+        } else if (
+          errorMessage.includes("permission") ||
+          errorMessage.includes("access")
+        ) {
+          errorMessage = "Permission error. Please contact support.";
+        } else if (
+          errorMessage.includes("undefined") ||
+          errorMessage.includes("null")
+        ) {
+          errorMessage = "System error. Please refresh the page and try again.";
+        } else if (errorMessage.includes("extra field")) {
+          errorMessage =
+            "Form submission error: Invalid form data. Please try again.";
+        }
+      }
+
+      // Try to send a fallback analytics event if possible
+      try {
+        if (typeof window !== "undefined") {
+          console.log(
+            "[Convex] Attempting to log fallback analytics for failed submission",
+          );
+          // This could be expanded to actually send analytics
+
+          // Check if the error is due to network issues and provide recovery instructions
+          if (
+            error instanceof Error &&
+            (error.message.includes("network") ||
+              error.message.includes("connection") ||
+              error.message.includes("timeout"))
+          ) {
+            console.log(
+              "[Convex] Network-related error detected, adding recovery instructions",
+            );
+          }
+        }
+      } catch (analyticsError) {
+        console.error("[Convex] Failed to log analytics:", analyticsError);
+      }
+
+      return {
+        success: false,
+        error: errorMessage,
+        originalError: error,
+      };
     }
   };
 
-  return { submitContact };
+  // Helper function to check if the contact was actually created despite errors
+  const verifyContactCreation = async (email: string): Promise<boolean> => {
+    try {
+      // This would need to be implemented if we want to verify if a contact was created
+      // despite errors in the response. For now, it's just a placeholder.
+      return false;
+    } catch (error) {
+      console.error("[Convex] Error verifying contact creation:", error);
+      return false;
+    }
+  };
+
+  return {
+    submitContact,
+    isInitialized,
+    createContactAvailable: typeof createContact === "function",
+    verifyContactCreation,
+  };
 }
 
 // Hook for contact management operations
@@ -119,11 +343,17 @@ export function useContactManagement() {
       });
       return { success: true };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
     }
   };
 
-  const markAsInProgress = async (contactId: Id<"contacts">, notes?: string) => {
+  const markAsInProgress = async (
+    contactId: Id<"contacts">,
+    notes?: string,
+  ) => {
     try {
       await updateStatus({
         id: contactId,
@@ -132,7 +362,10 @@ export function useContactManagement() {
       });
       return { success: true };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
     }
   };
 
@@ -144,7 +377,10 @@ export function useContactManagement() {
       });
       return { success: true };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
     }
   };
 
@@ -156,7 +392,10 @@ export function useContactManagement() {
       });
       return { success: true };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
     }
   };
 
@@ -164,7 +403,7 @@ export function useContactManagement() {
     contactId: Id<"contacts">,
     content: string,
     author: string,
-    type: "note" | "email" | "call" = "note"
+    type: "note" | "email" | "call" = "note",
   ) => {
     try {
       await addNote({
@@ -175,7 +414,10 @@ export function useContactManagement() {
       });
       return { success: true };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
     }
   };
 
@@ -214,30 +456,45 @@ export function useContactFilters() {
         ].filter(Boolean);
 
         const matchesSearch = searchFields.some((field) =>
-          field?.toLowerCase().includes(searchTerm)
+          field?.toLowerCase().includes(searchTerm),
         );
         if (!matchesSearch) return false;
       }
 
       // Status filter
-      if (filters.status && filters.status !== "all" && contact.status !== filters.status) {
+      if (
+        filters.status &&
+        filters.status !== "all" &&
+        contact.status !== filters.status
+      ) {
         return false;
       }
 
       // Contact type filter
-      if (filters.contactType && filters.contactType !== "all" && contact.contactType !== filters.contactType) {
+      if (
+        filters.contactType &&
+        filters.contactType !== "all" &&
+        contact.contactType !== filters.contactType
+      ) {
         return false;
       }
 
       // Priority filter
-      if (filters.priority && filters.priority !== "all" && contact.priority !== filters.priority) {
+      if (
+        filters.priority &&
+        filters.priority !== "all" &&
+        contact.priority !== filters.priority
+      ) {
         return false;
       }
 
       // Date range filter
       if (filters.dateRange) {
         const contactDate = new Date(contact.createdAt);
-        if (contactDate < filters.dateRange.from || contactDate > filters.dateRange.to) {
+        if (
+          contactDate < filters.dateRange.from ||
+          contactDate > filters.dateRange.to
+        ) {
           return false;
         }
       }
@@ -249,7 +506,7 @@ export function useContactFilters() {
   const getSortedContacts = (
     contacts: typeof allContacts,
     sortBy: "createdAt" | "updatedAt" | "name" | "priority" | "status",
-    sortOrder: "asc" | "desc" = "desc"
+    sortOrder: "asc" | "desc" = "desc",
   ) => {
     if (!contacts) return [];
 

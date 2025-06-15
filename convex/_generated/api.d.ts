@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as contacts from "../contacts.js";
+import type * as diagnostics from "../diagnostics.js";
 import type * as http from "../http.js";
 import type * as projectConsultations from "../projectConsultations.js";
 
@@ -27,6 +28,7 @@ import type * as projectConsultations from "../projectConsultations.js";
  */
 declare const fullApi: ApiFromModules<{
   contacts: typeof contacts;
+  diagnostics: typeof diagnostics;
   http: typeof http;
   projectConsultations: typeof projectConsultations;
 }>;
