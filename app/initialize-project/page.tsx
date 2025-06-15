@@ -910,9 +910,7 @@ export default function InitializeProject() {
                   {index < steps.length - 1 && (
                     <div
                       className={`flex-1 h-0.5 mx-4 rounded transition-all duration-300 ${
-                        currentStep > step.number
-                          ? "bg-primary"
-                          : "bg-neutral-200"
+                        currentStep > step.number ? "bg-primary" : "bg-muted"
                       }`}
                     />
                   )}
@@ -926,7 +924,7 @@ export default function InitializeProject() {
                 <div
                   key={step.number}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentStep >= step.number ? "bg-primary" : "bg-neutral-200"
+                    currentStep >= step.number ? "bg-primary" : "bg-muted"
                   }`}
                 />
               ))}
@@ -934,19 +932,19 @@ export default function InitializeProject() {
           </div>
 
           {/* Form Card */}
-          <Card className="shadow-lg border-0 bg-white/95 backdrop-blur-sm">
+          <Card className="shadow-lg border-0 bg-background/95 backdrop-blur-sm form-card">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl md:text-2xl font-semibold text-gray-900">
+              <CardTitle className="text-xl md:text-2xl font-semibold">
                 {steps[currentStep - 1].title}
               </CardTitle>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 Step {currentStep} of {steps.length}
               </div>
             </CardHeader>
             <CardContent>
               <Form {...form}>
                 {convexStatus === "error" && (
-                  <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded">
+                  <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700/30 text-red-700 dark:text-red-200 rounded">
                     <p className="flex items-center">
                       <AlertCircle className="h-4 w-4 mr-2" />
                       Connection error: Unable to connect to our servers. Your
@@ -973,7 +971,7 @@ export default function InitializeProject() {
                       handleSubmit(data);
                     })(e);
                   }}
-                  className="space-y-6"
+                  className="space-y-6 project-form"
                 >
                   {/* Step 1: Project Basics */}
                   {currentStep === 1 && (
@@ -1197,10 +1195,10 @@ export default function InitializeProject() {
                               {projectGoals.map((goal) => (
                                 <div
                                   key={goal.value}
-                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation ${
+                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation project-selection-item ${
                                     field.value?.includes(goal.value)
-                                      ? "border-primary bg-primary/5"
-                                      : "border-gray-200 hover:border-gray-300 active:bg-gray-50"
+                                      ? "border-primary bg-primary/5 selected"
+                                      : "border-border hover:border-primary/30 active:bg-muted/50"
                                   }`}
                                   onClick={() => {
                                     const currentGoals = field.value || [];
@@ -1253,10 +1251,10 @@ export default function InitializeProject() {
                               {commonFeatures.map((feature) => (
                                 <div
                                   key={feature.value}
-                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation ${
+                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation project-selection-item ${
                                     field.value?.includes(feature.value)
-                                      ? "border-primary bg-primary/5"
-                                      : "border-gray-200 hover:border-gray-300 active:bg-gray-50"
+                                      ? "border-primary bg-primary/5 selected"
+                                      : "border-border hover:border-primary/30 active:bg-muted/50"
                                   }`}
                                   onClick={() => {
                                     const currentFeatures = field.value || [];
@@ -1374,7 +1372,7 @@ export default function InitializeProject() {
                       />
 
                       {/* Smart Estimates Card - Always show */}
-                      <Card className="bg-blue-50 border-blue-200">
+                      <Card className="bg-blue-50 border-blue-200 project-estimate-card">
                         <CardContent className="p-4">
                           <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
                             <CheckCircle className="w-4 h-4" />
@@ -1382,18 +1380,18 @@ export default function InitializeProject() {
                           </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                             <div className="text-center">
-                              <div className="text-lg font-bold text-blue-800">
+                              <div className="text-lg font-bold text-blue-800 card-value">
                                 ${calculateEstimatedBudget().toLocaleString()}
                               </div>
-                              <div className="text-blue-600">
+                              <div className="text-blue-600 card-label">
                                 Estimated Cost
                               </div>
                             </div>
                             <div className="text-center">
-                              <div className="text-lg font-bold text-blue-800">
+                              <div className="text-lg font-bold text-blue-800 card-value">
                                 {calculateEstimatedTimeline()} weeks
                               </div>
-                              <div className="text-blue-600">
+                              <div className="text-blue-600 card-label">
                                 Estimated Timeline
                               </div>
                             </div>

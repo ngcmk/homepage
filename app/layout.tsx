@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import type React from "react";
 import { LanguageProvider } from "./contexts/language-context";
-import { ThemeProvider } from "./components/ThemeProvider";
+// import { ThemeProvider } from "./components/ThemeProvider";
 import { ConvexClientProvider } from "./providers/convex-provider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -28,15 +28,15 @@ export default function RootLayout({
         className={`${montserrat.variable} font-sans bg-background text-foreground`}
       >
         <ConvexClientProvider>
-          <ThemeProvider
+          {/* <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >
-            <LanguageProvider>{children}</LanguageProvider>
-            <Toaster />
-          </ThemeProvider>
+          > */}
+          <LanguageProvider>{children}</LanguageProvider>
+          <Toaster />
+          {/* </ThemeProvider> */}
         </ConvexClientProvider>
       </body>
     </html>

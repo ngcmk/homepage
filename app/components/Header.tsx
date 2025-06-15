@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { useLanguage } from "../contexts/language-context";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { ThemeToggle } from "./ThemeToggle";
+// import { ThemeToggle } from "./ThemeToggle";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -160,13 +160,13 @@ export default function Header() {
               <Link href="/initialize-project">{t("nav.startProject")}</Link>
             </Button>
 
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <LanguageSwitcher />
           </div>
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center space-x-2">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <LanguageSwitcher />
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>

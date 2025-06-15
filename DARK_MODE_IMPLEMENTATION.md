@@ -3,14 +3,16 @@
 ## Overview
 This document provides a comprehensive guide to the dark mode implementation in the ngc project using shadcn/ui and next-themes.
 
-## Implementation Status: ✅ Complete
+## Implementation Status: ⚠️ Partially Complete
 
 The dark mode implementation includes:
 - **Theme Provider Setup** - Complete theme management system
 - **Theme Toggle Components** - Multiple toggle options (dropdown/simple)
-- **Component Updates** - All components updated for dark mode compatibility
+- **Component Updates** - Most components updated for dark mode compatibility
 - **CSS Enhancements** - Custom dark mode styles and animations
 - **UI Showcase** - Comprehensive dark mode demonstration
+
+However, there are some issues with the initialize-project page that have been fixed.
 
 ## Technical Implementation
 
@@ -132,6 +134,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
   }
 }
 ```
@@ -293,6 +301,12 @@ function CustomThemeButton() {
    - Ensure `useTheme` is called within ThemeProvider
    - Check for JavaScript errors in console
 
+4. **Initialize Project Form Issues**
+   - Hard-coded color values in form elements
+   - Missing dark mode variables in CSS
+   - Special cards and UI elements with fixed background colors
+   - Form selection items with light-mode specific styling
+
 #### Debug Commands
 ```bash
 # Check theme value
@@ -343,3 +357,28 @@ The dark mode implementation provides:
 - **Production-Ready**: Tested across browsers and devices
 
 The implementation follows modern best practices and provides an excellent user experience across all themes and devices.
+
+## Recent Fixes
+
+### Initialize Project Form Fixes
+The initialize-project page had several dark mode issues that have been fixed:
+
+1. **Missing CSS Variables**
+   - Added missing CSS variables for proper dark mode compatibility
+   - Added specialized form element dark mode styling
+
+2. **Hard-coded Colors**
+   - Replaced hard-coded light-mode colors (bg-white, text-gray-900, etc.) with theme variables
+   - Updated neutral colors to use semantic theme-aware colors
+
+3. **Form Element Styling**
+   - Added dark mode specific styles for form inputs, selection items, and cards
+   - Created consistent hover and active states for interactive elements
+   - Added project-specific classes for better dark mode targeting
+
+4. **Card and Estimate Panel**
+   - Fixed blue-background estimate card to support dark mode
+   - Added card-value and card-label classes for better theme control
+   - Updated border colors to use theme variables
+
+These fixes ensure the initialize-project form now properly supports dark mode with appropriate contrast, readability, and visual aesthetics consistent with the rest of the application.
