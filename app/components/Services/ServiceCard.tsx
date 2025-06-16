@@ -16,7 +16,7 @@ interface ServiceCardProps {
     title: string;
     description: string;
     category: string;
-    badge: string;
+    // badge: string;
     price?: string;
     duration?: string;
     features?: string[];
@@ -39,11 +39,11 @@ export default function ServiceCard({
     setIsHovered(false);
   };
 
-  const getBadgeVariant = () => {
-    if (service.badge === "New") return "default";
-    if (service.badge === "Popular") return "destructive";
-    return "secondary";
-  };
+  // const getBadgeVariant = () => {
+  //   if (service.badge === "New") return "default";
+  //   if (service.badge === "Popular") return "destructive";
+  //   return "secondary";
+  // };
 
   const getIconColor = () => {
     switch (service.category) {
@@ -94,12 +94,12 @@ export default function ServiceCard({
             animate={{ y: isHovered ? -5 : 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Badge
+            {/* <Badge
               variant={getBadgeVariant()}
               className="text-xs font-semibold shadow-lg"
             >
               {service.badge}
-            </Badge>
+            </Badge> */}
           </motion.div>
 
           {/* Popularity Stars */}
@@ -268,9 +268,9 @@ export function ServiceCardCompact({ service, index }: ServiceCardProps) {
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-1">
               <h4 className="font-semibold text-sm">{service.title}</h4>
-              <Badge variant="outline" className="text-xs">
+              {/* <Badge variant="outline" className="text-xs">
                 {service.badge}
-              </Badge>
+              </Badge> */}
             </div>
             <p className="text-xs text-muted-foreground line-clamp-1">
               {service.description}

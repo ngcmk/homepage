@@ -55,37 +55,37 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/services/design"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.uiux")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/services/development"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.webdev")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/services/mobile"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.mobileapps")}
-                </a>
+                </Link>
               </li>
-              <li>
-                <a
-                  href="#"
+              {/* <li>
+                <Link
+                  href="/services/branding"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.branding")}
-                </a>
-              </li>
+                </Link>
+              </li> */}
             </ul>
           </div>
           <div>
@@ -94,36 +94,36 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/about"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.about")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/careers"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.careers")}
-                </a>
+                </Link>
               </li>
-              <li>
-                <a
-                  href="#"
+              {/* <li>
+                <Link
+                  href="/blog"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.blog")}
-                </a>
-              </li>
+                </Link>
+              </li> */}
               <li>
-                <a
+                <Link
                   href="#contact"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   {t("footer.contact")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -134,10 +134,10 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} ngc. {t("footer.copyright")}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="/privacy" className="hover:text-white transition-colors">
                 {t("footer.privacy")}
               </Link>
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="/terms" className="hover:text-white transition-colors">
                 {t("footer.terms")}
               </Link>
             </div>

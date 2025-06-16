@@ -27,6 +27,8 @@ import {
   AlertCircle,
   Wifi,
   WifiOff,
+  Instagram,
+  Facebook,
 } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "../../contexts/language-context";
@@ -51,23 +53,17 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     threshold: 0.1,
   });
 
-  // Initialize Convex hook outside useEffect
   const createContact = useCreateContact();
 
-  // Check Convex connection on component mount
   useEffect(() => {
     const checkConvexConnection = () => {
       try {
-        // Try to use a Convex hook to check if connection is available
         if (createContact !== undefined) {
-          // console.log("[ContactHub] Convex connection available");
           setConvexStatus("connected");
         } else {
-          console.error("[ContactHub] Convex not available");
           setConvexStatus("error");
         }
       } catch (error) {
-        console.error("[ContactHub] Convex connection error:", error);
         setConvexStatus("error");
       }
     };
@@ -81,7 +77,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       icon: Mail,
       title: "Email Us",
       subtitle: "Get a response within 24 hours",
-      description: "Send us a detailed message about your project requirements",
+      description: "Send us a detailed message about your project",
       action: "Send Email",
       href: "mailto:hello@ngc.solutions",
       color: "from-blue-500/20 to-cyan-500/20",
@@ -102,19 +98,6 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       badge: "Free",
       stats: "Available Mon-Fri",
     },
-    // {
-    //   id: "chat",
-    //   icon: MessageSquare,
-    //   title: "Live Chat",
-    //   subtitle: "Instant support during business hours",
-    //   description: "Chat with our team for quick questions and quotes",
-    //   action: "Start Chat",
-    //   href: "#chat",
-    //   color: "from-purple-500/20 to-pink-500/20",
-    //   borderColor: "border-purple-500/30",
-    //   badge: "Online Now",
-    //   stats: "Avg. 2min response",
-    // },
     {
       id: "project",
       icon: Zap,
@@ -138,6 +121,18 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       description: "Serving clients worldwide",
     },
     {
+      icon: Phone,
+      label: "CEO Phone",
+      value: "+389 78 209 406",
+      description: "Call us ...",
+    },
+    {
+      icon: Phone,
+      label: "CTO Phone",
+      value: "+389 70 294 386",
+      description: "Call us ...",
+    },
+    {
       icon: Clock,
       label: "Business Hours",
       value: "Mon - Fri, 9AM - 6PM CET",
@@ -146,7 +141,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     {
       icon: Globe,
       label: "Languages",
-      value: "English, German, Croatian",
+      value: "English, Macedonian, Serbian",
       description: "Multilingual support",
     },
   ];
@@ -159,17 +154,23 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       color: "hover:text-blue-600",
     },
     {
-      icon: Github,
-      name: "GitHub",
-      href: "https://github.com/ngc-solutions",
-      color: "hover:text-gray-800 dark:hover:text-gray-200",
-    },
-    {
       icon: Twitter,
       name: "Twitter",
       href: "https://twitter.com/ngc_solutions",
       color: "hover:text-blue-400",
     },
+    {
+      icon: Instagram,
+      name: "Instagram",
+      href: "https://instagram.com/ngc_solutions",
+      color: "hover:text-pink-600",
+    },
+    {
+      icon:Facebook,
+      name: "Facebook",
+      href: "https://facebook.com/ngc_solutions",
+      color: "hover:text-blue-600",
+    }
   ];
 
   const testimonialQuotes = [
@@ -288,9 +289,9 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
                     </p>
                     <Separator className="mb-4" />
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-muted-foreground">
+                      {/* <span className="text-xs text-muted-foreground">
                         {method.stats}
-                      </span>
+                      </span> */}
                       <Button
                         asChild
                         size="sm"

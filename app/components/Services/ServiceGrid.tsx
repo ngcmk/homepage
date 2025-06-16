@@ -17,7 +17,7 @@ interface ServiceGridProps {
     title: string;
     description: string;
     category: string;
-    badge: string;
+    // badge?: string;
     price?: string;
     duration?: string;
     features?: string[];
@@ -117,7 +117,7 @@ export default function ServiceGrid({
         >
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0 lg:space-x-6">
             {/* Search */}
-            <div className="relative w-full lg:w-96">
+            {/* <div className="relative w-full lg:w-96">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search services..."
@@ -125,10 +125,10 @@ export default function ServiceGrid({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-background/80 backdrop-blur-sm"
               />
-            </div>
+            </div> */}
 
             {/* View Toggle */}
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <Button
                 variant={viewMode === "grid" ? "default" : "outline"}
                 size="sm"
@@ -145,7 +145,7 @@ export default function ServiceGrid({
               >
                 <List className="w-4 h-4" />
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Category Filters */}
@@ -174,17 +174,17 @@ export default function ServiceGrid({
           className="mb-8"
         >
           <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
+            {/* <p className="text-sm text-muted-foreground">
               Showing {filteredServices.length} of {services.length} services
               {searchTerm && ` for "${searchTerm}"`}
               {activeCategory !== "all" && ` in ${activeCategory}`}
-            </p>
-            <div className="flex items-center space-x-2">
+            </p> */}
+            {/* <div className="flex items-center space-x-2">
               <Badge variant="outline" className="text-xs">
                 <Filter className="w-3 h-3 mr-1" />
                 {activeCategory === "all" ? "All" : activeCategory}
               </Badge>
-            </div>
+            </div> */}
           </div>
         </motion.div>
 

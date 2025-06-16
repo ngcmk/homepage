@@ -21,8 +21,8 @@ export default function Services() {
       title: t("services.development.title"),
       description: t("services.development.description"),
       category: "Technical",
-      badge: "Core Service",
-      price: "From $5,000",
+      // badge: "Core Service",
+      price: "From $500",
       duration: "4-8 weeks",
       features: [
         "Custom web applications",
@@ -39,8 +39,8 @@ export default function Services() {
       title: t("services.design.title"),
       description: t("services.design.description"),
       category: "Creative",
-      badge: "Core Service",
-      price: "From $3,000",
+      // badge: "Core Service",
+      price: "From $300",
       duration: "2-4 weeks",
       features: [
         "UI/UX design",
@@ -57,8 +57,8 @@ export default function Services() {
       title: t("services.mobile.title"),
       description: t("services.mobile.description"),
       category: "Technical",
-      badge: "Popular",
-      price: "From $8,000",
+      // badge: "Popular",
+      price: "From $10,000",
       duration: "6-12 weeks",
       features: [
         "iOS & Android apps",
@@ -75,7 +75,7 @@ export default function Services() {
       title: t("services.ai.title"),
       description: t("services.ai.description"),
       category: "Innovation",
-      badge: "New",
+      // badge: "New",
       price: "From $10,000",
       duration: "8-16 weeks",
       features: [
@@ -93,8 +93,8 @@ export default function Services() {
       title: t("services.poc.title"),
       description: t("services.poc.description"),
       category: "Innovation",
-      badge: "Specialized",
-      price: "From $2,500",
+      // badge: "Specialized",
+      price: "From $1,000",
       duration: "1-3 weeks",
       features: [
         "Rapid prototyping",
@@ -110,7 +110,7 @@ export default function Services() {
       title: t("services.ngo-support.title"),
       description: t("services.ngo-support.description"),
       category: "Social Impact",
-      badge: "Pro Bono",
+      // badge: "Pro Bono",
       price: "Free",
       duration: "Varies",
       features: [
