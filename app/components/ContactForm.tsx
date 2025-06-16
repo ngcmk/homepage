@@ -166,11 +166,11 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       setIsSuccess(false);
       setRedirecting(false);
 
-      console.log("[ContactForm] Starting submission with data:", data);
+      // console.log("[ContactForm] Starting submission with data:", data);
 
       // Call parent onSubmit if provided
       if (onSubmit) {
-        console.log("[ContactForm] Using parent onSubmit handler");
+        // console.log("[ContactForm] Using parent onSubmit handler");
         // Make sure fields have default values before submitting
         const dataWithDefaults = {
           ...data,
@@ -183,25 +183,25 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         return;
       }
 
-      console.log("[ContactForm] Using Convex integration");
-      console.log(
-        "[ContactForm] Convex status:",
-        isInitialized ? "initialized" : "not initialized",
-      );
-      console.log(
-        "[ContactForm] submitContact available:",
-        typeof submitContact === "function",
-      );
+      // console.log("[ContactForm] Using Convex integration");
+      // console.log(
+      //   "[ContactForm] Convex status:",
+      //   isInitialized ? "initialized" : "not initialized",
+      // );
+      // console.log(
+      //   "[ContactForm] submitContact available:",
+      //   typeof submitContact === "function",
+      // );
 
       // Map form data to Convex format
       const contactType = mapSubjectToContactType(data.subject);
       const priority = getPriorityFromSubject(data.subject);
 
-      console.log("[ContactForm] Mapped data:", {
-        contactType,
-        priority,
-        subject: data.subject || "general",
-      });
+      // console.log("[ContactForm] Mapped data:", {
+      //   contactType,
+      //   priority,
+      //   subject: data.subject || "general",
+      // });
 
       if (typeof submitContact !== "function") {
         setIsSubmitting(false);
@@ -234,15 +234,15 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       };
 
       // For debugging, show all form values including budget
-      console.log("[ContactForm] Complete form data:", {
-        ...submissionData,
-        budget: data.budget || "discuss", // Budget shown in logs but not sent to Convex
-        // Log timestamp for debugging only, don't include it in the actual submission
-        logTimestamp: Date.now(),
-      });
+      // console.log("[ContactForm] Complete form data:", {
+      //   ...submissionData,
+      //   budget: data.budget || "discuss", // Budget shown in logs but not sent to Convex
+      //   // Log timestamp for debugging only, don't include it in the actual submission
+      //   logTimestamp: Date.now(),
+      // });
 
       // Log only the data that will be sent to Convex
-      console.log("[ContactForm] Submitting to Convex API:", submissionData);
+      // console.log("[ContactForm] Submitting to Convex API:", submissionData);
 
       let result;
       const startTime = Date.now();
@@ -254,10 +254,10 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         // Check for direct Convex response format
         if (typeof directResult === "object" && directResult !== null) {
           if (directResult.success === true && "contactId" in directResult) {
-            console.log(
-              "[ContactForm] Detected direct Convex response format:",
-              directResult,
-            );
+            // console.log(
+            //   "[ContactForm] Detected direct Convex response format:",
+            //   directResult,
+            // );
             result = { success: true, contactId: directResult.contactId };
           } else {
             result = directResult;
@@ -267,10 +267,10 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         }
 
         const endTime = Date.now();
-        console.log(
-          `[ContactForm] Convex request took ${endTime - startTime}ms`,
-        );
-        console.log("[ContactForm] Convex submission result:", result);
+        // console.log(
+        //   `[ContactForm] Convex request took ${endTime - startTime}ms`,
+        // );
+        // console.log("[ContactForm] Convex submission result:", result);
 
         // Store budget info in localStorage for reference since it's not in Convex
         if (typeof window !== "undefined" && data.budget && result.contactId) {
@@ -291,7 +291,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
           }
         }
       } catch (convexError) {
-        console.error("[ContactForm] Convex API error:", convexError);
+        // console.error("[ContactForm] Convex API error:", convexError);
         throw new Error("Failed to contact server. Please try again later.");
       }
 
@@ -302,7 +302,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         (result.success === true ||
           (typeof result === "object" && "success" in result && result.success))
       ) {
-        console.log("[ContactForm] Submission successful!");
+        // console.log("[ContactForm] Submission successful!");
         setIsSuccess(true);
         toast.success(
           "Thank you for your message! We've received your inquiry and will get back to you within 24 hours.",
@@ -334,7 +334,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         (result as string).indexOf('success":true') >= 0
       ) {
         // Handle string response that might be JSON
-        console.log("[ContactForm] Received string success response");
+        // console.log("[ContactForm] Received string success response");
         setIsSuccess(true);
         toast.success(
           "Thank you for your message! We've received your inquiry and will get back to you within 24 hours.",
@@ -361,7 +361,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         }, 1000);
       } else {
         const errorMessage = result?.error || "Failed to submit form";
-        console.error("[ContactForm] Submission failed:", errorMessage);
+        // console.error("[ContactForm] Submission failed:", errorMessage);
         setSubmitError(errorMessage);
         toast.error(errorMessage);
         setIsSubmitting(false);

@@ -60,7 +60,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       try {
         // Try to use a Convex hook to check if connection is available
         if (createContact !== undefined) {
-          console.log("[ContactHub] Convex connection available");
+          // console.log("[ContactHub] Convex connection available");
           setConvexStatus("connected");
         } else {
           console.error("[ContactHub] Convex not available");
