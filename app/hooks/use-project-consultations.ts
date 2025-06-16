@@ -173,18 +173,17 @@ export function useUpdateProjectEstimates() {
 
 // Custom hook for project consultation form submission
 export function useProjectConsultationForm() {
-  // Define the type for the mutation function
-  let createProject:
-    | ReturnType<typeof useCreateProjectConsultation>
-    | undefined;
+  // Define the type for the mutation function and initialize it
+  const createProjectMutation = useCreateProjectConsultation();
 
-  // Initialize the mutation in a try-catch block
-  try {
-    createProject = useCreateProjectConsultation();
+  // Store the mutation function safely
+  const createProject = createProjectMutation;
+
+  // Log initialization status
+  if (!createProject) {
+    console.error("Failed to initialize project consultation form");
+  } else {
     console.log("Convex mutation initialized successfully");
-  } catch (error) {
-    console.error("Failed to initialize project consultation form:", error);
-    createProject = undefined;
   }
 
   type ProjectConsultationData = {

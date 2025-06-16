@@ -212,8 +212,8 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         return;
       }
 
-      // Destructure to explicitly exclude timestamp field
-      const { budget, timestamp, ...validFields } = data;
+      // Destructure to explicitly exclude budget field
+      const { budget, ...validFields } = data;
 
       // Prepare submission data with defaults for missing values - only include fields valid for Convex
       const submissionData = {
@@ -253,15 +253,12 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
 
         // Check for direct Convex response format
         if (typeof directResult === "object" && directResult !== null) {
-          if (
-            directResult.type === "MutationResponse" &&
-            directResult.success === true
-          ) {
+          if (directResult.success === true && "contactId" in directResult) {
             console.log(
               "[ContactForm] Detected direct Convex response format:",
               directResult,
             );
-            result = { success: true, contactId: directResult.result };
+            result = { success: true, contactId: directResult.contactId };
           } else {
             result = directResult;
           }
@@ -303,9 +300,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
       if (
         result &&
         (result.success === true ||
-          (typeof result === "object" &&
-            result.type === "MutationResponse" &&
-            result.success === true))
+          (typeof result === "object" && "success" in result && result.success))
       ) {
         console.log("[ContactForm] Submission successful!");
         setIsSuccess(true);
@@ -336,7 +331,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         }, 1000); // 1-second delay for better UX and to ensure state updates complete
       } else if (
         typeof result === "string" &&
-        result.includes('success":true')
+        (result as string).indexOf('success":true') >= 0
       ) {
         // Handle string response that might be JSON
         console.log("[ContactForm] Received string success response");

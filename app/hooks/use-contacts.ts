@@ -148,8 +148,31 @@ export function useContactForm() {
       "ipAddress",
     ];
 
-    // Start with a clean object
-    const submissionData: Record<string, any> = {
+    // Define the type explicitly to match Convex mutation parameters
+    type SubmissionDataType = {
+      name: string;
+      email: string;
+      message: string;
+      contactType:
+        | "general"
+        | "business"
+        | "support"
+        | "partnership"
+        | "careers";
+      priority?: "low" | "medium" | "high" | "urgent";
+      phone?: string;
+      company?: string;
+      subject?: string;
+      source?: string;
+      userAgent?: string;
+      referrer?: string;
+      ipAddress?: string;
+      gdprConsent?: boolean;
+      marketingConsent?: boolean;
+    };
+
+    // Start with a clean object with the correct type
+    const submissionData: SubmissionDataType = {
       // Set required fields with defaults
       name: data.name || "Unknown",
       email: data.email || "unknown@example.com",
@@ -160,9 +183,16 @@ export function useContactForm() {
     };
 
     // Only add allowed optional fields if they exist in data
+    // For the allowed fields in the data object
     for (const field of allowedFields) {
-      if (field in data && !submissionData[field]) {
-        submissionData[field] = (data as any)[field];
+      if (
+        field in data &&
+        !submissionData[field as keyof typeof submissionData]
+      ) {
+        // Use type assertion to handle dynamic property access
+        (submissionData as Record<string, any>)[field] = (
+          data as Record<string, any>
+        )[field];
       }
     }
 
@@ -201,9 +231,14 @@ export function useContactForm() {
 
       // Check for direct Convex response format
       if (typeof contactId === "object" && contactId !== null) {
-        if ("success" in contactId && contactId.success === true) {
+        // Use type assertion for the response object
+        const responseObj = contactId as Record<string, any>;
+        if ("success" in responseObj && responseObj.success === true) {
           console.log("[Convex] Detected direct Convex response format");
-          return { success: true, contactId: contactId.result || contactId };
+          return {
+            success: true,
+            contactId: "result" in responseObj ? responseObj.result : contactId,
+          };
         }
       }
 

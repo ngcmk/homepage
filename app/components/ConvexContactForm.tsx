@@ -17,10 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { toast } from "sonner";
+import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 interface ContactFormData {
   name: string;
@@ -57,10 +55,7 @@ export function ConvexContactForm() {
     message: string;
   }>({ type: null, message: "" });
   const [redirecting, setRedirecting] = useState(false);
-
-  // For tracking component mounting status
-  const isMounted = useRef(true);
-
+  const [formData, setFormData] = useState<ContactFormData>(initialFormData);
   useEffect(() => {
     // Cleanup function to prevent state updates after unmount
     return () => {
@@ -95,14 +90,13 @@ export function ConvexContactForm() {
       "[ConvexContactForm] createContact available:",
       createContactAvailable,
     );
-  }, [isInitialized, createContactAvailable]);
+  }, [isInitialized, createContactAvailable, formData, submitContact]);
 
   const handleInputChange = (
     field: keyof ContactFormData,
     value: string | boolean,
   ) => {
-    console.log(`[ConvexContactForm] Setting ${field} to:`, value);
-    setFormData((prev) => ({
+    setFormData((prev: ContactFormData) => ({
       ...prev,
       [field]: value,
     }));
@@ -194,8 +188,8 @@ export function ConvexContactForm() {
       console.log("[ConvexContactForm] *** FORM SUBMISSION STARTED ***");
       console.log("[ConvexContactForm] Preparing to submit contact form...");
 
-      // Destructure to explicitly exclude timestamp field if it exists
-      const { timestamp, ...validFields } = formData;
+      // Only use valid fields from the form data
+      const validFields = { ...formData };
 
       // Prepare the data with trimmed values
       const submissionData = {
@@ -224,12 +218,16 @@ export function ConvexContactForm() {
 
       // Check for direct Convex response format
       if (typeof result === "object" && result !== null) {
-        if (result.type === "MutationResponse" && result.success === true) {
+        if (
+          "success" in result &&
+          result.success === true &&
+          "contactId" in result
+        ) {
           console.log(
             "[ConvexContactForm] Detected direct Convex response format",
             result,
           );
-          result = { success: true, contactId: result.result };
+          result = { success: true, contactId: result.contactId };
         }
       }
 
@@ -243,9 +241,7 @@ export function ConvexContactForm() {
       if (
         result &&
         (result.success === true ||
-          (typeof result === "object" &&
-            result.type === "MutationResponse" &&
-            result.success === true))
+          (typeof result === "object" && "success" in result && result.success))
       ) {
         console.log("[ConvexContactForm] Submission successful!");
         setSubmitStatus({
@@ -318,7 +314,7 @@ export function ConvexContactForm() {
         <CardContent className="pt-6 text-center">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mb-2">
-              <CheckCircle className="h-10 w-10 text-green-600" />
+              <CheckCircle className="w-6 h-6 mr-2 text-green-500" />
             </div>
             <h3 className="text-2xl font-bold">Message Sent!</h3>
             <p className="text-muted-foreground max-w-md mx-auto">
@@ -541,7 +537,7 @@ export function ConvexContactForm() {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 Sending...
               </>
             ) : !isInitialized || !createContactAvailable ? (
