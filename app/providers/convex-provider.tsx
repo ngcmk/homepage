@@ -161,7 +161,7 @@ export function ConvexClientProvider({ children }: ConvexClientProviderProps) {
   }, []);
 
   if (!isInitialized) {
-    return <div>Initializing Convex connection...</div>;
+    return ;
   }
 
   return (
