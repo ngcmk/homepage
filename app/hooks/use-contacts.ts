@@ -85,19 +85,19 @@ export function useContactActivities(
 export function useContactForm() {
   // Use createContact directly to avoid initialization errors
   const createContact = useCreateContact();
-  console.log("[Convex] Contact form hook initialized");
+  // console.log("[Convex] Contact form hook initialized");
 
   // Track initialization state
   const isInitialized = createContact !== undefined && createContact !== null;
-  console.log("[Convex] Hook initialized status:", isInitialized);
+  // console.log("[Convex] Hook initialized status:", isInitialized);
 
   // Add detailed function info for debugging
-  if (typeof createContact === "function") {
-    console.log(
-      "[Convex] createContact function details:",
-      createContact.toString().substring(0, 100) + "...",
-    );
-  }
+  // if (typeof createContact === "function") {
+  //   console.log(
+  //     "[Convex] createContact function details:",
+  //     createContact.toString().substring(0, 100) + "...",
+  //   );
+  // }
 
   const submitContact = async (data: {
     name: string;
@@ -113,16 +113,16 @@ export function useContactForm() {
     // Explicitly document fields that should NOT be included
     timestamp?: never; // This signals that timestamp should never be included
   }) => {
-    console.log("[Convex] submitContact called with data:", {
-      name: data.name,
-      email: data.email,
-      subject: data.subject,
-      contactType: data.contactType,
-    });
+    // console.log("[Convex] submitContact called with data:", {
+    //   name: data.name,
+    //   email: data.email,
+    //   subject: data.subject,
+    //   contactType: data.contactType,
+    // });
 
     // Simple check for createContact function
     if (!createContact || typeof createContact !== "function") {
-      console.error("[Convex] createContact function not available");
+      // console.error("[Convex] createContact function not available");
       return {
         success: false,
         error: "Server connection not available. Please try again later.",
