@@ -79,7 +79,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       subtitle: "Get a response within 24 hours",
       description: "Send us a detailed message about your project",
       action: "Send Email",
-      href: "mailto:hello@ngc.solutions",
+      href: "mailto:contact@ngc.solutions",
       color: "from-blue-500/20 to-cyan-500/20",
       borderColor: "border-blue-500/30",
       badge: "24h Response",

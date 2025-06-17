@@ -180,11 +180,11 @@ export function useProjectConsultationForm() {
   const createProject = createProjectMutation;
 
   // Log initialization status
-  if (!createProject) {
-    console.error("Failed to initialize project consultation form");
-  } else {
-    console.log("Convex mutation initialized successfully");
-  }
+  // if (!createProject) {
+  //   console.error("Failed to initialize project consultation form");
+  // } else {
+  //   console.log("Convex mutation initialized successfully");
+  // }
 
   type ProjectConsultationData = {
     name?: string;
@@ -230,7 +230,7 @@ export function useProjectConsultationForm() {
     }
 
     try {
-      console.log("Starting project submission with Convex...");
+      // console.log("Starting project submission with Convex...");
 
       // Validate required fields
       if (!data.contactEmail) {
@@ -251,11 +251,11 @@ export function useProjectConsultationForm() {
             : undefined,
       };
 
-      console.log("Calling Convex API with data:", projectData);
+      // console.log("Calling Convex API with data:", projectData);
 
       try {
         const projectId = await createProject(projectData);
-        console.log("Project submitted successfully, ID:", projectId);
+        // console.log("Project submitted successfully, ID:", projectId);
         return { success: true, projectId } as SubmissionResult;
       } catch (error) {
         // Check specifically for ArgumentValidationError
@@ -290,12 +290,12 @@ export function useProjectConsultationForm() {
             source: "website",
           };
 
-          console.log("Retrying with cleaned data");
+          // console.log("Retrying with cleaned data");
           const projectId = await createProject(cleanedData);
-          console.log(
-            "Project submitted successfully after cleaning, ID:",
-            projectId,
-          );
+          // console.log(
+          //   "Project submitted successfully after cleaning, ID:",
+          //   projectId,
+          // );
           return { success: true, projectId } as SubmissionResult;
         }
         throw error; // Re-throw if not a validation error
@@ -327,7 +327,7 @@ export function useProjectConsultationForm() {
         } else if (errorMessage.includes("ArgumentValidationError")) {
           errorMessage =
             "Data validation error. Please check your input and try again.";
-          console.log("Validation error details:", errorMessage);
+          // console.log("Validation error details:", errorMessage);
         }
       }
 
