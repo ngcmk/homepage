@@ -95,7 +95,7 @@ export function ConvexClientProvider({ children }: ConvexClientProviderProps) {
       const newClient = createConvexClient();
       if (newClient) {
         setClient(newClient);
-        console.log(`[CONVEX] Created new client for changed environment`);
+        // console.log(`[CONVEX] Created new client for changed environment`);
       }
     }
 
@@ -103,17 +103,17 @@ export function ConvexClientProvider({ children }: ConvexClientProviderProps) {
     setIsInitialized(true);
 
     // Log Convex connection details
-    console.log(
-      `[CONVEX] Provider mounted in ${nodeEnv} mode with URL:`,
-      convexUrl,
-    );
+    // console.log(
+    //   `[CONVEX] Provider mounted in ${nodeEnv} mode with URL:`,
+    //   convexUrl,
+    // );
 
     // Test connection
     const testConnection = async () => {
       try {
         // Simple fetch to test if the server is reachable
         await fetch(convexUrl || "", { method: "HEAD", mode: "no-cors" });
-        console.log(`[CONVEX] Server reachable at ${convexUrl}`);
+        // console.log(`[CONVEX] Server reachable at ${convexUrl}`);
         setIsConnected(true);
 
         // Show toast in development mode
@@ -138,14 +138,14 @@ export function ConvexClientProvider({ children }: ConvexClientProviderProps) {
 
     // Set up connection status monitoring
     const handleOnline = () => {
-      console.log("Convex: Reconnecting after network recovery");
+      // console.log("Convex: Reconnecting after network recovery");
       setIsConnected(true);
       toast.success("Connection restored");
       testConnection();
     };
 
     const handleOffline = () => {
-      console.log("Convex: Network connection lost");
+      // console.log("Convex: Network connection lost");
       setIsConnected(false);
       toast.error("Network connection lost. Reconnecting...");
     };

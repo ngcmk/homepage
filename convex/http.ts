@@ -213,7 +213,7 @@ http.route({
         201,
       );
     } catch (error) {
-      console.error("Error creating contact:", error);
+      // console.error("Error creating contact:", error);
       return errorResponse("Failed to create contact", 500);
     }
   }),
@@ -245,7 +245,7 @@ http.route({
         data: contact,
       });
     } catch (error) {
-      console.error("Error fetching contact:", error);
+      // console.error("Error fetching contact:", error);
       return errorResponse("Failed to fetch contact", 500);
     }
   }),
@@ -348,7 +348,7 @@ http.route({
         201,
       );
     } catch (error) {
-      console.error("Error adding note:", error);
+      // console.error("Error adding note:", error);
       if (error instanceof Error && error.message === "Contact not found") {
         return errorResponse("Contact not found", 404);
       }
@@ -385,7 +385,7 @@ http.route({
         count: activities.length,
       });
     } catch (error) {
-      console.error("Error fetching contact activities:", error);
+      // console.error("Error fetching contact activities:", error);
       return errorResponse("Failed to fetch contact activities", 500);
     }
   }),
@@ -418,7 +418,7 @@ http.route({
           : "Contact marked as spam",
       });
     } catch (error) {
-      console.error("Error deleting contact:", error);
+      // console.error("Error deleting contact:", error);
       if (error instanceof Error && error.message === "Contact not found") {
         return errorResponse("Contact not found", 404);
       }
@@ -440,7 +440,7 @@ http.route({
         data: stats,
       });
     } catch (error) {
-      console.error("Error fetching contact stats:", error);
+      // console.error("Error fetching contact stats:", error);
       return errorResponse("Failed to fetch contact statistics", 500);
     }
   }),
@@ -475,7 +475,7 @@ http.route({
         message: "Contact assigned successfully",
       });
     } catch (error) {
-      console.error("Error assigning contact:", error);
+      // console.error("Error assigning contact:", error);
       if (
         error instanceof Error &&
         (error.message === "Contact not found" ||
@@ -631,7 +631,7 @@ http.route({
         201,
       );
     } catch (error) {
-      console.error("Error creating project consultation:", error);
+      // console.error("Error creating project consultation:", error);
       return errorResponse("Failed to create project consultation", 500);
     }
   }),
@@ -666,7 +666,7 @@ http.route({
         data: project,
       });
     } catch (error) {
-      console.error("Error fetching project consultation:", error);
+      // console.error("Error fetching project consultation:", error);
       return errorResponse("Failed to fetch project consultation", 500);
     }
   }),
@@ -718,7 +718,7 @@ http.route({
         message: "Project consultation status updated successfully",
       });
     } catch (error) {
-      console.error("Error updating project consultation status:", error);
+      // console.error("Error updating project consultation status:", error);
       if (
         error instanceof Error &&
         error.message === "Project consultation not found"
@@ -775,7 +775,7 @@ http.route({
         201,
       );
     } catch (error) {
-      console.error("Error adding note:", error);
+      // console.error("Error adding note:", error);
       if (
         error instanceof Error &&
         error.message === "Project consultation not found"
@@ -818,7 +818,7 @@ http.route({
         count: activities.length,
       });
     } catch (error) {
-      console.error("Error fetching project consultation activities:", error);
+      // console.error("Error fetching project consultation activities:", error);
       return errorResponse(
         "Failed to fetch project consultation activities",
         500,
@@ -857,7 +857,7 @@ http.route({
           : "Project consultation cancelled",
       });
     } catch (error) {
-      console.error("Error deleting project consultation:", error);
+      // console.error("Error deleting project consultation:", error);
       if (
         error instanceof Error &&
         error.message === "Project consultation not found"
@@ -885,7 +885,7 @@ http.route({
         data: stats,
       });
     } catch (error) {
-      console.error("Error fetching project consultation stats:", error);
+      // console.error("Error fetching project consultation stats:", error);
       return errorResponse(
         "Failed to fetch project consultation statistics",
         500,
@@ -923,7 +923,7 @@ http.route({
         message: "Project consultation assigned successfully",
       });
     } catch (error) {
-      console.error("Error assigning project consultation:", error);
+      // console.error("Error assigning project consultation:", error);
       if (
         error instanceof Error &&
         (error.message === "Project consultation not found" ||
