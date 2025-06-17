@@ -217,33 +217,33 @@ export function ConvexContactForm() {
       let result = await submitContact(submissionData);
 
       // Check for direct Convex response format
-      if (typeof result === "object" && result !== null) {
-        if (
-          "success" in result &&
-          result.success === true &&
-          "contactId" in result
-        ) {
-          console.log(
-            "[ConvexContactForm] Detected direct Convex response format",
-            result,
-          );
-          result = { success: true, contactId: result.contactId };
-        }
-      }
+      // if (typeof result === "object" && result !== null) {
+      //   if (
+      //     "success" in result &&
+      //     result.success === true &&
+      //     "contactId" in result
+      //   ) {
+      //     console.log(
+      //       "[ConvexContactForm] Detected direct Convex response format",
+      //       result,
+      //     );
+      //     result = { success: true, contactId: result.contactId };
+      //   }
+      // }
 
       // Calculate submission time
       const endTime = Date.now();
-      console.log(
-        `[ConvexContactForm] Submission took ${endTime - startTime}ms`,
-      );
+      // console.log(
+      //   `[ConvexContactForm] Submission took ${endTime - startTime}ms`,
+      // );
 
-      console.log("[ConvexContactForm] Submission result:", result);
+      // console.log("[ConvexContactForm] Submission result:", result);
       if (
         result &&
         (result.success === true ||
           (typeof result === "object" && "success" in result && result.success))
       ) {
-        console.log("[ConvexContactForm] Submission successful!");
+        // console.log("[ConvexContactForm] Submission successful!");
         setSubmitStatus({
           type: "success",
           message:
@@ -270,7 +270,7 @@ export function ConvexContactForm() {
           }
         }, 1000); // 1-second delay for better UX and to ensure state updates complete
       } else {
-        console.error("[ConvexContactForm] Submission failed:", result?.error);
+        // console.error("[ConvexContactForm] Submission failed:", result?.error);
         setSubmitStatus({
           type: "error",
           message: result?.error || "Failed to send message. Please try again.",
@@ -278,12 +278,12 @@ export function ConvexContactForm() {
         toast.error("Failed to submit contact form");
       }
     } catch (error) {
-      console.error("[ConvexContactForm] Submission exception:", error);
+      // console.error("[ConvexContactForm] Submission exception:", error);
 
       // More detailed error logging
       if (error instanceof Error) {
-        console.error("[ConvexContactForm] Error name:", error.name);
-        console.error("[ConvexContactForm] Error message:", error.message);
+        // console.error("[ConvexContactForm] Error name:", error.name);
+        // console.error("[ConvexContactForm] Error message:", error.message);
         console.error("[ConvexContactForm] Error stack:", error.stack);
       }
 
@@ -522,18 +522,18 @@ export function ConvexContactForm() {
             type="submit"
             className="w-full"
             disabled={isSubmitting || !isInitialized || !createContactAvailable}
-            onClick={() => {
-              console.log("[ConvexContactForm] Submit button clicked");
-              console.log("[ConvexContactForm] Current form state:", formData);
-              console.log(
-                "[ConvexContactForm] Convex initialized:",
-                isInitialized,
-              );
-              console.log(
-                "[ConvexContactForm] createContact available:",
-                createContactAvailable,
-              );
-            }}
+            // onClick={() => {
+            //   console.log("[ConvexContactForm] Submit button clicked");
+            //   console.log("[ConvexContactForm] Current form state:", formData);
+            //   console.log(
+            //     "[ConvexContactForm] Convex initialized:",
+            //     isInitialized,
+            //   );
+            //   console.log(
+            //     "[ConvexContactForm] createContact available:",
+            //     createContactAvailable,
+            //   );
+            // }}
           >
             {isSubmitting ? (
               <>

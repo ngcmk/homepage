@@ -205,87 +205,87 @@ export function useContactForm() {
       submissionData.referrer = document.referrer || undefined;
     }
 
-    console.log("[Convex] Cleaned submission data:", submissionData);
+    // console.log("[Convex] Cleaned submission data:", submissionData);
 
-    try {
-      // Add verbose diagnostic logging before submission
-      console.log(
-        "[Convex] DIAGNOSTIC: Submission data structure:",
-        JSON.stringify(submissionData, null, 2),
-      );
-      console.log(
-        "[Convex] DIAGNOSTIC: Fields being sent:",
-        Object.keys(submissionData),
-      );
+    // try {
+    //   // Add verbose diagnostic logging before submission
+    //   console.log(
+    //     "[Convex] DIAGNOSTIC: Submission data structure:",
+    //     JSON.stringify(submissionData, null, 2),
+    //   );
+    //   console.log(
+    //     "[Convex] DIAGNOSTIC: Fields being sent:",
+    //     Object.keys(submissionData),
+    //   );
 
-      // Check for potentially problematic fields
-      if ("timestamp" in submissionData) {
-        console.error(
-          "[Convex] DIAGNOSTIC WARNING: 'timestamp' field detected in submission data!",
-        );
-      }
+    //   // Check for potentially problematic fields
+    //   if ("timestamp" in submissionData) {
+    //     console.error(
+    //       "[Convex] DIAGNOSTIC WARNING: 'timestamp' field detected in submission data!",
+    //     );
+    //   }
 
       // Direct call to createContact without Promise.race
       const contactId = await createContact(submissionData);
-      console.log("[Convex] Contact created successfully, ID:", contactId);
+      // console.log("[Convex] Contact created successfully, ID:", contactId);
 
-      // Check for direct Convex response format
-      if (typeof contactId === "object" && contactId !== null) {
-        // Use type assertion for the response object
-        const responseObj = contactId as Record<string, any>;
-        if ("success" in responseObj && responseObj.success === true) {
-          console.log("[Convex] Detected direct Convex response format");
-          return {
-            success: true,
-            contactId: "result" in responseObj ? responseObj.result : contactId,
-          };
-        }
-      }
+      // // Check for direct Convex response format
+      // if (typeof contactId === "object" && contactId !== null) {
+      //   // Use type assertion for the response object
+      //   const responseObj = contactId as Record<string, any>;
+      //   if ("success" in responseObj && responseObj.success === true) {
+      //     console.log("[Convex] Detected direct Convex response format");
+      //     return {
+      //       success: true,
+      //       contactId: "result" in responseObj ? responseObj.result : contactId,
+      //     };
+      //   }
+      // }
 
       return { success: true, contactId };
-    } catch (error) {
-      console.error("[Convex] Error creating contact:", error);
+    // } catch (error) {
+    //   console.error("[Convex] Error creating contact:", error);
 
       let errorMessage = "Failed to submit contact form";
 
-      if (error instanceof Error) {
-        errorMessage = error.message;
+      // if (error instanceof Error) {
+      //   errorMessage = error.message;
 
-        // Log detailed error information
-        console.error(
-          "[Convex] DIAGNOSTIC: Error type:",
-          error.constructor.name,
-        );
-        console.error(
-          "[Convex] DIAGNOSTIC: Full error message:",
-          error.message,
-        );
-        console.error("[Convex] DIAGNOSTIC: Error stack:", error.stack);
+      //   // Log detailed error information
+      //   console.error(
+      //     "[Convex] DIAGNOSTIC: Error type:",
+      //     error.constructor.name,
+      //   );
+      //   console.error(
+      //     "[Convex] DIAGNOSTIC: Full error message:",
+      //     error.message,
+      //   );
+      //   console.error("[Convex] DIAGNOSTIC: Error stack:", error.stack);
 
-        // More specific error messages
-        if (error.message.includes("extra field")) {
-          console.error(
-            "[Convex] DIAGNOSTIC: Field validation error detected!",
-          );
-          errorMessage = "Form validation error: Invalid form data";
-        } else if (
-          error.message.includes("network") ||
-          error.message.includes("connection")
-        ) {
-          errorMessage = "Network error: Please check your connection";
-        } else if (error.message.includes("timeout")) {
-          errorMessage = "Request timed out: Server might be busy";
-        }
-      } else {
-        // Log non-Error objects
-        console.error("[Convex] DIAGNOSTIC: Non-Error object thrown:", error);
-      }
+      //   // More specific error messages
+      //   if (error.message.includes("extra field")) {
+      //     console.error(
+      //       "[Convex] DIAGNOSTIC: Field validation error detected!",
+      //     );
+      //     errorMessage = "Form validation error: Invalid form data";
+      //   } else if (
+      //     error.message.includes("network") ||
+      //     error.message.includes("connection")
+      //   ) {
+      //     errorMessage = "Network error: Please check your connection";
+      //   } else if (error.message.includes("timeout")) {
+      //     errorMessage = "Request timed out: Server might be busy";
+      //   }
+      // } else {
+      //   // Log non-Error objects
+      //   console.error("[Convex] DIAGNOSTIC: Non-Error object thrown:", error);
+      // }
 
-      return {
-        success: false,
-        error: errorMessage,
-      };
-    }
+      // return {
+      //   success: false,
+      //   error: errorMessage,
+      // };
+    // }
   };
 
   // Helper to parse response formats

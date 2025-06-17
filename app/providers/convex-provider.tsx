@@ -17,9 +17,9 @@ function createConvexClient() {
   }
 
   try {
-    console.log(
-      `[CONVEX] Initializing client in ${nodeEnv} mode with URL: ${convexUrl}`,
-    );
+    // console.log(
+    //   `[CONVEX] Initializing client in ${nodeEnv} mode with URL: ${convexUrl}`,
+    // );
 
     // Add timestamp to help prevent caching issues
     const clientOptions = {
@@ -28,7 +28,7 @@ function createConvexClient() {
 
     const client = new ConvexReactClient(convexUrl, clientOptions);
 
-    console.log(`[CONVEX] Client initialized successfully for ${nodeEnv}`);
+    // console.log(`[CONVEX] Client initialized successfully for ${nodeEnv}`);
 
     // Store the URL in localStorage to detect environment changes
     if (typeof window !== "undefined") {
@@ -53,10 +53,10 @@ if (typeof window !== "undefined") {
   const nodeEnv = process.env.NODE_ENV;
   const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
 
-  console.log(`[CONVEX] Running in browser with:
-  - URL: ${convexUrl}
-  - Environment: ${nodeEnv || "undefined"}
-  - Browser: ${navigator.userAgent}`);
+  // console.log(`[CONVEX] Running in browser with:
+  // - URL: ${convexUrl}
+  // - Environment: ${nodeEnv || "undefined"}
+  // - Browser: ${navigator.userAgent}`);
 }
 
 interface ConvexClientProviderProps {
@@ -80,10 +80,10 @@ export function ConvexClientProvider({ children }: ConvexClientProviderProps) {
 
       // If URL or environment changed, we need a new client
       if (storedUrl !== convexUrl || storedEnv !== nodeEnv) {
-        console.log(
-          `[CONVEX] Environment changed from ${storedEnv} to ${nodeEnv}`,
-        );
-        console.log(`[CONVEX] URL changed from ${storedUrl} to ${convexUrl}`);
+        // console.log(
+        //   `[CONVEX] Environment changed from ${storedEnv} to ${nodeEnv}`,
+        // );
+        // console.log(`[CONVEX] URL changed from ${storedUrl} to ${convexUrl}`);
         return true;
       }
 
