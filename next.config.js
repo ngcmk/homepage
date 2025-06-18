@@ -9,7 +9,7 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: 'https://mail.ngcmk.mk',
+            value: 'mail.ngc.mk',
           },
         ],
         destination: 'https://sven.mk-host4.com:2096/',
