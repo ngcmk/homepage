@@ -80,7 +80,7 @@ export default function Services() {
       duration: "8-16 weeks",
       features: [
         "AI model integration",
-        "Machine learning solutions",
+        // "Machine learning solutions",
         "Chatbot development",
         "Data analysis",
       ],

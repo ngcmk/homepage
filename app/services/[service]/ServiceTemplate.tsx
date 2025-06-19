@@ -127,21 +127,29 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                 <div className="text-2xl font-bold">
                   {service.startingPrice}
                 </div>
-                <div className="text-white/80 text-sm">Starting Price</div>
+                <div className="text-white/80 text-sm">
+                  {t('serviceTemplate.startingPrice')}
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">
                   {service.estimatedDuration}
                 </div>
-                <div className="text-white/80 text-sm">Timeline</div>
+                <div className="text-white/80 text-sm">
+                  {t('serviceTemplate.timeline')}
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{service.complexity}</div>
-                <div className="text-white/80 text-sm">Complexity</div>
+                <div className="text-white/80 text-sm">
+                  {t('serviceTemplate.complexity')}
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{service.category}</div>
-                <div className="text-white/80 text-sm">Category</div>
+                <div className="text-white/80 text-sm">
+                  {t('serviceTemplate.category')}
+                </div>
               </div>
             </div>
 
@@ -153,7 +161,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                 className="bg-white text-gray-900 hover:bg-white/90 font-semibold px-8"
               >
                 <Link href="/initialize-project">
-                  Start Your Project
+                  {t('serviceTemplate.cta.startProject')}
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
@@ -164,7 +172,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                 className="border-white text-white hover:bg-white/10 font-semibold px-8"
               >
                 <Link href="#pricing">
-                  View Pricing
+                  {t('serviceTemplate.cta.viewPricing')}
                   <DollarSign className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
@@ -182,12 +190,24 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             className="mb-12"
           >
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 mb-8">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="features">Features</TabsTrigger>
-              <TabsTrigger value="process">Process</TabsTrigger>
-              <TabsTrigger value="pricing">Pricing</TabsTrigger>
-              <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-              <TabsTrigger value="faq">FAQ</TabsTrigger>
+              <TabsTrigger value="overview">
+                {t('serviceTemplate.tabs.overview')}
+              </TabsTrigger>
+              <TabsTrigger value="features">
+                {t('serviceTemplate.tabs.features')}
+              </TabsTrigger>
+              <TabsTrigger value="process">
+                {t('serviceTemplate.tabs.process')}
+              </TabsTrigger>
+              <TabsTrigger value="pricing">
+                {t('serviceTemplate.tabs.pricing')}
+              </TabsTrigger>
+              <TabsTrigger value="portfolio">
+                {t('serviceTemplate.tabs.portfolio')}
+              </TabsTrigger>
+              <TabsTrigger value="faq">
+                {t('serviceTemplate.tabs.faq')}
+              </TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
@@ -195,7 +215,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
               {/* Service Benefits */}
               <section>
                 <h2 className="text-3xl font-bold text-center mb-8">
-                  Why Choose Our {serviceTitle}?
+                  {t('serviceTemplate.whyChoose', { service: service.title })}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {service.benefits.map((benefit) => (
@@ -225,7 +245,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
               {/* Target Audience */}
               <section className="bg-gray-50 rounded-2xl p-8">
                 <h2 className="text-2xl font-bold mb-6 text-center">
-                  Perfect For
+                  {t('serviceTemplate.targetAudience')}
                 </h2>
                 <div className="flex flex-wrap justify-center gap-3">
                   {service.targetAudience.map((audience, index) => (
@@ -243,7 +263,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
               {/* Technologies */}
               <section>
                 <h2 className="text-2xl font-bold mb-6 text-center">
-                  Technologies We Use
+                  {t('serviceTemplate.technologies')}
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                   {service.technologies.map((tech, index) => (
@@ -262,7 +282,9 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
 
               {/* Deliverables */}
               <section>
-                <h2 className="text-2xl font-bold mb-6">What You'll Receive</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  {t('serviceTemplate.deliverables')}
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {service.deliverables.map((deliverable, index) => (
                     <div key={index} className="flex items-center gap-3">
@@ -277,9 +299,11 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             {/* Features Tab */}
             <TabsContent value="features" className="space-y-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">Service Features</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  {t('serviceTemplate.features')}
+                </h2>
                 <p className="text-muted-foreground">
-                  Comprehensive features designed to meet your specific needs
+                  {t('serviceTemplate.featuresDescription')}
                 </p>
               </div>
 
@@ -313,9 +337,11 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             {/* Process Tab */}
             <TabsContent value="process" className="space-y-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">Our Process</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  {t('serviceTemplate.process')}
+                </h2>
                 <p className="text-muted-foreground">
-                  A proven methodology that ensures successful project delivery
+                  {t('serviceTemplate.processDescription')}
                 </p>
               </div>
 
@@ -361,9 +387,11 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             {/* Pricing Tab */}
             <TabsContent value="pricing" className="space-y-8" id="pricing">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">Transparent Pricing</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  {t('serviceTemplate.pricing')}
+                </h2>
                 <p className="text-muted-foreground">
-                  Choose the package that best fits your needs and budget
+                  {t('serviceTemplate.pricingDescription')}
                 </p>
               </div>
 
@@ -376,7 +404,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                     {tier.recommended && (
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <Badge className="bg-primary text-white">
-                          Recommended
+                          {t('serviceTemplate.recommended')}
                         </Badge>
                       </div>
                     )}
@@ -404,7 +432,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                         variant={tier.recommended ? "default" : "outline"}
                       >
                         <Link href="/initialize-project">
-                          Get Started
+                          {t('serviceTemplate.cta.getStarted')}
                           <ArrowRight className="ml-2 w-4 h-4" />
                         </Link>
                       </Button>
@@ -418,15 +446,14 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                 <Card className="bg-blue-50 border-blue-200 max-w-2xl mx-auto">
                   <CardContent className="p-6">
                     <h3 className="font-semibold mb-2">
-                      Need a Custom Solution?
+                      {t('serviceTemplate.customPricing')}
                     </h3>
                     <p className="text-muted-foreground mb-4">
-                      Every project is unique. Contact us for a personalized
-                      quote based on your specific requirements.
+                      {t('serviceTemplate.customPricingDescription')}
                     </p>
                     <Button asChild variant="outline">
                       <Link href="/#contact">
-                        Get Custom Quote
+                        {t('serviceTemplate.cta.customQuote')}
                         <MessageSquare className="ml-2 w-4 h-4" />
                       </Link>
                     </Button>
@@ -438,10 +465,11 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             {/* Portfolio Tab */}
             <TabsContent value="portfolio" className="space-y-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">Our Work</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  {t('serviceTemplate.portfolio')}
+                </h2>
                 <p className="text-muted-foreground">
-                  See how we've helped other businesses succeed with{" "}
-                  {serviceTitle.toLowerCase()}
+                  {t('serviceTemplate.portfolio.description')}
                 </p>
               </div>
 
@@ -480,7 +508,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                       {item.url && (
                         <Button asChild variant="outline" size="sm">
                           <Link href={item.url}>
-                            View Case Study
+                            {t('serviceTemplate.portfolio.cta')}
                             <ExternalLink className="ml-2 w-3 h-3" />
                           </Link>
                         </Button>
@@ -495,10 +523,11 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Star className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="font-semibold mb-2">Portfolio Coming Soon</h3>
+                  <h3 className="font-semibold mb-2">
+                    {t('serviceTemplate.portfolioComingSoon')}
+                  </h3>
                   <p className="text-muted-foreground">
-                    We're working on showcasing our latest{" "}
-                    {serviceTitle.toLowerCase()} projects.
+                    {t('serviceTemplate.portfolioComingSoonDescription')}
                   </p>
                 </div>
               )}
@@ -508,11 +537,10 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             <TabsContent value="faq" className="space-y-8">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4">
-                  Frequently Asked Questions
+                  {t('serviceTemplate.faq')}
                 </h2>
                 <p className="text-muted-foreground">
-                  Everything you need to know about our{" "}
-                  {serviceTitle.toLowerCase()} service
+                  {t('serviceTemplate.faqDescription')}
                 </p>
               </div>
 
@@ -540,15 +568,14 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                 <Card className="bg-gray-50 max-w-xl mx-auto">
                   <CardContent className="p-6">
                     <h3 className="font-semibold mb-2">
-                      Still Have Questions?
+                      {t('serviceTemplate.stillHaveQuestions')}
                     </h3>
                     <p className="text-muted-foreground mb-4">
-                      We're here to help! Get in touch with our team for
-                      personalized answers.
+                      {t('serviceTemplate.stillHaveQuestionsDescription')}
                     </p>
                     <Button asChild>
                       <Link href="/#contact">
-                        Contact Us
+                        {t('serviceTemplate.cta.contactUs')}
                         <MessageSquare className="ml-2 w-4 h-4" />
                       </Link>
                     </Button>
@@ -562,7 +589,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
           {service.relatedServices.length > 0 && (
             <section className="mt-16">
               <h2 className="text-2xl font-bold mb-8 text-center">
-                You Might Also Like
+                {t('serviceTemplate.relatedServices')}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {service.relatedServices.map((relatedId) => {
@@ -596,7 +623,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                       <CardContent>
                         <div className="flex justify-between items-center mb-4">
                           <span className="text-sm text-muted-foreground">
-                            Starting at
+                            {t('serviceTemplate.relatedServicesStartingAt')}
                           </span>
                           <span className="font-semibold">
                             {relatedService.startingPrice}
@@ -604,7 +631,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                         </div>
                         <Button asChild variant="outline" className="w-full">
                           <Link href={relatedService.path}>
-                            Learn More
+                            {t('serviceTemplate.relatedServicesLearnMore')}
                             <ChevronRight className="ml-2 w-4 h-4" />
                           </Link>
                         </Button>
@@ -623,11 +650,10 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
             >
               <CardContent className="p-12 text-center">
                 <h2 className="text-3xl font-bold mb-4">
-                  Ready to Get Started?
+                  {t('serviceTemplate.finalCta')}
                 </h2>
                 <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
-                  Let's discuss how our {serviceTitle.toLowerCase()} services
-                  can help transform your business and achieve your goals.
+                  {t('serviceTemplate.finalCtaDescription', { service: service.title })}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
@@ -636,7 +662,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                     className="bg-white text-gray-900 hover:bg-white/90 font-semibold px-8"
                   >
                     <Link href="/initialize-project">
-                      Start Your Project
+                      {t('serviceTemplate.cta.startProject')}
                       <Zap className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
@@ -647,7 +673,7 @@ export default function ServiceTemplate({ params }: ServiceTemplateProps) {
                     className="border-white text-white hover:bg-white/10 font-semibold px-8"
                   >
                     <Link href="/#contact">
-                      Schedule Consultation
+                      {t('serviceTemplate.cta.scheduleConsultation')}
                       <Calendar className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>

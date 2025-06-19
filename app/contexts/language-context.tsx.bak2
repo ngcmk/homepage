@@ -29,116 +29,6 @@ const translations = {
     "nav.home": "Home",
     "nav.startProject": "Start Project",
 
-    // Services
-    services: {
-      pageTitle: "Our Services",
-      pageDescription: "Comprehensive digital solutions to transform your business and drive growth",
-      whyChooseUs: {
-        title: "Why Choose Us",
-        description: "We are committed to delivering exceptional results for every project we undertake. Here's why our clients trust us with their digital needs.",
-        expertTeam: {
-          title: "Expert Team",
-          description: "Our team of experienced professionals is dedicated to delivering high-quality solutions tailored to your needs."
-        },
-        fastDelivery: {
-          title: "Fast Delivery",
-          description: "We understand the importance of time and ensure timely delivery of all our projects without compromising on quality."
-        },
-        ongoingSupport: {
-          title: "Ongoing Support",
-          description: "Our relationship doesn't end with project delivery. We provide continuous support to ensure your success."
-        }
-      },
-      searchPlaceholder: "Search services...",
-      allCategories: "All Categories",
-      viewModes: {
-        grid: "Grid view",
-        list: "List view"
-      },
-      filters: {
-        status: "Status",
-        type: "Type",
-        urgency: "Urgency",
-        allStatuses: "All Statuses",
-        allTypes: "All Types",
-        allUrgencies: "All Urgencies"
-      },
-      stats: {
-        servicesOffered: "Services Offered",
-        projectsCompleted: "Projects Completed",
-        clientSatisfaction: "Client Satisfaction",
-        yearsExperience: "Years Experience"
-      },
-      serviceCard: {
-        startingAt: "Starting at",
-        timeline: "Timeline",
-        complexity: "Complexity",
-        learnMore: "Learn More",
-        freeForNGOs: "Free for NGOs",
-        premiumService: "Premium Service"
-      },
-      resultsCount: "Showing {count} of {total} services",
-      cta: {
-        title: "Ready to bring your ideas to life?",
-        description: "Whether you have a project in mind or just want to explore possibilities, we're here to help. Let's create something amazing together!",
-        startProject: "Start Your Project",
-        getFreeConsultation: "Get Free Consultation"
-      }
-    },
-
-      // Service Template
-    serviceTemplate: {
-      startingPrice: "Starting Price",
-      timeline: "Timeline",
-      complexity: "Complexity",
-      category: "Category",
-      targetAudience: "Perfect For",
-      technologies: "Technologies We Use",
-      deliverables: "What You'll Receive",
-      features: "Service Features",
-      featuresDescription: "Comprehensive features designed to meet your specific needs",
-      process: "Our Process",
-      processDescription: "A proven methodology that ensures successful project delivery",
-      pricing: "Transparent Pricing",
-      pricingDescription: "Choose the package that best fits your needs and budget",
-      portfolio: {
-        title: "Portfolio",
-        cta: "View All Projects",
-        description: "See how we've helped other businesses succeed with {service}"
-      },
-      faq: "Frequently Asked Questions",
-      faqDescription: "Everything you need to know about our {service} service",
-      recommended: "Recommended",
-      customPricing: "Need a Custom Solution?",
-      customPricingDescription: "Every project is unique. Contact us for a personalized quote based on your specific requirements.",
-      portfolioComingSoon: "Portfolio Coming Soon",
-      portfolioComingSoonDescription: "We're working on showcasing our latest {service} projects.",
-      stillHaveQuestions: "Still Have Questions?",
-      stillHaveQuestionsDescription: "We're here to help! Get in touch with our team for personalized answers.",
-      relatedServices: "You Might Also Like",
-      relatedServicesStartingAt: "Starting at",
-      relatedServicesLearnMore: "Learn More",
-      finalCta: "Ready to Get Started?",
-      finalCtaDescription: "Let's discuss how our {service} services can help transform your business and achieve your goals.",
-      cta: {
-        startProject: "Start Your Project",
-        viewPricing: "View Pricing",
-        getStarted: "Get Started",
-        customQuote: "Get Custom Quote",
-        contactUs: "Contact Us",
-        scheduleConsultation: "Schedule Consultation"
-      },
-      tabs: {
-        overview: "Overview",
-        features: "Features",
-        process: "Process",
-        pricing: "Pricing",
-        portfolio: "Portfolio",
-        faq: "FAQ"
-      },
-      whyChoose: "Why Choose Our {service}?"
-    },
-
     // Hero
     "hero.title": "We craft digital experiences with purpose",
     "hero.subtitle":
@@ -445,116 +335,6 @@ const translations = {
     "nav.home": "Дома",
     "nav.startProject": "Започни проект",
 
-    // Services
-    services: {
-      pageTitle: "Наши Услуги",
-      pageDescription: "Сеобфатни дигитални решенија за трансформација на вашиот бизнис и поттикнување на растот",
-      whyChooseUs: {
-        title: "Зошто да нè изберете",
-        description: "Посветени сме на остварување исклучителни резултати за секој проект. Еве зошто нашите клиенти ни веруваат за нивните дигитални потреби.",
-        expertTeam: {
-          title: "Стручен Тим",
-          description: "Нашиот тим од искусни професионалци е посветен на доставување висококвалитетни решенија прилагодени на вашите потреби."
-        },
-        fastDelivery: {
-          title: "Брза Испорака",
-          description: "Г разбираме значењето на времето и обезбедуваме навремена испорака на сите наши проекти без компрромиси во однос на квалитетот."
-        },
-        ongoingSupport: {
-          title: "Континуирана Поддршка",
-          description: "Нашата соработка не завршува со испораката на проектот. Обезбедуваме континуирана поддршка за да го обезбедиме вашиот успех."
-        }
-      },
-      searchPlaceholder: "Пребарувај услуги...",
-      allCategories: "Сите категории",
-      viewModes: {
-        grid: "Мрежен приказ",
-        list: "Листа приказ"
-      },
-      filters: {
-        status: "Статус",
-        type: "Тип",
-        urgency: "Итност",
-        allStatuses: "Сите статуси",
-        allTypes: "Сите типови",
-        allUrgencies: "Сите итности"
-      },
-      stats: {
-        servicesOffered: "Понудени Услуги",
-        projectsCompleted: "Завршени Проекти",
-        clientSatisfaction: "Задоволство на Клиенти",
-        yearsExperience: "Години Искуство"
-      },
-      serviceCard: {
-        startingAt: "Цена од",
-        timeline: "Времетраење",
-        complexity: "Комплексност",
-        learnMore: "Дознај Повеќе",
-        freeForNGOs: "Бесплатно за НВО",
-        premiumService: "Премиум Услуга"
-      },
-      resultsCount: "Прикажани се {count} од вкупно {total} услуги",
-      cta: {
-        title: "Подготвени сте да ги оживеете вашите идеи?",
-        description: "Без разлика дали имате конкретен проект или сакате само да ги истражите можностите, ние сме тука за да ви помогнеме. Ајде заедно да создадеме нешто неверојатно!",
-        startProject: "Започнете го вашиот проект",
-        getFreeConsultation: "Добијте бесплатна консултација"
-      }
-    },
-
-    // Service Template
-    serviceTemplate: {
-      startingPrice: "Почетна Цена",
-      timeline: "Времетраење",
-      complexity: "Комплексност",
-      category: "Категорија",
-      targetAudience: "Совршено за",
-      technologies: "Технологии што ги користиме",
-      deliverables: "Што ќе добиете",
-      features: "Карактеристики на Услугата",
-      featuresDescription: "Сеопфатни карактеристики дизајнирани да ги исполнат вашите специфични потреби",
-      process: "Нашиот Процес",
-      processDescription: "Докажан пристап што обезбедува успешна имплементација на проектот",
-      pricing: "Транспарентни Цени",
-      pricingDescription: "Изберете го пакетот што најмногу одговара на вашите потреби и буџет",
-      portfolio: {
-        title: "Портфолио",
-        cta: "Види ги сите проекти",
-        description: "Погледнете како им помогнавме на други бизниси да успеат со {service}"
-      },
-      faq: "Често Поставувани Прашања",
-      faqDescription: "Сè што треба да знаете за нашата {service} услуга",
-      recommended: "Препорачано",
-      customPricing: "Дали ви треба прилагодено решение?",
-      customPricingDescription: "Секој проект е уникатен. Контактирајте не за персонализирана понуда според вашите специфични потреби.",
-      portfolioComingSoon: "Портфолиото наскоро",
-      portfolioComingSoonDescription: "Работиме на прикажување на нашите најнови проекти од областа {service}.",
-      stillHaveQuestions: "Сè уште имате прашања?",
-      stillHaveQuestionsDescription: "Тука сме да ви помогнеме! Контактирајте не за персонализирани одговори.",
-      relatedServices: "Можеби ќе ве интересира",
-      relatedServicesStartingAt: "Цени од",
-      relatedServicesLearnMore: "Дознајте повеќе",
-      finalCta: "Подготвени сте да започнете?",
-      finalCtaDescription: "Разговарајте со нас за тоа како нашите {service} услуги можат да го трансформираат вашиот бизнис и да ви помогнат да ги постигнете вашите цели.",
-      cta: {
-        startProject: "Започнете го вашиот проект",
-        viewPricing: "Види цени",
-        getStarted: "Започнете",
-        customQuote: "Побарајте понуда",
-        contactUs: "Контактирајте не",
-        scheduleConsultation: "Закажете консултација"
-      },
-      tabs: {
-        overview: "Преглед",
-        features: "Карактеристики",
-        process: "Процес",
-        pricing: "Цени",
-        portfolio: "Портфолио",
-        faq: "ЧПП"
-      },
-      whyChoose: "Зошто да ја изберете нашата {service}?"
-    },
-
     // Херој
     "hero.title": "Создаваме дигитални искуства со цел",
     "hero.subtitle":
@@ -576,7 +356,7 @@ const translations = {
     "services.mobile.description":
       "Нативни и крос-платформски апликации што нудат конзистентно искуство на сите уреди.",
     "services.poc.title": "Доказ за Концепт",
-    "services.poc.description": "Бринете ги вашите идеи",
+    "services.poc.description": "Остварете ги вашите идеи",
     "services.ai.title": "Интеграција на Вештачка Интелигенција",
     "services.ai.description": "Интегрирање на вештачка интелигенција во работните текови на клиентите со локални и облачни решенија",
     "services.ngo-support.title": "Поддршка за НВО",
@@ -860,116 +640,6 @@ const translations = {
     "nav.contact": "Kontakt",
     "nav.home": "Početna",
     "nav.startProject": "Započni projekat",
-
-    // Services
-    services: {
-      pageTitle: "Naše Usluge",
-      pageDescription: "Sveobuhvatna digitalna rešenja za transformaciju vašeg poslovanja i podsticanje rasta",
-      whyChooseUs: {
-        title: "Zašto Izabrati Nas",
-        description: "Posvećeni smo pružanju izuzetnih rezultata za svaki projekat. Evo zašto nam naši klijenti veruju kada je u pitanju njihove digitalne potrebe.",
-        expertTeam: {
-          title: "Stručni Tim",
-          description: "Naš tim iskusnih profesionalaca posvećen je pružanju visokokvalitetnih rešenja prilagođenih vašim potrebama."
-        },
-        fastDelivery: {
-          title: "Brza Isporuka",
-          description: "Razumemo važnost vremena i obezbeđujemo pravovremenu isporuku svih naših projekata bez kompromisa u pogledu kvaliteta."
-        },
-        ongoingSupport: {
-          title: "Kontinuirana Podrška",
-          description: "Naša saradnja ne završava se isporukom projekta. Pružamo kontinuiranu podršku kako bismo osigurali vaš uspeh."
-        }
-      },
-      searchPlaceholder: "Pretražite usluge...",
-      allCategories: "Sve Kategorije",
-      viewModes: {
-        grid: "Mrežni prikaz",
-        list: "Lista prikaz"
-      },
-      filters: {
-        status: "Status",
-        type: "Tip",
-        urgency: "Hitnost",
-        allStatuses: "Svi Statusi",
-        allTypes: "Svi Tipovi",
-        allUrgencies: "Sve Hitnosti"
-      },
-      stats: {
-        servicesOffered: "Ponudjene Usluge",
-        projectsCompleted: "Završeni Projekti",
-        clientSatisfaction: "Zadovoljstvo Klijenata",
-        yearsExperience: "Godine Iskustva"
-      },
-      serviceCard: {
-        startingAt: "Cena od",
-        timeline: "Trajanje",
-        complexity: "Složenost",
-        learnMore: "Saznajte Više",
-        freeForNGOs: "Besplatno za NVO",
-        premiumService: "Premium Usluga"
-      },
-      resultsCount: "Prikazano {count} od ukupno {total} usluga",
-      cta: {
-        title: "Spremni da oživite svoje ideje?",
-        description: "Bez obzira da li imate konkretan projekat na umu ili samo želite da istražite mogućnosti, mi smo tu da vam pomognemo. Zajedno možemo stvoriti nešto neverovatno!",
-        startProject: "Započnite svoj projekat",
-        getFreeConsultation: "Zakažite besplatnu konsultaciju"
-      }
-    },
-
-    // Service Template
-    serviceTemplate: {
-      startingPrice: "Početna Cena",
-      timeline: "Trajanje",
-      complexity: "Složenost",
-      category: "Kategorija",
-      targetAudience: "Savršeno za",
-      technologies: "Tehnologije koje koristimo",
-      deliverables: "Šta dobijate",
-      features: "Karakteristike Usluge",
-      featuresDescription: "Sveobuhvatne karakteristike dizajnirane da zadovolje vaše specifične potrebe",
-      process: "Naš Proces",
-      processDescription: "Dokazan pristup koji osigurava uspešnu implementaciju projekta",
-      pricing: "Transparentne Cene",
-      pricingDescription: "Izaberite paket koji najbolje odgovara vašim potrebama i budžetu",
-      portfolio: {
-        title: "Portfolio",
-        cta: "Pogledaj sve projekte",
-        description: "Pogledajte kako smo pomogli drugim kompanijama da uspeju sa {service}"
-      },
-      faq: "Često Postavljana Pitanja",
-      faqDescription: "Sve što treba da znate o našoj uslzi {service}",
-      recommended: "Preporučeno",
-      customPricing: "Trebate prilagođeno rešenje?",
-      customPricingDescription: "Svaki projekat je jedinstven. Kontaktirajte nas za personalizovanu ponudu prema vašim specifičnim potrebama.",
-      portfolioComingSoon: "Portfolio uskoro",
-      portfolioComingSoonDescription: "Radimo na prikazivanju naših najnovijih projekata iz oblasti {service}.",
-      stillHaveQuestions: "Još uvek imate pitanja?",
-      stillHaveQuestionsDescription: "Tu smo da vam pomognemo! Kontaktirajte nas za personalizovane odgovore.",
-      relatedServices: "Možda vas zanima",
-      relatedServicesStartingAt: "Cene od",
-      relatedServicesLearnMore: "Saznajte više",
-      finalCta: "Spremni da započnete?",
-      finalCtaDescription: "Razgovarajte s nama o tome kako naše usluge {service} mogu transformisati vaše poslovanje i pomoći vam da postignete vaše ciljeve.",
-      cta: {
-        startProject: "Započnite vaš projekat",
-        viewPricing: "Pogledajte cene",
-        getStarted: "Započnite",
-        customQuote: "Zatražite ponudu",
-        contactUs: "Kontaktirajte nas",
-        scheduleConsultation: "Zakažite konsultacije"
-      },
-      tabs: {
-        overview: "Pregled",
-        features: "Karakteristike",
-        process: "Proces",
-        pricing: "Cene",
-        portfolio: "Portfolio",
-        faq: "ČPP"
-      },
-      whyChoose: "Zašto izabrati našu {service}?"
-    },
 
     // Heroj
     "hero.title": "Stvaramo digitalna iskustva sa svrhom",
@@ -1268,7 +938,127 @@ const translations = {
       }
     }
   },
-  // Services and serviceTemplate have been moved to their respective language objects
+  // Services moved to individual language objects
+  // services: {
+  //   en: {
+  //     pageTitle: "Our Services",
+  //     pageDescription: "Comprehensive digital solutions to transform your business and drive growth",
+      searchPlaceholder: "Search services...",
+      allCategories: "All Categories",
+      viewModes: {
+        grid: "Grid view",
+        list: "List view"
+      },
+      filters: {
+        status: "Status",
+        type: "Type",
+        urgency: "Urgency",
+        allStatuses: "All Statuses",
+        allTypes: "All Types",
+        allUrgencies: "All Urgencies"
+      },
+      stats: {
+        servicesOffered: "Services Offered",
+        projectsCompleted: "Projects Completed",
+        clientSatisfaction: "Client Satisfaction",
+        yearsExperience: "Years Experience"
+      },
+      serviceCard: {
+        startingAt: "Starting at",
+        timeline: "Timeline",
+        complexity: "Complexity",
+        learnMore: "Learn More",
+        freeForNGOs: "Free for NGOs",
+        premiumService: "Premium Service"
+      },
+      resultsCount: "Showing {count} of {total} services"
+    },
+    mk: {
+      pageTitle: "Наши Услуги",
+      pageDescription: "Сеобфатни дигитални решенија за трансформација на вашиот бизнис и поттикнување на растот",
+      searchPlaceholder: "Пребарувај услуги...",
+      allCategories: "Сите категории",
+      viewModes: {
+        grid: "Мрежен приказ",
+        list: "Листа приказ"
+      },
+      filters: {
+        status: "Статус",
+        type: "Тип",
+        urgency: "Итност",
+        allStatuses: "Сите статуси",
+        allTypes: "Сите типови",
+        allUrgencies: "Сите итности"
+      },
+      stats: {
+        servicesOffered: "Понудени Услуги",
+        projectsCompleted: "Завршени Проекти",
+        clientSatisfaction: "Задоволство на Клиенти",
+        yearsExperience: "Години Искуство"
+      },
+      serviceCard: {
+        startingAt: "Цена од",
+        timeline: "Времетраење",
+        complexity: "Комплексност",
+        learnMore: "Дознај Повеќе",
+        freeForNGOs: "Бесплатно за НВО",
+        premiumService: "Премиум Услуга"
+      },
+      resultsCount: "Прикажани се {count} од вкупно {total} услуги"
+    },
+    sr: {
+      pageTitle: "Naše Usluge",
+      pageDescription: "Sveobuhvatna digitalna rešenja za transformaciju vašeg poslovanja i podsticanje rasta",
+      searchPlaceholder: "Pretražite usluge...",
+      allCategories: "Sve Kategorije",
+      viewModes: {
+        grid: "Mrežni prikaz",
+        list: "Lista prikaz"
+      },
+      filters: {
+        status: "Status",
+        type: "Tip",
+        urgency: "Hitnost",
+        allStatuses: "Svi Statusi",
+        allTypes: "Svi Tipovi",
+        allUrgencies: "Sve Hitnosti"
+      },
+      stats: {
+        servicesOffered: "Ponudjene Usluge",
+        projectsCompleted: "Završeni Projekti",
+        clientSatisfaction: "Zadovoljstvo Klijenata",
+        yearsExperience: "Godine Iskustva"
+      },
+      serviceCard: {
+        startingAt: "Cena od",
+        timeline: "Trajanje",
+        complexity: "Složenost",
+        learnMore: "Saznajte Više",
+        freeForNGOs: "Besplatno za NVO",
+        premiumService: "Premium Usluga"
+      },
+      resultsCount: "Prikazano {count} od ukupno {total} usluga",
+      serviceTemplate: {
+        startingPrice: "Početna Cena",
+        timeline: "Trajanje",
+        complexity: "Složenost",
+        category: "Kategorija",
+        cta: {
+          startProject: "Započnite Vaš Projekat",
+          viewPricing: "Pogledajte Cene"
+        },
+        tabs: {
+          overview: "Pregled",
+          features: "Karakteristike",
+          process: "Proces",
+          pricing: "Cene",
+          portfolio: "Portfolio",
+          faq: "Često Postavljana Pitanja"
+        },
+        whyChoose: "Zašto izabrati našu {service}?"
+      }
+    }
+  }
 };
 
 // Provider component
@@ -1288,22 +1078,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", language);
   }, [language]);
 
-  // Translation function with support for both flat and nested keys
+  // Translation function with support for nested keys and interpolation
   const t = <T = string>(key: string, params?: Record<string, any> & { returnObjects?: boolean }): T => {
-    // First try to find the key as a flat key (e.g., "nav.services")
-    if (translations[language] && key in translations[language]) {
-      const result = (translations[language] as any)[key];
-      // If the result is a string and we have params, perform interpolation
-      if (typeof result === 'string' && params) {
-        return Object.entries(params).reduce(
-          (str, [param, value]) => str.replace(new RegExp(`\\{${param}\\}`, 'g'), String(value)),
-          result
-        ) as unknown as T;
-      }
-      return result as unknown as T;
-    }
-    
-    // If not found as a flat key, try as a nested key
+    // Split the key by dots to handle nested objects
     const keys = key.split('.');
     let result: any = translations[language];
     

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useProjectConsultations, useProjectManagement } from "../hooks/use-project-consultations";
+import { useLanguage } from "../contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,6 +38,7 @@ interface FilterState {
 }
 
 export function ProjectConsultationsList() {
+  const { t } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     status: "all",
     type: "all",
@@ -73,23 +75,23 @@ export function ProjectConsultationsList() {
   const handleStatusChange = async (projectId: Id<"projectConsultations">, newStatus: string) => {
     try {
       if (newStatus === "reviewing") {
-        await markAsReviewing(projectId, "Status updated to reviewing");
-        toast.success("Project marked as reviewing");
+        await markAsReviewing(projectId, t('projectConsultations.success.markedReviewing'));
+        toast.success(t('projectConsultations.success.markedReviewing'));
       } else if (newStatus === "quoted") {
-        await markAsQuoted(projectId, "Quote prepared and sent");
-        toast.success("Project marked as quoted");
+        await markAsQuoted(projectId, t('projectConsultations.success.markedQuoted'));
+        toast.success(t('projectConsultations.success.markedQuoted'));
       }
     } catch (error) {
-      toast.error("Failed to update status");
+      toast.error(t('projectConsultations.errors.updateStatus'));
     }
   };
 
   const handleAddNote = async (projectId: Id<"projectConsultations">, note: string) => {
     try {
       await addProjectNote(projectId, note, "Admin", "note");
-      toast.success("Note added successfully");
+      toast.success(t('projectConsultations.success.noteAdded'));
     } catch (error) {
-      toast.error("Failed to add note");
+      toast.error(t('projectConsultations.errors.addNote'));
     }
   };
 
@@ -99,10 +101,10 @@ export function ProjectConsultationsList() {
       reviewing: "bg-yellow-100 text-yellow-800",
       quoted: "bg-purple-100 text-purple-800",
       accepted: "bg-green-100 text-green-800",
-      declined: "bg-red-100 text-red-800",
       in_progress: "bg-indigo-100 text-indigo-800",
       completed: "bg-emerald-100 text-emerald-800",
       cancelled: "bg-gray-100 text-gray-800",
+      declined: "bg-red-100 text-red-800",
     };
     return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-800";
   };
@@ -118,32 +120,66 @@ export function ProjectConsultationsList() {
   };
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    return new Date(timestamp).toLocaleDateString(
+      t('languageCode') === 'mk' ? 'mk-MK' : 
+      t('languageCode') === 'sr' ? 'sr-RS' : 'en-US',
+      {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    );
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+    return new Intl.NumberFormat(
+      t('languageCode') === 'mk' ? 'mk-MK' : 
+      t('languageCode') === 'sr' ? 'sr-RS' : 'en-US',
+      {
+        style: "currency",
+        currency: t('languageCode') === 'mk' ? 'MKD' : 
+                t('languageCode') === 'sr' ? 'RSD' : 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }
+    ).format(amount);
   };
+
+  // Helper to get status display text
+  const getStatusText = (status: string) => {
+    const statuses = t('projectConsultations.filters.statuses') as Record<string, string>;
+    return statuses[status] || status.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
+  // Helper to get type display text
+  const getTypeText = (type: string) => {
+    const types = t('projectConsultations.filters.types') as Record<string, string>;
+    return types[type] || type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
+  // Helper to get urgency display text
+  const getUrgencyText = (urgency: string) => {
+    const urgencies = t('projectConsultations.filters.urgencies') as Record<string, string>;
+    return urgencies[urgency] || urgency.charAt(0).toUpperCase() + urgency.slice(1);
+  };
+
+  // Get filter options with proper typing
+  const statusOptions = Object.entries(t('projectConsultations.filters.statuses') as Record<string, string>);
+  const typeOptions = Object.entries(t('projectConsultations.filters.types') as Record<string, string>);
+  const urgencyOptions = Object.entries(t('projectConsultations.filters.urgencies') as Record<string, string>);
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Project Consultations</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {t('projectConsultations.title')}
+          </h1>
           <p className="text-gray-600">
-            {filteredProjects?.length || 0} consultation requests
+            {filteredProjects?.length || 0} {t('projectConsultations.messages.noProjects').toLowerCase()}
           </p>
         </div>
 
@@ -153,7 +189,7 @@ export function ProjectConsultationsList() {
           className="flex items-center gap-2"
         >
           <Filter className="w-4 h-4" />
-          Filters
+          {t('projectConsultations.actions.filters')}
         </Button>
       </div>
 
@@ -163,11 +199,13 @@ export function ProjectConsultationsList() {
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Search</label>
+                <label className="text-sm font-medium">
+                  {t('projectConsultations.filters.searchPlaceholder')}
+                </label>
                 <div className="relative">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="Search projects..."
+                    placeholder={t('projectConsultations.filters.searchPlaceholder')}
                     value={filters.search}
                     onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
                     className="pl-10"
@@ -176,7 +214,9 @@ export function ProjectConsultationsList() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Status</label>
+                <label className="text-sm font-medium">
+                  {t('projectConsultations.filters.statusLabel')}
+                </label>
                 <Select
                   value={filters.status}
                   onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}
@@ -185,19 +225,22 @@ export function ProjectConsultationsList() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="reviewing">Reviewing</SelectItem>
-                    <SelectItem value="quoted">Quoted</SelectItem>
-                    <SelectItem value="accepted">Accepted</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="all">
+                      {t('projectConsultations.filters.allStatuses')}
+                    </SelectItem>
+                    {statusOptions.map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Project Type</label>
+                <label className="text-sm font-medium">
+                  {t('projectConsultations.filters.typeLabel')}
+                </label>
                 <Select
                   value={filters.type}
                   onValueChange={(value) => setFilters(prev => ({ ...prev, type: value }))}
@@ -206,19 +249,22 @@ export function ProjectConsultationsList() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="website-redesign">Website Redesign</SelectItem>
-                    <SelectItem value="new-website">New Website</SelectItem>
-                    <SelectItem value="ecommerce">E-commerce</SelectItem>
-                    <SelectItem value="web-app">Web App</SelectItem>
-                    <SelectItem value="mobile-app">Mobile App</SelectItem>
-                    <SelectItem value="branding">Branding</SelectItem>
+                    <SelectItem value="all">
+                      {t('projectConsultations.filters.allTypes')}
+                    </SelectItem>
+                    {typeOptions.map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Urgency</label>
+                <label className="text-sm font-medium">
+                  {t('projectConsultations.filters.urgencyLabel')}
+                </label>
                 <Select
                   value={filters.urgency}
                   onValueChange={(value) => setFilters(prev => ({ ...prev, urgency: value }))}
@@ -227,11 +273,14 @@ export function ProjectConsultationsList() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Urgencies</SelectItem>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="urgent">Urgent</SelectItem>
+                    <SelectItem value="all">
+                      {t('projectConsultations.filters.allUrgencies')}
+                    </SelectItem>
+                    {urgencyOptions.map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -245,17 +294,21 @@ export function ProjectConsultationsList() {
         {!filteredProjects ? (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading project consultations...</p>
+            <p className="mt-4 text-gray-600">
+              {t('projectConsultations.messages.loading')}
+            </p>
           </div>
         ) : filteredProjects.length === 0 ? (
           <Card>
             <CardContent className="text-center py-12">
               <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No projects found</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {t('projectConsultations.messages.noProjects')}
+              </h3>
               <p className="text-gray-600">
                 {filters.search || filters.status !== "all" || filters.type !== "all" || filters.urgency !== "all"
-                  ? "Try adjusting your filters to see more results."
-                  : "No project consultations have been submitted yet."}
+                  ? t('projectConsultations.messages.noProjectsFiltered')
+                  : t('projectConsultations.messages.noProjectsDefault')}
               </p>
             </CardContent>
           </Card>
@@ -267,20 +320,20 @@ export function ProjectConsultationsList() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
                       <CardTitle className="text-lg">
-                        {project.name || "Untitled Project"}
+                        {project.name || t('projectConsultations.messages.untitledProject')}
                       </CardTitle>
                       <Badge className={getStatusColor(project.status)}>
-                        {project.status.replace("_", " ")}
+                        {getStatusText(project.status)}
                       </Badge>
                       <Badge className={getUrgencyColor(project.priority)}>
                         <Zap className="w-3 h-3 mr-1" />
-                        {project.priority}
+                        {getUrgencyText(project.priority)}
                       </Badge>
                     </div>
 
                     {project.type && (
                       <Badge variant="outline">
-                        {project.type.replace("-", " ")}
+                        {getTypeText(project.type)}
                       </Badge>
                     )}
                   </div>
@@ -292,15 +345,16 @@ export function ProjectConsultationsList() {
                         variant="outline"
                         onClick={() => handleStatusChange(project._id, "reviewing")}
                       >
-                        Start Review
+                        {t('projectConsultations.actions.startReview')}
                       </Button>
                     )}
                     {project.status === "reviewing" && (
                       <Button
                         size="sm"
+                        variant="outline"
                         onClick={() => handleStatusChange(project._id, "quoted")}
                       >
-                        Send Quote
+                        {t('projectConsultations.actions.sendQuote')}
                       </Button>
                     )}
                   </div>
@@ -344,6 +398,7 @@ export function ProjectConsultationsList() {
                   )}
                 </div>
 
+
                 {/* Project Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                   {project.estimatedBudget && (
@@ -353,7 +408,9 @@ export function ProjectConsultationsList() {
                         <p className="text-sm font-medium text-gray-900">
                           {formatCurrency(project.estimatedBudget)}
                         </p>
-                        <p className="text-xs text-gray-600">Est. Budget</p>
+                        <p className="text-xs text-gray-600">
+                          {t('projectConsultations.labels.estBudget')}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -363,9 +420,11 @@ export function ProjectConsultationsList() {
                       <Clock className="w-4 h-4 text-blue-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">
-                          {project.estimatedTimeline} weeks
+                          {project.estimatedTimeline} {t('projectConsultations.labels.estTimeline').split(' ')[1]}
                         </p>
-                        <p className="text-xs text-gray-600">Est. Timeline</p>
+                        <p className="text-xs text-gray-600">
+                          {t('projectConsultations.labels.estTimeline')}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -376,7 +435,9 @@ export function ProjectConsultationsList() {
                       <p className="text-sm font-medium text-gray-900">
                         {formatDate(project.createdAt)}
                       </p>
-                      <p className="text-xs text-gray-600">Submitted</p>
+                      <p className="text-xs text-gray-600">
+                        {t('projectConsultations.labels.submitted')}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -386,7 +447,9 @@ export function ProjectConsultationsList() {
                   <div className="space-y-2">
                     {project.goals && project.goals.length > 0 && (
                       <div>
-                        <p className="text-sm font-medium text-gray-900 mb-1">Goals:</p>
+                        <p className="text-sm font-medium text-gray-900 mb-1">
+                          {t('projectConsultations.labels.goals')}:
+                        </p>
                         <div className="flex flex-wrap gap-1">
                           {project.goals.slice(0, 3).map((goal, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
@@ -395,7 +458,7 @@ export function ProjectConsultationsList() {
                           ))}
                           {project.goals.length > 3 && (
                             <Badge variant="secondary" className="text-xs">
-                              +{project.goals.length - 3} more
+                              +{project.goals.length - 3} {t('projectConsultations.labels.more')}
                             </Badge>
                           )}
                         </div>
@@ -404,7 +467,9 @@ export function ProjectConsultationsList() {
 
                     {project.features && project.features.length > 0 && (
                       <div>
-                        <p className="text-sm font-medium text-gray-900 mb-1">Features:</p>
+                        <p className="text-sm font-medium text-gray-900 mb-1">
+                          {t('projectConsultations.labels.features')}:
+                        </p>
                         <div className="flex flex-wrap gap-1">
                           {project.features.slice(0, 3).map((feature, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
@@ -413,7 +478,7 @@ export function ProjectConsultationsList() {
                           ))}
                           {project.features.length > 3 && (
                             <Badge variant="outline" className="text-xs">
-                              +{project.features.length - 3} more
+                              +{project.features.length - 3} {t('projectConsultations.labels.more')}
                             </Badge>
                           )}
                         </div>
@@ -428,11 +493,11 @@ export function ProjectConsultationsList() {
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      const note = prompt("Add a note:");
+                      const note = prompt(t('projectConsultations.actions.addNote') + ":");
                       if (note) handleAddNote(project._id, note);
                     }}
                   >
-                    Add Note
+                    {t('projectConsultations.actions.addNote')}
                   </Button>
 
                   {project.contactEmail && (
@@ -441,7 +506,7 @@ export function ProjectConsultationsList() {
                       variant="outline"
                       onClick={() => window.open(`mailto:${project.contactEmail}`)}
                     >
-                      Send Email
+                      {t('projectConsultations.actions.sendEmail')}
                     </Button>
                   )}
 
@@ -451,7 +516,7 @@ export function ProjectConsultationsList() {
                       variant="outline"
                       onClick={() => window.open(project.existingWebsite, "_blank")}
                     >
-                      View Website
+                      {t('projectConsultations.actions.viewWebsite')}
                     </Button>
                   )}
                 </div>

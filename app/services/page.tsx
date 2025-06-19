@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "../contexts/language-context";
 
 const iconMap: Record<string, React.ComponentType<any>> = {
   Code,
@@ -51,6 +52,7 @@ const getIcon = (iconName?: string) => {
 };
 
 export default function ServicesPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedCategory, setSelectedCategory] = React.useState("all");
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid");
@@ -70,10 +72,10 @@ export default function ServicesPage() {
   const categories = ["all", ...Array.from(new Set(servicesData.map(s => s.category.toLowerCase())))];
 
   const stats = [
-    { label: "Services Offered", value: "6+", icon: Target },
-    { label: "Projects Completed", value: "100+", icon: CheckCircle },
-    { label: "Client Satisfaction", value: "98%", icon: Star },
-    { label: "Years Experience", value: "5+", icon: Award },
+    { label: t('services.stats.servicesOffered'), value: "6+", icon: Target },
+    { label: t('services.stats.projectsCompleted'), value: "100+", icon: CheckCircle },
+    { label: t('services.stats.clientSatisfaction'), value: "98%", icon: Star },
+    { label: t('services.stats.yearsExperience'), value: "5+", icon: Award },
   ];
 
   return (
@@ -85,10 +87,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
-              Our Services
+              {t('services.title')}
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8">
-              Comprehensive digital solutions to transform your business and drive growth
+              {t('services.subtitle')}
             </p>
 
             {/* Stats */}
@@ -112,11 +114,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              Search
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Search services..."
+                  placeholder={t('services.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -127,12 +128,12 @@ export default function ServicesPage() {
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-48">
                   <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="All Categories" />
+                  <SelectValue placeholder={t('services.allCategories')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
                     <SelectItem key={category} value={category}>
-                      {category === "all" ? "All Categories" : category.charAt(0).toUpperCase() + category.slice(1)}
+                      {category === "all" ? t('services.allCategories') : category.charAt(0).toUpperCase() + category.slice(1)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -144,6 +145,7 @@ export default function ServicesPage() {
                   variant={viewMode === "grid" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
+                  aria-label={t('services.viewModes.grid')}
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
@@ -151,6 +153,7 @@ export default function ServicesPage() {
                   variant={viewMode === "list" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("list")}
+                  aria-label={t('services.viewModes.list')}
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -159,7 +162,10 @@ export default function ServicesPage() {
 
             {/* Results count */}
             <div className="mt-4 text-gray-600">
-              Showing {filteredServices.length} of {servicesData.length} services
+              {t('services.resultsCount', { 
+                count: filteredServices.length.toString(), 
+                total: servicesData.length.toString() 
+              })}
             </div>
           </div>
         </div>
@@ -200,21 +206,21 @@ export default function ServicesPage() {
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2 text-gray-500">
                               <DollarSign className="w-4 h-4" />
-                              <span>Starting at</span>
+                              <span>{t('services.serviceCard.startingAt')}</span>
                             </div>
                             <span className="font-semibold">{service.startingPrice}</span>
                           </div>
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2 text-gray-500">
                               <Clock className="w-4 h-4" />
-                              <span>Timeline</span>
+                              <span>{t('services.serviceCard.timeline')}</span>
                             </div>
                             <span className="font-semibold">{service.estimatedDuration}</span>
                           </div>
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2 text-gray-500">
                               <TrendingUp className="w-4 h-4" />
-                              <span>Complexity</span>
+                              <span>{t('services.serviceCard.complexity')}</span>
                             </div>
                             <Badge variant="outline" className="text-xs">
                               {service.complexity}
@@ -240,11 +246,11 @@ export default function ServicesPage() {
                         <div className="flex gap-2">
                           <Button asChild className="flex-1">
                             <Link href={service.path}>
-                              Learn More
+                              {t('services.serviceCard.learnMore')}
                               <ArrowRight className="ml-2 w-4 h-4" />
                             </Link>
                           </Button>
-                          <Button asChild variant="outline" size="icon">
+                          <Button asChild variant="outline" size="icon" aria-label="Start Project">
                             <Link href="/initialize-project">
                               <Rocket className="w-4 h-4" />
                             </Link>
@@ -256,7 +262,7 @@ export default function ServicesPage() {
                           <div className="mt-3">
                             <Badge className="bg-red-100 text-red-800 border-red-200">
                               <Heart className="w-3 h-3 mr-1" />
-                              Free for NGOs
+                              {t('services.serviceCard.freeForNGOs')}
                             </Badge>
                           </div>
                         )}
@@ -264,7 +270,7 @@ export default function ServicesPage() {
                           <div className="mt-3">
                             <Badge className="bg-amber-100 text-amber-800 border-amber-200">
                               <Star className="w-3 h-3 mr-1" />
-                              Premium Service
+                              {t('services.serviceCard.premiumService')}
                             </Badge>
                           </div>
                         )}
@@ -281,31 +287,60 @@ export default function ServicesPage() {
                   return (
                     <Card key={service.id} className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-6">
-                        <div className="flex items-start gap-6">
-                          {/* Icon */}
-                          <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center flex-shrink-0`}>
-                            <IconComponent className="w-8 h-8 text-white" />
+                        <div className="flex flex-col md:flex-row gap-6">
+                          {/* Left Side - Icon and Basic Info */}
+                          <div className="flex-shrink-0">
+                            <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center`}>
+                              <IconComponent className="w-8 h-8 text-white" />
+                            </div>
                           </div>
 
-                          {/* Content */}
+                          {/* Middle - Content */}
                           <div className="flex-1">
-                            <div className="flex items-start justify-between mb-3">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
                               <div>
-                                <div className="flex items-center gap-3 mb-2">
-                                  <h3 className="text-xl font-bold">{service.title}</h3>
-                                  <Badge variant="outline">{service.category}</Badge>
-                                  {service.isNGO && (
-                                    <Badge className="bg-red-100 text-red-800 border-red-200">
-                                      <Heart className="w-3 h-3 mr-1" />
-                                      Free for NGOs
-                                    </Badge>
-                                  )}
-                                </div>
-                                <p className="text-gray-600 mb-3">{service.description}</p>
+                                <h3 className="text-xl font-bold">{service.title}</h3>
+                                <p className="text-gray-600 text-sm mt-1">{service.shortDescription}</p>
                               </div>
-                              <div className="text-right flex-shrink-0 ml-6">
-                                <div className="text-lg font-bold text-primary">{service.startingPrice}</div>
-                                <div className="text-sm text-gray-500">{service.estimatedDuration}</div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline">{service.category}</Badge>
+                                {service.isNGO && (
+                                  <Badge className="bg-red-100 text-red-800 border-red-200">
+                                    <Heart className="w-3 h-3 mr-1" />
+                                    {t('services.serviceCard.freeForNGOs')}
+                                  </Badge>
+                                )}
+                                {service.isPremium && (
+                                  <Badge className="bg-amber-100 text-amber-800 border-amber-200">
+                                    <Star className="w-3 h-3 mr-1" />
+                                    {t('services.serviceCard.premiumService')}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+
+                            <p className="text-gray-600 mb-4">{service.description}</p>
+
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                              <div className="space-y-1">
+                                <div className="text-sm text-gray-500">{t('services.serviceCard.startingAt')}</div>
+                                <div className="font-medium">{service.startingPrice}</div>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="text-sm text-gray-500">{t('services.serviceCard.timeline')}</div>
+                                <div className="font-medium">{service.estimatedDuration}</div>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="text-sm text-gray-500">{t('services.serviceCard.complexity')}</div>
+                                <div>
+                                  <Badge variant="outline" className="text-xs">
+                                    {service.complexity}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="text-sm text-gray-500">{t('serviceTemplate.category')}</div>
+                                <div className="font-medium">{service.category}</div>
                               </div>
                             </div>
 
@@ -318,17 +353,17 @@ export default function ServicesPage() {
                               ))}
                             </div>
 
-                            {/* Actions */}
-                            <div className="flex gap-3">
-                              <Button asChild>
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                              <Button asChild variant="outline" className="flex-1">
                                 <Link href={service.path}>
-                                  Learn More
+                                  {t('services.serviceCard.learnMore')}
                                   <ArrowRight className="ml-2 w-4 h-4" />
                                 </Link>
                               </Button>
-                              <Button asChild variant="outline">
+                              <Button asChild>
                                 <Link href="/initialize-project">
-                                  Start Project
+                                  {t('serviceTemplate.cta.startProject')}
                                   <Rocket className="ml-2 w-4 h-4" />
                                 </Link>
                               </Button>
@@ -341,27 +376,6 @@ export default function ServicesPage() {
                 })}
               </div>
             )}
-
-            {/* No Results */}
-            {filteredServices.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">No services found</h3>
-                <p className="text-gray-600 mb-4">
-                  Try adjusting your search criteria or browse all services.
-                </p>
-                <Button
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedCategory("all");
-                  }}
-                >
-                  Clear Filters
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -371,10 +385,8 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Why Choose Our Services?</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                We combine technical expertise with creative vision to deliver solutions that drive real business results.
-              </p>
+              <h2 className="text-3xl font-bold mb-4">{t('services.whyChooseUs.title')}</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">{t('services.whyChooseUs.description')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -383,10 +395,8 @@ export default function ServicesPage() {
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Users className="w-8 h-8 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">Expert Team</h3>
-                  <p className="text-gray-600">
-                    Our team brings years of experience and cutting-edge expertise to every project.
-                  </p>
+                  <h3 className="text-xl font-semibold mb-4">{t('services.whyChooseUs.expertTeam.title')}</h3>
+                  <p className="text-gray-600">{t('services.whyChooseUs.expertTeam.description')}</p>
                 </CardContent>
               </Card>
 
@@ -395,10 +405,8 @@ export default function ServicesPage() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Zap className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">Fast Delivery</h3>
-                  <p className="text-gray-600">
-                    We deliver high-quality solutions on time, every time, without compromising on quality.
-                  </p>
+                  <h3 className="text-xl font-semibold mb-4">{t('services.whyChooseUs.fastDelivery.title')}</h3>
+                  <p className="text-gray-600">{t('services.whyChooseUs.fastDelivery.description')}</p>
                 </CardContent>
               </Card>
 
@@ -407,10 +415,8 @@ export default function ServicesPage() {
                   <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Shield className="w-8 h-8 text-purple-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">Ongoing Support</h3>
-                  <p className="text-gray-600">
-                    We provide comprehensive support and maintenance to ensure your success long-term.
-                  </p>
+                  <h3 className="text-xl font-semibold mb-4">{t('services.whyChooseUs.ongoingSupport.title')}</h3>
+                  <p className="text-gray-600">{t('services.whyChooseUs.ongoingSupport.description')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -424,10 +430,8 @@ export default function ServicesPage() {
           <div className="max-w-4xl mx-auto">
             <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-0">
               <CardContent className="p-12 text-center">
-                <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
-                <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
-                  Let's discuss your project and find the perfect service solution for your needs.
-                </p>
+                <h2 className="text-3xl font-bold mb-4">{t('services.cta.title')}</h2>
+                <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">{t('services.cta.description')}</p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     asChild
@@ -435,7 +439,7 @@ export default function ServicesPage() {
                     className="bg-white text-gray-900 hover:bg-white/90 font-semibold px-8"
                   >
                     <Link href="/initialize-project">
-                      Start Your Project
+                      {t('services.cta.startProject')}
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
@@ -446,7 +450,7 @@ export default function ServicesPage() {
                     className="border-white text-white hover:bg-white/10 font-semibold px-8"
                   >
                     <Link href="/#contact">
-                      Get Free Consultation
+                      {t('services.cta.getFreeConsultation')}
                       <Users className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
