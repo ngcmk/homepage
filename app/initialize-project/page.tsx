@@ -317,6 +317,8 @@ export default function InitializeProject() {
     company: t("project.initialize.placeholders.company"),
     preferredContact: t("project.initialize.placeholders.preferredContact"),
     additionalInfo: t("project.initialize.placeholders.additionalInfo"),
+    type: t("project.initialize.placeholders.type"),
+    urgency: t("project.initialize.placeholders.urgency"),
   };
 
   const buttons = {
@@ -475,7 +477,7 @@ export default function InitializeProject() {
     {
       value: "increase-traffic",
       label: getTranslation(
-        "project.initialize.projectGoals.increaseTraffic",
+        "project.initialize.projectGoals.increase-traffic",
         "Increase Website Traffic",
       ),
     },
@@ -2345,7 +2347,7 @@ export default function InitializeProject() {
                         className="flex items-center gap-2 justify-center h-12 touch-manipulation"
                       >
                         <ArrowLeft className="w-4 h-4" />
-                        {t("project.initialize.back")}
+                        {t("project.initialize.buttons.back")}
                       </Button>
                     )}
 
@@ -2355,7 +2357,7 @@ export default function InitializeProject() {
                         onClick={handleNext}
                         className="flex items-center gap-2 justify-center ml-auto h-12 px-8 touch-manipulation"
                       >
-                        {t("project.initialize.continue")}
+                        {t("project.initialize.buttons.continue")}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (

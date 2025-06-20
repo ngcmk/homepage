@@ -259,6 +259,8 @@ const en: Translation = {
       placeholders: {
         name: "Enter your project name",
         description: "Tell us about your project goals and requirements...",
+        type: "Select your project type",
+        urgency: "Select timeframe",
         industry: "Select your industry",
         targetAudience:
           "Describe your target audience (e.g., young professionals, small business owners, students...)",
@@ -331,6 +333,10 @@ const en: Translation = {
 
       // Project Goals
       projectGoals: [
+        {
+          value: "increase-traffic",
+          label: "Increase Website Traffic",
+        },
         { value: "increaseSales", label: "Increase Sales/Leads" },
         { value: "improveBranding", label: "Improve Branding" },
         {
@@ -429,6 +435,20 @@ const en: Translation = {
         invalidUrl: "Please enter a valid URL",
       },
 
+      // Error Messages
+      errors: {
+        serverUnavailable:
+          "We couldn't connect to our server. Please try again.",
+        emailRequired: "Please enter a contact email to submit your request.",
+        unknownError: "An unknown error occurred. Please try again.",
+        networkError:
+          "Network connection failed. Please check your internet connection.",
+        timeoutError: "Request timed out. Please try again.",
+        permissionError: "You don't have permission to perform this action.",
+        validationError:
+          "Some fields contain errors. Please check and try again.",
+      },
+
       // Success/Error States
       states: {
         loading: "Loading...",
@@ -452,6 +472,94 @@ const en: Translation = {
         menuButton: "Toggle menu",
         nextStep: "Next step",
         previousStep: "Previous step",
+      },
+    },
+
+    // Project Initialization
+    project: {
+      initialize: {
+        title: "Start Your Project",
+        subtitle:
+          "Tell us about your project and we'll get back to you with a customized quote",
+
+        // Steps
+        steps: {
+          step1: "Project Basics",
+          step2: "Project Details",
+          step3: "Timeline & Budget",
+          step4: "Contact Info",
+          step5: "Review & Submit",
+        },
+
+        // Form Fields
+        fields: {
+          name: "Project Name",
+          description: "Project Description",
+          type: "Project Type",
+          urgency: "Project Urgency",
+          industry: "Industry/Business Type",
+          targetAudience: "Target Audience",
+          existingWebsite: "Existing Website URL",
+          goals: "Project Goals",
+          features: "Desired Features",
+          timeline: "Project Timeline",
+          budget: "Project Budget",
+          hasContent: "Content Preparation",
+          designPreferences: "Design Style Preferences",
+          contactName: "Your Name",
+          contactEmail: "Email Address",
+          contactPhone: "Phone Number",
+          company: "Company/Organization",
+          preferredContact: "Preferred Contact Method",
+          additionalInfo: "Additional Information",
+          projectFiles: "Project References & Assets",
+        },
+
+        // Placeholders
+        placeholders: {
+          name: "Enter your project name",
+          description: "Tell us about your project goals and requirements...",
+          type: "Select your project type",
+          urgency: "Select your project urgency",
+          industry: "Select your industry",
+          targetAudience:
+            "Describe your target audience (e.g., young professionals, small business owners, students...)",
+          existingWebsite: "https://yourwebsite.com",
+          designPreferences:
+            "Describe your preferred design style, colors, examples of websites you like, etc.",
+          contactName: "Enter your full name",
+          contactEmail: "your.email@example.com",
+          contactPhone: "+1 (555) 123-4567",
+          company: "Your company name",
+          preferredContact: "How would you like us to contact you? (Optional)",
+          additionalInfo:
+            "Any additional details, special requirements, or questions you'd like to share?",
+        },
+
+        // Buttons & Actions
+        buttons: {
+          next: "Next Step",
+          previous: "Previous Step",
+          submit: "Submit Project",
+          chooseFiles: "Choose Files",
+          startFresh: "Start fresh",
+          back: "Back",
+          continue: "Continue",
+        },
+
+        // Error Messages
+        errors: {
+          serverUnavailable:
+            "We couldn't connect to our server. Please try again.",
+          emailRequired: "Please enter a contact email to submit your request.",
+          unknownError: "An unknown error occurred. Please try again.",
+          networkError:
+            "Network connection failed. Please check your internet connection.",
+          timeoutError: "Request timed out. Please try again.",
+          permissionError: "You don't have permission to perform this action.",
+          validationError:
+            "Some fields contain errors. Please check and try again.",
+        },
       },
     },
 

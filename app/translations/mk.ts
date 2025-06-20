@@ -1,3 +1,4 @@
+import { projectNew } from "next/dist/build/swc/generated-native";
 import { Translation } from "../types/translation";
 
 const mk: Translation = {
@@ -332,6 +333,12 @@ const mk: Translation = {
         urgent: "Итно (2-4 недели)",
         asap: "Многу итно (1-2 недели)",
       },
+
+      // Project Goals
+      projectGoals: [
+        { value: "increase-traffic", label: "Зголемување на собраќајот" },
+        { value: "increase-conversions", label: "Зголемување на конверзиите" },
+      ],
 
       // Budget Ranges
       budgetRanges: {
