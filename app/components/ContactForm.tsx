@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useContactForm } from "../hooks/use-contacts";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -292,7 +292,12 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
         }
       } catch (convexError) {
         // console.error("[ContactForm] Convex API error:", convexError);
-        throw new Error("Failed to contact server. Please try again later.");
+        throw new Error(
+          t("contact.form.errors.submissionError", {
+            default:
+              "There was a problem sending your message. Please try again.",
+          }),
+        );
       }
 
       if (!isMounted.current) return;
@@ -385,36 +390,113 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
   };
 
   const subjectOptions = [
-    { value: "general", label: "General Inquiry" },
-    { value: "project", label: "New Project" },
-    { value: "design", label: "Design Services" },
-    { value: "development", label: "Development Services" },
-    { value: "mobile", label: "Mobile App Development" },
-    { value: "ai", label: "AI Integration" },
-    { value: "support", label: "Support" },
-    { value: "other", label: "Other" },
+    {
+      value: "general",
+      label: t("contact.form.contactTypes.general", {
+        default: "General Inquiry",
+      }),
+    },
+    {
+      value: "project",
+      label: t("contact.form.contactTypes.business", {
+        default: "Business Opportunity",
+      }),
+    },
+    {
+      value: "design",
+      label: t("contact.form.contactTypes.business", {
+        default: "Business Opportunity",
+      }),
+    },
+    {
+      value: "development",
+      label: t("contact.form.contactTypes.business", {
+        default: "Business Opportunity",
+      }),
+    },
+    {
+      value: "mobile",
+      label: t("contact.form.contactTypes.business", {
+        default: "Business Opportunity",
+      }),
+    },
+    {
+      value: "ai",
+      label: t("contact.form.contactTypes.business", {
+        default: "Business Opportunity",
+      }),
+    },
+    {
+      value: "support",
+      label: t("contact.form.contactTypes.support", {
+        default: "Technical Support",
+      }),
+    },
+    {
+      value: "other",
+      label: t("contact.form.contactTypes.general", {
+        default: "General Inquiry",
+      }),
+    },
+  ];
+
+  const budgetOptions = [
+    {
+      value: "under-5k",
+      label: t("contact.form.budgetOptions.under5k", {
+        default: "Under $5,000",
+      }),
+    },
+    {
+      value: "5k-10k",
+      label: t("contact.form.budgetOptions.fiveToTenK", {
+        default: "$5,000 - $10,000",
+      }),
+    },
+    {
+      value: "10k-25k",
+      label: t("contact.form.budgetOptions.tenToTwentyFiveK", {
+        default: "$10,000 - $25,000",
+      }),
+    },
+    {
+      value: "25k-50k",
+      label: t("contact.form.budgetOptions.twentyFiveToFiftyK", {
+        default: "$25,000 - $50,000",
+      }),
+    },
+    {
+      value: "50k-100k",
+      label: t("contact.form.budgetOptions.fiftyToHundredK", {
+        default: "$50,000 - $100,000",
+      }),
+    },
+    {
+      value: "over-100k",
+      label: t("contact.form.budgetOptions.overHundredK", {
+        default: "Over $100,000",
+      }),
+    },
+    {
+      value: "discuss",
+      label: t("contact.form.budgetOptions.letsDiscuss", {
+        default: "Let's discuss",
+      }),
+    },
   ];
 
   // We no longer need this since we set defaults in the main useEffect
-
-  const budgetOptions = [
-    { value: "under-5k", label: "Under $5,000" },
-    { value: "5k-10k", label: "$5,000 - $10,000" },
-    { value: "10k-25k", label: "$10,000 - $25,000" },
-    { value: "25k-50k", label: "$25,000 - $50,000" },
-    { value: "50k-100k", label: "$50,000 - $100,000" },
-    { value: "over-100k", label: "Over $100,000" },
-    { value: "discuss", label: "Let's discuss" },
-  ];
 
   return (
     <Card className={className}>
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">
-          Get in Touch
+          {t("contact.form.title", { default: "Send us a Message" })}
         </CardTitle>
         <p className="text-muted-foreground text-center">
-          Ready to start your project? Let's discuss your needs.
+          {t("contact.form.subtitle", {
+            default: "We'll get back to you as soon as possible",
+          })}
         </p>
       </CardHeader>
       <CardContent>
@@ -431,11 +513,13 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <User className="h-4 w-4" />
-                    Full Name *
+                    {t("contact.form.nameLabel", { default: "Your Name" })} *
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your full name"
+                      placeholder={t("contact.form.namePlaceholder", {
+                        default: "Enter your name",
+                      })}
                       {...field}
                       className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                     />
@@ -453,12 +537,17 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
-                    Email Address *
+                    {t("contact.form.emailLabel", {
+                      default: "Email Address",
+                    })}{" "}
+                    *
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="your.email@example.com"
+                      placeholder={t("contact.form.emailPlaceholder", {
+                        default: "name@example.com",
+                      })}
                       {...field}
                       className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                     />
@@ -476,18 +565,22 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <Phone className="h-4 w-4" />
-                    Phone Number
+                    {t("contact.form.phoneLabel", { default: "Phone Number" })}
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="tel"
-                      placeholder="+1 (555) 123-4567"
+                      placeholder={t("contact.form.phonePlaceholder", {
+                        default: "+1 (123) 456-7890",
+                      })}
                       {...field}
                       className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                     />
                   </FormControl>
                   <FormDescription>
-                    Optional - We'll call you to discuss your project
+                    {t("contact.form.phoneDescription", {
+                      default: "Optional, but helpful for quick follow-ups",
+                    })}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -502,17 +595,21 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <Briefcase className="h-4 w-4" />
-                    Company/Organization
+                    {t("contact.form.companyLabel", { default: "Company" })}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Your company name"
+                      placeholder={t("contact.form.companyPlaceholder", {
+                        default: "Your organization",
+                      })}
                       {...field}
                       className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                     />
                   </FormControl>
                   <FormDescription>
-                    Optional - Tell us about your organization
+                    {t("contact.form.companyDescription", {
+                      default: "Optional company or organization name",
+                    })}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -525,14 +622,23 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
               name="subject"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subject *</FormLabel>
+                  <FormLabel>
+                    {t("contact.form.subjectLabel", {
+                      default: "How can we help?",
+                    })}{" "}
+                    *
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value || "general"}
                   >
                     <FormControl>
                       <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                        <SelectValue placeholder="Select the topic of your inquiry" />
+                        <SelectValue
+                          placeholder={t("contact.form.subjectPlaceholder", {
+                            default: "Select a topic",
+                          })}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -544,7 +650,9 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Please select a subject for your inquiry
+                    {t("contact.form.subjectDescription", {
+                      default: "Choose the topic that best fits your inquiry",
+                    })}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -557,14 +665,22 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
               name="budget"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Project Budget</FormLabel>
+                  <FormLabel>
+                    {t("contact.form.budgetLabel", {
+                      default: "Project Budget",
+                    })}
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value || "discuss"}
                   >
                     <FormControl>
                       <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                        <SelectValue placeholder="Select your approximate budget range" />
+                        <SelectValue
+                          placeholder={t("contact.form.budgetPlaceholder", {
+                            default: "Select your budget range",
+                          })}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -576,8 +692,9 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Optional - Helps us provide more accurate estimates (stored
-                    locally, not in Convex)
+                    {t("contact.form.budgetDescription", {
+                      default: "Helps us provide appropriate solutions",
+                    })}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -592,11 +709,14 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
                     <MessageSquare className="h-4 w-4" />
-                    Message *
+                    {t("contact.form.messageLabel", {
+                      default: "Your Message",
+                    })}{" "}
+                    *
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us about your project, goals, timeline, and any specific requirements..."
+                      placeholder={t("contact.form.messagePlaceholder")}
                       className="min-h-[120px] transition-all duration-200 focus:ring-2 focus:ring-primary/20 resize-vertical"
                       {...field}
                       onChange={(e) => {
@@ -609,10 +729,15 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                     />
                   </FormControl>
                   <FormDescription>
-                    {field.value?.length || 0}/1000 characters
+                    {field.value?.length || 0}/1000{" "}
+                    {t("contact.form.characters", { default: "characters" })}
                     {field.value?.length > 0 && field.value?.length < 3 && (
                       <span className="text-red-500 ml-2">
-                        (Message must be at least 3 characters)
+                        (
+                        {t("contact.form.validation.minLength", {
+                          default: "Message is too short",
+                        })}
+                        )
                       </span>
                     )}
                   </FormDescription>
@@ -628,15 +753,15 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 className="w-full h-12 text-base font-medium bg-primary hover:bg-primary/90 transition-all duration-200"
                 disabled={isSubmitting}
                 onClick={() => {
-                  console.log("[ContactForm] Submit button clicked");
-                  console.log("[ContactForm] Form state:", form.formState);
-                  console.log("[ContactForm] Form values:", form.getValues());
+                  // console.log("[ContactForm] Submit button clicked");
+                  // console.log("[ContactForm] Form state:", form.formState);
+                  // console.log("[ContactForm] Form values:", form.getValues());
                 }}
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending Message...
+                    {t("contact.form.sending", { default: "Sending..." })}
                   </div>
                 ) : (
                   <div
@@ -644,18 +769,18 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                     data-testid="send-button"
                   >
                     <Send className="h-4 w-4" />
-                    Send Message
+                    {t("contact.form.submit", {
+                      default: "Send Message",
+                    })}
                   </div>
                 )}
               </Button>
             </div>
 
             {/* Privacy Notice */}
-            <p className="text-xs text-muted-foreground text-center mt-4">
-              By submitting this form, you agree to our privacy policy. We'll
-              only use your information to respond to your inquiry and provide
-              relevant project updates.
-            </p>
+            {/* <p className="text-xs text-muted-foreground text-center mt-4">
+              {t("contact.form.privacyNotice")}
+            </p> */}
 
             {/* Error Message */}
             {submitError && (
@@ -663,7 +788,7 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 className="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm"
                 data-testid="error-message"
               >
-                <p className="font-medium">Error submitting form:</p>
+                <p className="font-medium">{t("contact.form.errorTitle")}</p>
                 <p>{submitError}</p>
               </div>
             )}
@@ -674,10 +799,14 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
                 className="mt-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-md text-sm"
                 data-testid="connection-status"
               >
-                <p className="font-medium">System Status:</p>
+                <p className="font-medium">
+                  {t("contact.form.systemStatus", { default: "System Status" })}
+                </p>
                 <p>
-                  Connection to database not yet established. Your submission
-                  may be delayed.
+                  {t("contact.form.connectionWarning", {
+                    default:
+                      "We're having trouble connecting to our server. Your message will still be saved locally until connection is restored.",
+                  })}
                 </p>
               </div>
             )}

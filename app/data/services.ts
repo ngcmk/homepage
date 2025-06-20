@@ -753,7 +753,7 @@ export const servicesData: Service[] = [
     title: "AI Integration",
     description:
       "Integrate AI into client workflows with on-premises and cloud solutions.",
-    shortDescription: "AI-powered solutions for business automation",
+    shortDescription: "AI-powered solutions",
     icon: "Brain",
     category: "Emerging Tech",
     color: "#F59E0B",
@@ -972,9 +972,9 @@ export const servicesData: Service[] = [
       "Performance reports",
     ],
     tags: [
-      "Machine Learning",
+      // "Machine Learning",
       "AI Integration",
-      "Automation",
+      // "Automation",
       "Predictive Analytics",
       "NLP",
     ],

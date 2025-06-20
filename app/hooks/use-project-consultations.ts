@@ -219,13 +219,16 @@ export function useProjectConsultationForm() {
     | { success: false; error: string; originalError?: unknown };
 
   const submitProjectConsultation = async (
-    data: ProjectConsultationData,
+    data: ProjectConsultationData & { t?: (key: string) => string },
   ): Promise<SubmissionResult> => {
+    // Get the translation function from data or use a default implementation
+    const t = data.t || ((key: string) => key);
+    
     if (!createProject) {
       console.error("Convex mutation not available");
       return {
         success: false,
-        error: "Server connection not available. Please try again later.",
+        error: t("project.initialize.errors.serverUnavailable"),
       } as SubmissionResult;
     }
 
@@ -236,7 +239,7 @@ export function useProjectConsultationForm() {
       if (!data.contactEmail) {
         return {
           success: false,
-          error: "Email address is required",
+          error: t("project.initialize.errors.emailRequired"),
         } as SubmissionResult;
       }
 
@@ -304,7 +307,7 @@ export function useProjectConsultationForm() {
       console.error("Error submitting project consultation:", error);
 
       // Provide more detailed error messages based on the type of error
-      let errorMessage = "Unknown error occurred";
+      let errorMessage = t("project.initialize.errors.unknownError");
 
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -314,20 +317,16 @@ export function useProjectConsultationForm() {
           errorMessage.includes("network") ||
           errorMessage.includes("connection")
         ) {
-          errorMessage =
-            "Network error. Please check your connection and try again.";
+          errorMessage = t("project.initialize.errors.networkError");
         } else if (errorMessage.includes("timeout")) {
-          errorMessage = "Request timed out. Please try again.";
+          errorMessage = t("project.initialize.errors.timeoutError");
         } else if (
           errorMessage.includes("permission") ||
           errorMessage.includes("access")
         ) {
-          errorMessage =
-            "Permission error. Please try again or contact support.";
+          errorMessage = t("project.initialize.errors.permissionError");
         } else if (errorMessage.includes("ArgumentValidationError")) {
-          errorMessage =
-            "Data validation error. Please check your input and try again.";
-          // console.log("Validation error details:", errorMessage);
+          errorMessage = t("project.initialize.errors.validationError");
         }
       }
 

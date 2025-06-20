@@ -80,7 +80,7 @@ export default function Services() {
       duration: "8-16 weeks",
       features: [
         "AI model integration",
-        "Machine learning solutions",
+        // "Machine learning solutions",
         "Chatbot development",
         "Data analysis",
       ],
@@ -126,8 +126,8 @@ export default function Services() {
   return (
     <ServiceGrid
       services={services}
-      title={t("services.title")}
-      subtitle={t("services.subtitle")}
+      title={t("services.pageTitle")}
+      subtitle={t("services.pageDescription")}
       className="bg-gradient-to-b from-background to-muted/20"
     />
   );
