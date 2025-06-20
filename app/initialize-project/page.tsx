@@ -175,8 +175,8 @@ export default function InitializeProject() {
   const [hasAutoSaved, setHasAutoSaved] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [convexStatus, setConvexStatus] =
-    React.useState<ConvexStatus>("unknown");
+  // const [convexStatus, setConvexStatus] =
+  //   React.useState<ConvexStatus>("unknown");
   const router = useRouter();
   const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
   const { submitProjectConsultation } = useProjectConsultationForm();
