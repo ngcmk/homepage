@@ -17,19 +17,19 @@ export default function ThankYou() {
           </div>
 
           <h1 className="text-3xl font-bold mb-3">
-            {t('thankYou.title')}
+            {t('project.thankYou.title')}
           </h1>
 
           <p className="text-xl mb-8">
-            {t('thankYou.subtitle')}
+            {t('project.thankYou.subtitle')}
           </p>
 
           <div className="bg-muted p-6 rounded-lg mb-8 w-full max-w-2xl">
             <h2 className="text-lg font-semibold mb-3">
-              {t('thankYou.whatHappensNext')}
+              {t('project.thankYou.whatHappensNext')}
             </h2>
             <ul className="space-y-3 text-left">
-              {(t('thankYou.nextSteps', { returnObjects: true }) as string[]).map((step: string, index: number) => (
+              {(t('project.thankYou.nextSteps', { returnObjects: true }) as string[]).map((step: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <span className="mr-2 mt-1">•</span>
                   <span>{step}</span>
@@ -41,12 +41,12 @@ export default function ThankYou() {
           <div className="space-y-4 sm:space-x-4 sm:space-y-0 flex flex-col sm:flex-row w-full max-w-md justify-center">
             <Button asChild className="w-full">
               <Link href="/">
-                {t('thankYou.actions.returnHome')}
+                {t('project.thankYou.actions.returnHome')}
               </Link>
             </Button>
             <Button asChild variant="outline" className="w-full">
               <Link href="/services">
-                {t('thankYou.actions.exploreServices')}
+                {t('project.thankYou.actions.exploreServices')}
               </Link>
             </Button>
           </div>

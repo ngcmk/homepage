@@ -1,11 +1,8 @@
 "use client";
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useEffect } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -16,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -24,103 +21,165 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { useLanguage } from "../contexts/language-context";
-import PageBreadcrumb from "../components/Breadcrumb";
-import { toast } from "sonner";
-import { useProjectConsultationForm } from "../hooks/use-project-consultations";
-import { useRouter } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CheckCircle,
+  AlertCircle,
   ArrowLeft,
   ArrowRight,
-  Rocket,
-  Upload,
-  X,
+  CheckCircle,
   File,
   Mail,
   Phone,
-  AlertCircle,
   RefreshCcw,
+  Rocket,
+  Upload,
+  X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
+import PageBreadcrumb from "../components/Breadcrumb";
+import { useLanguage } from "../contexts/language-context";
+import { useProjectConsultationForm } from "../hooks/use-project-consultations";
 
-// Validation schema
-const projectFormSchema = z.object({
-  name: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || (val.length >= 2 && val.length <= 100),
-      "Project name must be between 2-100 characters if provided",
-    ),
-  description: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || (val.length >= 10 && val.length <= 1000),
-      "Description must be between 10-1000 characters if provided",
-    ),
-  type: z.string().optional(),
-  urgency: z.string().optional(),
-  industry: z.string().optional(),
-  targetAudience: z.string().optional(),
-  existingWebsite: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || /^https?:\/\/.+/.test(val),
-      "Please enter a valid URL starting with http:// or https://",
-    ),
-  goals: z.array(z.string()).optional(),
-  features: z.array(z.string()).optional(),
-  timeline: z.string().optional(),
-  budget: z.string().optional(),
-  hasContent: z.string().optional(),
-  designPreferences: z.string().optional(),
-  contactName: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || (val.length >= 2 && val.length <= 100),
-      "Contact name must be between 2-100 characters if provided",
-    ),
-  contactEmail: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
-      "Please enter a valid email address if provided",
-    ),
-  contactPhone: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
-      "Please enter a valid phone number",
-    ),
-  company: z.string().optional(),
-  preferredContact: z.string().optional(),
-  additionalInfo: z.string().optional(),
-  projectFiles: z.array(z.any()).optional(),
-});
+// Define schema creation function that takes validation functions as parameters
+const createProjectFormSchema = (
+  getValidationMessage: (
+    key: string,
+    defaultMessage: string,
+    params?: Record<string, any>,
+  ) => string,
+) =>
+  z.object({
+    name: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || (val.length >= 2 && val.length <= 100),
+        (val) => ({
+          message: getValidationMessage(
+            val && val.length < 2 ? "minLength" : "maxLength",
+            val && val.length < 2
+              ? "Must be at least 2 characters"
+              : "Must be 100 characters or less",
+            { min: 2, max: 100 },
+          ),
+        }),
+      ),
+    description: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || (val.length >= 10 && val.length <= 1000),
+        (val) => ({
+          message: getValidationMessage(
+            val && val.length < 10 ? "minLength" : "maxLength",
+            val && val.length < 10
+              ? "Must be at least 10 characters"
+              : "Must be 1000 characters or less",
+            { min: 10, max: 1000 },
+          ),
+        }),
+      ),
+    type: z.string().optional(),
+    urgency: z.string().optional(),
+    industry: z.string().optional(),
+    targetAudience: z.string().optional(),
+    existingWebsite: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || /^https?:\/\/.+/.test(val),
+        getValidationMessage(
+          "invalidUrl",
+          "Please enter a valid URL starting with http:// or https://",
+        ),
+      ),
+    goals: z.array(z.string()).optional(),
+    features: z.array(z.string()).optional(),
+    timeline: z.string().optional(),
+    budget: z.string().optional(),
+    hasContent: z.string().optional(),
+    designPreferences: z.string().optional(),
+    contactName: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || (val.length >= 2 && val.length <= 100),
+        (val) => ({
+          message: getValidationMessage(
+            val && val.length < 2 ? "minLength" : "maxLength",
+            val && val.length < 2
+              ? "Must be at least 2 characters"
+              : "Must be 100 characters or less",
+            { min: 2, max: 100 },
+          ),
+        }),
+      ),
+    contactEmail: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+        getValidationMessage(
+          "invalidEmail",
+          "Please enter a valid email address",
+        ),
+      ),
+    contactPhone: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
+        getValidationMessage(
+          "invalidPhone",
+          "Please enter a valid phone number",
+        ),
+      ),
+    company: z.string().optional(),
+    preferredContact: z.string().optional(),
+    additionalInfo: z.string().optional(),
+    projectFiles: z.array(z.any()).optional(),
+  });
 
-type ProjectFormValues = z.infer<typeof projectFormSchema>;
+// We'll define the type inside the component
 
 export default function InitializeProject() {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = React.useState(1);
+
+  // Validation function with access to the t function
+  const getValidationMessage = (
+    key: string,
+    defaultMessage: string,
+    params: Record<string, any> = {},
+  ) => {
+    const translation = t(`project.initialize.validation.${key}`, {
+      ...params,
+      default: defaultMessage,
+    });
+    return translation;
+  };
+
+  // Create the schema with our validation function
+  const projectFormSchema = createProjectFormSchema(getValidationMessage);
+  // Define the type based on the schema
+  type ProjectFormValues = z.infer<typeof projectFormSchema>;
+
+  // Explicitly define status type to fix TypeScript errors
+  type ConvexStatus = "idle" | "connected" | "error" | "unknown";
+
   const [hasAutoSaved, setHasAutoSaved] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
-  // Explicitly define status type to fix TypeScript errors
-  type ConvexStatus = "connected" | "error" | "unknown";
   const [convexStatus, setConvexStatus] =
     React.useState<ConvexStatus>("unknown");
-  const { t } = useLanguage();
-  const { submitProjectConsultation } = useProjectConsultationForm();
   const router = useRouter();
+  const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
+  const { submitProjectConsultation } = useProjectConsultationForm();
 
   // Auto-save key for localStorage
   const AUTOSAVE_KEY = "ngc-project-form-data";
@@ -145,6 +204,7 @@ export default function InitializeProject() {
     checkConvexConnection();
   }, []);
 
+  // Initialize the form with default values
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
@@ -209,6 +269,82 @@ export default function InitializeProject() {
     return () => subscription.unsubscribe();
   }, [form, currentStep]);
 
+  // Get translated labels and placeholders using the new nested structure
+  const labels = {
+    projectName: t("project.initialize.fields.name"),
+    projectDescription: t("project.initialize.fields.description"),
+    projectType: t("project.initialize.fields.type"),
+    projectUrgency: t("project.initialize.fields.urgency"),
+    industry: t("project.initialize.fields.industry"),
+    targetAudience: t("project.initialize.fields.targetAudience"),
+    existingWebsite: t("project.initialize.fields.existingWebsite"),
+    projectGoals: t("project.initialize.fields.goals"),
+    features: t("project.initialize.fields.features"),
+    timeline: t("project.initialize.fields.timeline"),
+    budget: t("project.initialize.fields.budget"),
+    hasContent: t("project.initialize.fields.hasContent"),
+    designPreferences: t("project.initialize.fields.designPreferences"),
+    contactName: t("project.initialize.fields.contactName"),
+    contactEmail: t("project.initialize.fields.contactEmail"),
+    contactPhone: t("project.initialize.fields.contactPhone"),
+    company: t("project.initialize.fields.company"),
+    preferredContact: t("project.initialize.fields.preferredContact"),
+    additionalInfo: t("project.initialize.fields.additionalInfo"),
+    projectFiles: t("project.initialize.fields.projectFiles"),
+  };
+
+  // Helper function to safely get translations with fallbacks
+  const getTranslation = (key: string, defaultValue: string) => {
+    try {
+      const value = t(key, { default: defaultValue });
+      return typeof value === "string" ? value : defaultValue;
+    } catch (error) {
+      console.error(`Error getting translation for ${key}:`, error);
+      return defaultValue;
+    }
+  };
+
+  const placeholders = {
+    projectName: t("project.initialize.placeholders.name"),
+    projectDescription: t("project.initialize.placeholders.description"),
+    industry: t("project.initialize.placeholders.industry"),
+    targetAudience: t("project.initialize.placeholders.targetAudience"),
+    existingWebsite: t("project.initialize.placeholders.existingWebsite"),
+    designPreferences: t("project.initialize.placeholders.designPreferences"),
+    contactName: t("project.initialize.placeholders.contactName"),
+    contactEmail: t("project.initialize.placeholders.contactEmail"),
+    contactPhone: t("project.initialize.placeholders.contactPhone"),
+    company: t("project.initialize.placeholders.company"),
+    preferredContact: t("project.initialize.placeholders.preferredContact"),
+    additionalInfo: t("project.initialize.placeholders.additionalInfo"),
+  };
+
+  const buttons = {
+    next: t("project.initialize.buttons.next"),
+    previous: t("project.initialize.buttons.previous"),
+    submit: t("project.initialize.buttons.submit"),
+    chooseFiles: t("project.initialize.buttons.chooseFiles"),
+    startFresh: t("project.initialize.buttons.startFresh"),
+  };
+
+  const fileUploadTexts = {
+    title: t("project.initialize.fileUpload.title"),
+    description: t("project.initialize.fileUpload.description"),
+    supportedFormats: t("project.initialize.fileUpload.supportedFormats"),
+  };
+
+  const autoSaveMessages = {
+    restored: t("project.initialize.autosave.restored"),
+    startFresh: t("project.initialize.autosave.startFresh"),
+  };
+
+  const confirmationDialog = {
+    title: t("project.initialize.confirm.title"),
+    message: t("project.initialize.confirm.message"),
+    yes: t("project.initialize.confirm.yes"),
+    no: t("project.initialize.confirm.no"),
+  };
+
   // Clear saved data
   const clearSavedData = () => {
     if (typeof window !== "undefined") {
@@ -219,140 +355,287 @@ export default function InitializeProject() {
   };
 
   const projectTypes = [
-    { value: "website-redesign", label: t("initializeProject.typeRedesign") },
-    { value: "new-website", label: t("initializeProject.typeNewSite") },
-    { value: "ecommerce", label: t("initializeProject.typeEcommerce") },
-    { value: "web-app", label: t("initializeProject.typeWebApp") },
-    { value: "mobile-app", label: t("initializeProject.typeMobileApp") },
-    { value: "branding", label: t("initializeProject.typeBranding") },
+    {
+      value: "website-redesign",
+      label: t("project.initialize.types.websiteRedesign"),
+    },
+    { value: "new-website", label: t("project.initialize.types.newWebsite") },
+    { value: "ecommerce", label: t("project.initialize.types.ecommerce") },
+    { value: "web-app", label: t("project.initialize.types.webApp") },
+    { value: "mobile-app", label: t("project.initialize.types.mobileApp") },
+    { value: "branding", label: t("project.initialize.types.branding") },
   ];
 
   const timelines = [
-    { value: "urgent", label: "ASAP (Rush job)" },
-    { value: "1-2-months", label: "1-2 months" },
-    { value: "2-4-months", label: "2-4 months" },
-    { value: "4-6-months", label: "4-6 months" },
-    { value: "6-months-plus", label: "6+ months" },
-    { value: "flexible", label: "I'm flexible" },
+    { value: "urgent", label: t("project.initialize.timelines.urgent") },
+    {
+      value: "1-2-months",
+      label: t("project.initialize.timelines.oneToTwoMonths"),
+    },
+    {
+      value: "2-4-months",
+      label: t("project.initialize.timelines.twoToFourMonths"),
+    },
+    {
+      value: "4-6-months",
+      label: t("project.initialize.timelines.fourToSixMonths"),
+    },
+    {
+      value: "6-months-plus",
+      label: t("project.initialize.timelines.sixMonthsPlus"),
+    },
+    { value: "flexible", label: t("project.initialize.timelines.flexible") },
   ];
 
+  // Prepare data structures for the form
   const budgets = [
-    { value: "under-5k", label: "Under $5,000" },
-    { value: "5k-15k", label: "$5,000 - $15,000" },
-    { value: "15k-30k", label: "$15,000 - $30,000" },
-    { value: "30k-50k", label: "$30,000 - $50,000" },
-    { value: "50k-100k", label: "$50,000 - $100,000" },
-    { value: "over-100k", label: "Over $100,000" },
-    { value: "discuss", label: "Let's discuss" },
+    { value: "under-5k", label: t("project.initialize.budgets.under5k") },
+    { value: "5k-15k", label: t("project.initialize.budgets.fiveTo15k") },
+    { value: "15k-30k", label: t("project.initialize.budgets.fifteenTo30k") },
+    { value: "30k-50k", label: t("project.initialize.budgets.thirtyTo50k") },
+    { value: "50k-100k", label: t("project.initialize.budgets.fiftyTo100k") },
+    { value: "over-100k", label: t("project.initialize.budgets.over100k") },
+    { value: "discuss", label: t("project.initialize.budgets.discuss") },
   ];
 
+  // Get and format urgency levels from translations
+  console.log("Attempting to get urgencyLevels...");
+  // Define urgency levels with fallback
   const urgencyLevels = [
     {
       value: "low",
-      label: "Low Priority",
-      description: "No rush, flexible timeline",
+      label: t("project.initialize.urgencyLevels.notUrgent", {
+        default: "Not Urgent (3+ months)",
+      }),
     },
     {
       value: "medium",
-      label: "Medium Priority",
-      description: "Standard timeline expected",
+      label: t("project.initialize.urgencyLevels.standard", {
+        default: "Standard (1-3 months)",
+      }),
     },
     {
       value: "high",
-      label: "High Priority",
-      description: "Important project, tight timeline",
+      label: t("project.initialize.urgencyLevels.urgent", {
+        default: "Urgent (2-4 weeks)",
+      }),
     },
     {
       value: "urgent",
-      label: "Urgent",
-      description: "Critical deadline, immediate attention needed",
+      label: t("project.initialize.urgencyLevels.asap", {
+        default: "ASAP (1-2 weeks)",
+      }),
+    },
+  ];
+  console.log(`Using urgencyLevels:`, urgencyLevels);
+
+  // Define industries with fallback
+  const industries = [
+    {
+      value: "tech",
+      label: getTranslation("project.initialize.industries.tech", "Technology"),
+    },
+    {
+      value: "finance",
+      label: getTranslation("project.initialize.industries.finance", "Finance"),
+    },
+    {
+      value: "healthcare",
+      label: getTranslation(
+        "project.initialize.industries.healthcare",
+        "Healthcare",
+      ),
+    },
+    {
+      value: "education",
+      label: getTranslation(
+        "project.initialize.industries.education",
+        "Education",
+      ),
+    },
+    {
+      value: "retail",
+      label: getTranslation("project.initialize.industries.retail", "Retail"),
+    },
+    {
+      value: "manufacturing",
+      label: getTranslation(
+        "project.initialize.industries.manufacturing",
+        "Manufacturing",
+      ),
+    },
+    {
+      value: "other",
+      label: getTranslation("project.initialize.industries.other", "Other"),
     },
   ];
 
-  const industries = [
-    { value: "technology", label: "Technology & Software" },
-    { value: "healthcare", label: "Healthcare & Medical" },
-    { value: "finance", label: "Finance & Banking" },
-    { value: "education", label: "Education & Training" },
-    { value: "retail", label: "Retail & E-commerce" },
-    { value: "restaurant", label: "Restaurant & Food Service" },
-    { value: "real-estate", label: "Real Estate" },
-    { value: "consulting", label: "Consulting & Professional Services" },
-    { value: "nonprofit", label: "Non-profit & NGO" },
-    { value: "manufacturing", label: "Manufacturing & Industrial" },
-    { value: "creative", label: "Creative & Design" },
-    { value: "other", label: "Other" },
-  ];
-
+  // Define project goals with fallback
   const projectGoals = [
-    { value: "increase-sales", label: "Increase Sales & Revenue" },
-    { value: "brand-awareness", label: "Build Brand Awareness" },
-    { value: "user-engagement", label: "Improve User Engagement" },
-    { value: "lead-generation", label: "Generate More Leads" },
-    { value: "customer-support", label: "Better Customer Support" },
-    { value: "mobile-presence", label: "Establish Mobile Presence" },
-    { value: "automation", label: "Automate Business Processes" },
-    { value: "modernize", label: "Modernize Existing Systems" },
-    { value: "expand-market", label: "Expand to New Markets" },
-    { value: "improve-seo", label: "Improve Search Rankings" },
+    {
+      value: "increase-traffic",
+      label: getTranslation(
+        "project.initialize.projectGoals.increaseTraffic",
+        "Increase Website Traffic",
+      ),
+    },
+    {
+      value: "increase-conversions",
+      label: getTranslation(
+        "project.initialize.projectGoals.increaseConversions",
+        "Increase Conversions",
+      ),
+    },
+    {
+      value: "improve-ux",
+      label: getTranslation(
+        "project.initialize.projectGoals.improveUx",
+        "Improve User Experience",
+      ),
+    },
+    {
+      value: "rebrand",
+      label: getTranslation(
+        "project.initialize.projectGoals.rebrand",
+        "Rebrand/Refresh Design",
+      ),
+    },
+    {
+      value: "add-features",
+      label: getTranslation(
+        "project.initialize.projectGoals.addFeatures",
+        "Add New Features",
+      ),
+    },
+    {
+      value: "mobile-friendly",
+      label: getTranslation(
+        "project.initialize.projectGoals.mobileFriendly",
+        "Make Site Mobile-Friendly",
+      ),
+    },
+    {
+      value: "seo",
+      label: getTranslation(
+        "project.initialize.projectGoals.seo",
+        "Improve SEO",
+      ),
+    },
   ];
 
+  // Define common features with fallback
   const commonFeatures = [
-    { value: "user-accounts", label: "User Registration & Login" },
-    { value: "payment-processing", label: "Payment Processing" },
-    { value: "content-management", label: "Content Management System" },
-    { value: "analytics", label: "Analytics & Reporting" },
-    { value: "social-integration", label: "Social Media Integration" },
-    { value: "search-functionality", label: "Search Functionality" },
-    { value: "multi-language", label: "Multi-language Support" },
-    { value: "api-integration", label: "Third-party API Integration" },
-    { value: "mobile-app", label: "Mobile App" },
-    { value: "admin-dashboard", label: "Admin Dashboard" },
-    { value: "email-notifications", label: "Email Notifications" },
-    { value: "file-uploads", label: "File Upload System" },
+    {
+      value: "responsive",
+      label: getTranslation(
+        "project.initialize.commonFeatures.responsive",
+        "Responsive Design",
+      ),
+    },
+    {
+      value: "cms",
+      label: getTranslation(
+        "project.initialize.commonFeatures.cms",
+        "Content Management System",
+      ),
+    },
+    {
+      value: "ecommerce",
+      label: getTranslation(
+        "project.initialize.commonFeatures.ecommerce",
+        "E-commerce Capabilities",
+      ),
+    },
+    {
+      value: "blog",
+      label: getTranslation("project.initialize.commonFeatures.blog", "Blog"),
+    },
+    {
+      value: "contact-form",
+      label: getTranslation(
+        "project.initialize.commonFeatures.contactForm",
+        "Contact Form",
+      ),
+    },
+    {
+      value: "seo",
+      label: getTranslation(
+        "project.initialize.commonFeatures.seo",
+        "SEO Optimization",
+      ),
+    },
+    {
+      value: "analytics",
+      label: getTranslation(
+        "project.initialize.commonFeatures.analytics",
+        "Analytics Integration",
+      ),
+    },
   ];
 
+  // Define contact methods with fallback
   const contactMethods = [
     {
       value: "email",
-      label: "Email",
-      description: "Preferred for detailed discussions",
+      label: getTranslation(
+        "project.initialize.contactMethods.email.label",
+        "Email",
+      ),
+      description: getTranslation(
+        "project.initialize.contactMethods.email.description",
+        "Best for detailed discussions",
+      ),
     },
     {
       value: "phone",
-      label: "Phone Call",
-      description: "Quick and direct communication",
+      label: getTranslation(
+        "project.initialize.contactMethods.phone.label",
+        "Phone Call",
+      ),
+      description: getTranslation(
+        "project.initialize.contactMethods.phone.description",
+        "Good for quick questions",
+      ),
     },
     {
       value: "video",
-      label: "Video Call",
-      description: "Face-to-face meetings online",
+      label: getTranslation(
+        "project.initialize.contactMethods.video.label",
+        "Video Call",
+      ),
+      description: getTranslation(
+        "project.initialize.contactMethods.video.description",
+        "Best for complex discussions",
+      ),
     },
-    { value: "any", label: "Any Method", description: "Whatever works best" },
   ];
 
   const steps = [
     {
       number: 1,
-      title: "Project Basics",
+      title: t("project.initialize.steps.step1"),
       fields: [],
     },
     {
       number: 2,
-      title: "Project Details",
+      title: t("project.initialize.steps.step2"),
       fields: [],
     },
     {
       number: 3,
-      title: "Timeline & Budget",
+      title: t("project.initialize.steps.step3"),
       fields: [],
     },
     {
       number: 4,
-      title: "Contact Information",
+      title: t("project.initialize.steps.step4"),
       fields: [],
     },
-    { number: 5, title: "Review & Submit", fields: [] },
+    {
+      number: 5,
+      title: t("project.initialize.steps.step5"),
+      fields: [],
+    },
   ];
 
   const validateCurrentStep = async () => {
@@ -383,18 +666,15 @@ export default function InitializeProject() {
 
     // Check Convex connection before submitting
     if (convexStatus === ("error" as ConvexStatus)) {
-      toast.error(
-        "Unable to connect to our server. Please check your internet connection and try again.",
-        { duration: 5000 },
-      );
+      toast.error(t("project.initialize.errors.connectionError"), {
+        duration: 5000,
+      });
       return;
     }
 
     // Ensure we at least have contact information
     if (!data.contactEmail) {
-      toast.error(
-        "Please provide your email address so we can contact you about your project.",
-      );
+      toast.error(t("project.initialize.errors.emailRequired"));
       return;
     }
 
@@ -470,12 +750,9 @@ export default function InitializeProject() {
         console.log("Submission result:", result);
 
         if (result.success) {
-          toast.success(
-            "Thank you for your interest! We've received your project consultation request and will get back to you within 24 hours to discuss your project needs.",
-            {
-              duration: 6000,
-            },
-          );
+          toast.success(t("project.initialize.success.submissionSuccess"), {
+            duration: 6000,
+          });
 
           // Clear auto-saved data after successful submission
           clearSavedData();
@@ -489,7 +766,7 @@ export default function InitializeProject() {
           // If we have contact info but submission failed, show a more helpful message
           if (data.contactEmail && submissionAttempts > 1) {
             toast.error(
-              "We're having trouble processing your request. We've noted your email and will contact you directly.",
+              t("project.initialize.errors.submissionErrorWithContact"),
               { duration: 8000 },
             );
             throw new Error(
@@ -510,10 +787,9 @@ export default function InitializeProject() {
           convexError.message.includes("ArgumentValidationError")
         ) {
           console.error("Validation error:", convexError.message);
-          toast.error(
-            "Form validation error. Please check your inputs and try again.",
-            { duration: 5000 },
-          );
+          toast.error(t("project.initialize.errors.validationError"), {
+            duration: 5000,
+          });
         } else if (
           convexError instanceof Error &&
           convexError.message.includes("does not match the schema")
@@ -521,12 +797,9 @@ export default function InitializeProject() {
           console.error("Schema error:", convexError.message);
 
           // This is likely the activities table error
-          toast.success(
-            "We got your project details, but there was a minor system error. Our team will contact you soon.",
-            {
-              duration: 6000,
-            },
-          );
+          toast.success(t("project.initialize.success.minorErrorSuccess"), {
+            duration: 6000,
+          });
 
           // Clear auto-saved data
           clearSavedData();
@@ -545,7 +818,7 @@ export default function InitializeProject() {
       console.error("Project consultation submission error:", error);
 
       // Add more specific error message based on the type of error
-      let errorMessage = "Something went wrong. Please try again.";
+      let errorMessage = t("project.initialize.errors.genericError");
 
       if (error instanceof Error) {
         console.error("Error details:", error.message, error.stack);
@@ -555,25 +828,22 @@ export default function InitializeProject() {
           error.message.includes("fetch") ||
           error.message.includes("connection")
         ) {
-          errorMessage =
-            "Network error. Please check your connection and try again.";
+          errorMessage = t("project.initialize.errors.networkError");
           // Update connection status
           setConvexStatus("error" as ConvexStatus);
         } else if (
           error.message.includes("permission") ||
           error.message.includes("auth")
         ) {
-          errorMessage =
-            "Authorization error. Please try again or contact support.";
+          errorMessage = t("project.initialize.errors.authError");
         } else if (
           error.message.includes("ArgumentValidation") ||
           error.message.includes("validation") ||
           error.message.includes("schema")
         ) {
-          errorMessage =
-            "There was an issue with some of your input data. We're working on fixing it.";
+          errorMessage = t("project.initialize.errors.dataValidationError");
         } else {
-          errorMessage = `Submission failed: ${error.message}`;
+          errorMessage = `${t("project.initialize.errors.submissionFailed")}: ${error.message}`;
         }
       }
 
@@ -828,10 +1098,10 @@ export default function InitializeProject() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              {t("initializeProject.title")}
+              {t("project.initialize.title")}
             </h1>
             <p className="text-neutral-600 text-lg">
-              {t("initializeProject.subtitle")}
+              {t("project.initialize.subtitle")}
             </p>
 
             {/* Auto-save indicator */}
@@ -840,15 +1110,14 @@ export default function InitializeProject() {
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mr-2" />
                   <span className="text-sm text-blue-800">
-                    Previous progress restored. You can continue where you left
-                    off.
+                    {t("project.initialize.autosave.restored")}
                   </span>
                 </div>
                 <button
                   onClick={clearSavedData}
                   className="text-xs text-blue-600 hover:text-blue-800 underline sm:ml-auto"
                 >
-                  Start fresh
+                  {buttons.startFresh}
                 </button>
               </div>
             )}
@@ -860,10 +1129,15 @@ export default function InitializeProject() {
             <div className="mb-6">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-sm font-medium text-gray-600">
-                  Step {currentStep} of {steps.length}
+                  {t("project.initialize.progress.step", {
+                    current: currentStep,
+                    total: steps.length,
+                  })}
                 </span>
                 <span className="text-sm font-medium text-primary">
-                  {Math.round(getStepProgress())}% Complete
+                  {t("project.initialize.progress.percentage", {
+                    percentage: Math.round(getStepProgress()),
+                  })}
                 </span>
               </div>
               <Progress value={getStepProgress()} className="h-3 mb-2" />
@@ -904,7 +1178,7 @@ export default function InitializeProject() {
                           : "text-neutral-500"
                       }`}
                     >
-                      {step.title}
+                      {t(`project.initialize.steps.step${step.number}`)}
                     </span>
                   </div>
                   {index < steps.length - 1 && (
@@ -935,10 +1209,13 @@ export default function InitializeProject() {
           <Card className="shadow-lg border-0 bg-background/95 backdrop-blur-sm form-card">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl md:text-2xl font-semibold">
-                {steps[currentStep - 1].title}
+                {t(`project.initialize.steps.step${currentStep}`)}
               </CardTitle>
               <div className="text-sm text-muted-foreground">
-                Step {currentStep} of {steps.length}
+                {t("project.initialize.progress.step", {
+                  current: currentStep,
+                  total: steps.length,
+                })}
               </div>
             </CardHeader>
             <CardContent>
@@ -947,17 +1224,15 @@ export default function InitializeProject() {
                   <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700/30 text-red-700 dark:text-red-200 rounded">
                     <p className="flex items-center">
                       <AlertCircle className="h-4 w-4 mr-2" />
-                      Connection error: Unable to connect to our servers. Your
-                      form data will be saved locally, but you may not be able
-                      to submit until the connection is restored.
+                      {t("project.initialize.errors.connectionError")}
                     </p>
                     <p className="mt-2 text-sm">
-                      If this problem persists, please email us directly at{" "}
+                      {t("project.initialize.errors.connectionErrorContact")}{" "}
                       <a
-                        href="mailto:support@ngc.com"
+                        href={`mailto:${t("project.initialize.contactEmail")}`}
                         className="font-medium underline"
                       >
-                        support@ngc.com
+                        {t("project.initialize.contactEmail")}
                       </a>
                     </p>
                   </div>
@@ -981,14 +1256,10 @@ export default function InitializeProject() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>
-                              {t("initializeProject.nameLabel")}
-                            </FormLabel>
+                            <FormLabel>{labels.projectName}</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder={t(
-                                  "initializeProject.namePlaceholder",
-                                )}
+                                placeholder={placeholders.projectName}
                                 {...field}
                                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                               />
@@ -1003,20 +1274,17 @@ export default function InitializeProject() {
                         name="description"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>
-                              {t("initializeProject.descriptionLabel")}
-                            </FormLabel>
+                            <FormLabel>{labels.projectDescription}</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder={t(
-                                  "initializeProject.descriptionPlaceholder",
-                                )}
+                                placeholder={placeholders.projectDescription}
                                 className="min-h-[120px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                                 {...field}
                               />
                             </FormControl>
                             <FormDescription>
-                              {field.value?.length || 0}/1000 characters
+                              {field.value?.length || 0}/1000{" "}
+                              {t("project.initialize.labels.characters")}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1028,16 +1296,18 @@ export default function InitializeProject() {
                         name="type"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>
-                              {t("initializeProject.typeLabel")}
-                            </FormLabel>
+                            <FormLabel>{labels.projectType}</FormLabel>
                             <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
                             >
                               <FormControl>
                                 <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="Select your project type" />
+                                  <SelectValue
+                                    placeholder={t(
+                                      "project.initialize.placeholders.type",
+                                    )}
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
@@ -1061,14 +1331,18 @@ export default function InitializeProject() {
                         name="urgency"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Project Urgency</FormLabel>
+                            <FormLabel>{labels.projectUrgency}</FormLabel>
                             <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
                             >
                               <FormControl>
                                 <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="How urgent is this project?" />
+                                  <SelectValue
+                                    placeholder={t(
+                                      "project.initialize.placeholders.urgency",
+                                    )}
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
@@ -1081,17 +1355,13 @@ export default function InitializeProject() {
                                       <span className="font-medium">
                                         {urgency.label}
                                       </span>
-                                      <span className="text-xs text-muted-foreground">
-                                        {urgency.description}
-                                      </span>
                                     </div>
                                   </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
                             <FormDescription>
-                              This helps us prioritize your project and assign
-                              the right team
+                              {t("project.initialize.descriptions.urgency")}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1108,14 +1378,16 @@ export default function InitializeProject() {
                         name="industry"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Industry/Business Type</FormLabel>
+                            <FormLabel>{labels.industry}</FormLabel>
                             <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
                             >
                               <FormControl>
                                 <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="Select your industry" />
+                                  <SelectValue
+                                    placeholder={placeholders.industry}
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
@@ -1130,8 +1402,7 @@ export default function InitializeProject() {
                               </SelectContent>
                             </Select>
                             <FormDescription>
-                              This helps us understand your market and tailor
-                              our approach
+                              {t("project.initialize.descriptions.industry")}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1143,16 +1414,18 @@ export default function InitializeProject() {
                         name="targetAudience"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Target Audience</FormLabel>
+                            <FormLabel>{labels.targetAudience}</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Describe your target audience (e.g., young professionals, small business owners, students...)"
+                                placeholder={placeholders.targetAudience}
                                 className="min-h-[80px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                                 {...field}
                               />
                             </FormControl>
                             <FormDescription>
-                              Who are you trying to reach with this project?
+                              {t(
+                                "project.initialize.descriptions.targetAudience",
+                              )}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1164,17 +1437,18 @@ export default function InitializeProject() {
                         name="existingWebsite"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Existing Website URL</FormLabel>
+                            <FormLabel>{labels.existingWebsite}</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="https://yourwebsite.com"
+                                placeholder={placeholders.existingWebsite}
                                 {...field}
                                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                               />
                             </FormControl>
                             <FormDescription>
-                              Optional - Link to your current website if you
-                              have one
+                              {t(
+                                "project.initialize.descriptions.existingWebsite",
+                              )}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1186,10 +1460,9 @@ export default function InitializeProject() {
                         name="goals"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Project Goals</FormLabel>
+                            <FormLabel>{labels.projectGoals}</FormLabel>
                             <FormDescription className="mb-4">
-                              Select the main goals you want to achieve
-                              (optional)
+                              {t("project.initialize.descriptions.goals")}
                             </FormDescription>
                             <div className="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto">
                               {projectGoals.map((goal) => (
@@ -1243,9 +1516,9 @@ export default function InitializeProject() {
                         name="features"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Desired Features</FormLabel>
+                            <FormLabel>{labels.features}</FormLabel>
                             <FormDescription className="mb-4">
-                              Select features you'd like to include (optional)
+                              {t("project.initialize.descriptions.features")}
                             </FormDescription>
                             <div className="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto">
                               {commonFeatures.map((feature) => (
@@ -2072,7 +2345,7 @@ export default function InitializeProject() {
                         className="flex items-center gap-2 justify-center h-12 touch-manipulation"
                       >
                         <ArrowLeft className="w-4 h-4" />
-                        {t("initializeProject.back")}
+                        {t("project.initialize.back")}
                       </Button>
                     )}
 
@@ -2082,7 +2355,7 @@ export default function InitializeProject() {
                         onClick={handleNext}
                         className="flex items-center gap-2 justify-center ml-auto h-12 px-8 touch-manipulation"
                       >
-                        {t("initializeProject.continue")}
+                        {t("project.initialize.continue")}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (

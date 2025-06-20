@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "../../contexts/language-context";
+
 import ContactForm from "../ContactForm";
 import { useCreateContact } from "../../hooks/use-contacts";
 
@@ -75,102 +76,155 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     {
       id: "email",
       icon: Mail,
-      title: "Email Us",
-      subtitle: "Get a response within 24 hours",
-      description: "Send us a detailed message about your project",
-      action: "Send Email",
+      title: t("contact.hub.methods.email.title", { default: "Send an Email" }),
+      subtitle: t("contact.hub.methods.email.subtitle", {
+        default: "Direct Communication",
+      }),
+      description: t("contact.hub.methods.email.description", {
+        default: "Write to us about your project needs and expectations.",
+      }),
+      action: t("contact.hub.methods.email.action", { default: "Email Us" }),
       href: "mailto:contact@ngc.solutions",
       color: "from-blue-500/20 to-cyan-500/20",
       borderColor: "border-blue-500/30",
-      badge: "24h Response",
-      stats: "95% response rate",
+      badge: t("contact.hub.methods.email.badge", { default: "24h Response" }),
+      stats: t("contact.hub.methods.email.stats", {
+        default: "Avg. response time: 4 hours",
+      }),
     },
     {
       id: "call",
       icon: Phone,
-      title: "Schedule a Call",
-      subtitle: "Free 30-minute consultation",
-      description: "Book a call to discuss your project in detail",
-      action: "Book Call",
+      title: t("contact.hub.methods.call.title", { default: "Book a Call" }),
+      subtitle: t("contact.hub.methods.call.subtitle", {
+        default: "Personal Consultation",
+      }),
+      description: t("contact.hub.methods.call.description", {
+        default:
+          "Schedule a call with our team to discuss your project in detail.",
+      }),
+      action: t("contact.hub.methods.call.action", {
+        default: "Schedule Call",
+      }),
       href: "/book-consultation",
       color: "from-green-500/20 to-emerald-500/20",
       borderColor: "border-green-500/30",
-      badge: "Free",
-      stats: "Available Mon-Fri",
+      badge: t("contact.hub.methods.call.badge", {
+        default: "Free Consultation",
+      }),
+      stats: t("contact.hub.methods.call.stats", {
+        default: "30 min initial discussion",
+      }),
     },
     {
       id: "project",
       icon: Zap,
-      title: "Start Project",
-      subtitle: "Begin with our project wizard",
-      description: "Get an instant quote and project timeline",
-      action: "Get Started",
+      title: t("contact.hub.methods.project.title", {
+        default: "Start a Project",
+      }),
+      subtitle: t("contact.hub.methods.project.subtitle", {
+        default: "Formal Request",
+      }),
+      description: t("contact.hub.methods.project.description", {
+        default: "Fill out our project brief form to get a detailed proposal.",
+      }),
+      action: t("contact.hub.methods.project.action", { default: "Start Now" }),
       href: "/initialize-project",
       color: "from-orange-500/20 to-red-500/20",
       borderColor: "border-orange-500/30",
-      badge: "Instant Quote",
-      stats: "5-min setup",
+      badge: t("contact.hub.methods.project.badge", {
+        default: "Detailed Brief",
+      }),
+      stats: t("contact.hub.methods.project.stats", {
+        default: "Quote within 2-3 days",
+      }),
     },
   ];
 
   const contactInfo = [
     {
       icon: MapPin,
-      label: "Office Location",
-      value: "Remote & Global",
-      description: "Serving clients worldwide",
+      label: t("contact.hub.info.location.label", {
+        default: "Office Location",
+      }),
+      value: t("contact.hub.info.location.value", {
+        default: "Skopje, North Macedonia",
+      }),
+      description: t("contact.hub.info.location.description", {
+        default: "Central European Time (CET)",
+      }),
     },
     {
       icon: Phone,
-      label: "CEO Phone",
-      value: "+389 78 209 406",
-      description: "Call us ...",
+      label: t("contact.hub.info.ceoPhone.label", {
+        default: "CEO Direct Line",
+      }),
+      value: t("contact.hub.info.ceoPhone.value", {
+        default: "+389 70 123 456",
+      }),
+      description: t("contact.hub.info.ceoPhone.description", {
+        default: "Martin, CEO & Co-founder",
+      }),
     },
     {
       icon: Phone,
-      label: "CTO Phone",
-      value: "+389 70 294 386",
-      description: "Call us ...",
+      label: t("contact.hub.info.ctoPhone.label", {
+        default: "CTO Direct Line",
+      }),
+      value: t("contact.hub.info.ctoPhone.value", {
+        default: "+389 70 456 789",
+      }),
+      description: t("contact.hub.info.ctoPhone.description", {
+        default: "Stefan, CTO & Co-founder",
+      }),
     },
     {
       icon: Clock,
-      label: "Business Hours",
-      value: "Mon - Fri, 9AM - 6PM CET",
-      description: "Emergency support available",
+      label: t("contact.hub.info.hours.label", { default: "Business Hours" }),
+      value: t("contact.hub.info.hours.value", {
+        default: "Mon-Fri: 9AM - 6PM CET",
+      }),
+      description: t("contact.hub.info.hours.description", {
+        default: "Weekend: By appointment",
+      }),
     },
     {
       icon: Globe,
-      label: "Languages",
-      value: "English, Macedonian, Serbian",
-      description: "Multilingual support",
+      label: t("contact.hub.info.languages.label", { default: "Languages" }),
+      value: t("contact.hub.info.languages.value", {
+        default: "English, Macedonian, Serbian",
+      }),
+      description: t("contact.hub.info.languages.description", {
+        default: "German & Dutch also available",
+      }),
     },
   ];
 
   const socialLinks = [
     {
       icon: Linkedin,
-      name: "LinkedIn",
+      name: t("contact.hub.social.linkedin.name", { default: "LinkedIn" }),
       href: "https://linkedin.com/company/ngc-solutions",
       color: "hover:text-blue-600",
     },
     {
       icon: Twitter,
-      name: "Twitter",
+      name: t("contact.hub.social.twitter.name", { default: "Twitter" }),
       href: "https://twitter.com/ngc_solutions",
       color: "hover:text-blue-400",
     },
     {
       icon: Instagram,
-      name: "Instagram",
+      name: t("contact.hub.social.instagram.name", { default: "Instagram" }),
       href: "https://instagram.com/ngc_solutions",
       color: "hover:text-pink-600",
     },
     {
-      icon:Facebook,
-      name: "Facebook",
+      icon: Facebook,
+      name: t("contact.hub.social.facebook.name", { default: "Facebook" }),
       href: "https://facebook.com/ngc_solutions",
       color: "hover:text-blue-600",
-    }
+    },
   ];
 
   const testimonialQuotes = [
@@ -230,16 +284,20 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
           >
             <Heart className="w-4 h-4 text-primary" />
             <span className="text-primary font-semibold text-sm">
-              Let's Work Together
+              {t("contact.hub.letsWorkTogether", {
+                default: "LET'S WORK TOGETHER",
+              })}
             </span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text">
-            {t("contact.title") || "Get In Touch"}
+            {t("contact.hub.title", { default: "Get in Touch" })}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {t("contact.subtitle") ||
-              "Ready to bring your ideas to life? Choose how you'd like to connect with us."}
+            {t("contact.hub.subtitle", {
+              default:
+                "Have a project in mind? We'd love to discuss how we can help.",
+            })}
           </p>
         </motion.div>
 
@@ -324,25 +382,34 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
               <CardHeader>
                 <div className="flex items-center space-x-2 mb-2">
                   <Send className="w-5 h-5 text-primary" />
-                  <CardTitle className="text-2xl">Send Us a Message</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {t("contact.hub.form.title", { default: "Send a Message" })}
+                  </CardTitle>
                 </div>
                 <p className="text-muted-foreground">
-                  Fill out the form below and we'll get back to you within 24
-                  hours.
+                  {t("contact.hub.form.subtitle", {
+                    default: "We'll get back to you as soon as possible.",
+                  })}
                 </p>
 
                 {/* Connection status indicator */}
                 {convexStatus === "connected" && (
                   <div className="mt-2 flex items-center gap-2 text-xs text-green-600 bg-green-50 p-1.5 px-2 rounded-md">
                     <Wifi className="h-3.5 w-3.5" />
-                    <span>Connected to database</span>
+                    <span>
+                      {t("contact.hub.status.connected", {
+                        default: "Live connection",
+                      })}
+                    </span>
                   </div>
                 )}
                 {convexStatus === "error" && (
                   <div className="mt-2 flex items-center gap-2 text-xs text-amber-600 bg-amber-50 p-1.5 px-2 rounded-md">
                     <WifiOff className="h-3.5 w-3.5" />
                     <span>
-                      Using offline mode - messages will be sent via email
+                      {t("contact.hub.status.offline", {
+                        default: "Currently offline",
+                      })}
                     </span>
                   </div>
                 )}
@@ -365,7 +432,11 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span>Contact Information</span>
+                  <span>
+                    {t("contact.hub.contactInfo.title", {
+                      default: "Contact Information",
+                    })}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -394,7 +465,9 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
             {/* Social Links */}
             <Card className="border border-border/50 bg-card/60 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Follow Us</CardTitle>
+                <CardTitle className="text-lg">
+                  {t("contact.hub.social.title", { default: "Follow Us" })}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex space-x-4">
@@ -466,15 +539,24 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
                   <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/20 rounded-full mb-3">
                     <Zap className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">Ready to Start?</h3>
+                  <h3 className="font-semibold mb-2">
+                    {t("contact.hub.ctaSection.title", {
+                      default: "Ready to Start?",
+                    })}
+                  </h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Get an instant quote for your project in just 5 minutes.
+                    {t("contact.hub.ctaSection.description", {
+                      default:
+                        "Initiate your project brief and get a custom proposal.",
+                    })}
                   </p>
                 </div>
                 <Button asChild className="w-full">
                   <Link href="/initialize-project">
                     <Zap className="w-4 h-4 mr-2" />
-                    Start Your Project
+                    {t("contact.hub.ctaSection.buttonText", {
+                      default: "Start Your Project",
+                    })}
                   </Link>
                 </Button>
               </CardContent>

@@ -22,24 +22,337 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 const translations = {
   en: {
     // Navigation
-    "nav.services": "Services",
-    "nav.work": "Work",
-    "nav.clients": "Clients",
-    "nav.contact": "Contact",
-    "nav.home": "Home",
-    "nav.startProject": "Start Project",
+    nav: {
+      services: "Services",
+      work: "Work",
+      clients: "Clients",
+      contact: "Contact",
+      home: "Home",
+      startProject: "Start Project",
+    },
+
+    // Initialize Project
+    initializeProject: {
+      title: "Start Your Project",
+      subtitle: "Tell us about your project and we'll get back to you with a customized quote",
+      
+      // Steps
+      steps: {
+        step1: "Project Basics",
+        step2: "Project Details",
+        step3: "Timeline & Budget",
+        step4: "Contact Info",
+        step5: "Review & Submit"
+      },
+      
+      // Form Fields
+      fields: {
+        name: "Project Name",
+        description: "Project Description",
+        type: "Project Type",
+        urgency: "Project Urgency",
+        industry: "Industry/Business Type",
+        targetAudience: "Target Audience",
+        existingWebsite: "Existing Website URL",
+        goals: "Project Goals",
+        features: "Desired Features",
+        timeline: "Project Timeline",
+        budget: "Project Budget",
+        hasContent: "Content Preparation",
+        designPreferences: "Design Style Preferences",
+        contactName: "Your Name",
+        contactEmail: "Email Address",
+        contactPhone: "Phone Number",
+        company: "Company/Organization",
+        preferredContact: "Preferred Contact Method",
+        additionalInfo: "Additional Information",
+        projectFiles: "Project References & Assets"
+      },
+      
+      // Placeholders
+      placeholders: {
+        name: "Enter your project name",
+        description: "Tell us about your project goals and requirements...",
+        industry: "Select your industry",
+        targetAudience: "Describe your target audience (e.g., young professionals, small business owners, students...)",
+        existingWebsite: "https://yourwebsite.com",
+        designPreferences: "Describe your preferred design style, colors, examples of websites you like, etc.",
+        contactName: "Enter your full name",
+        contactEmail: "your.email@example.com",
+        contactPhone: "+1 (555) 123-4567",
+        company: "Your company name",
+        preferredContact: "How would you like us to contact you? (Optional)",
+        additionalInfo: "Any additional details, special requirements, or questions you'd like to share?"
+      },
+      
+      // Buttons & Actions
+      buttons: {
+        next: "Next Step",
+        previous: "Previous Step",
+        submit: "Submit Project",
+        chooseFiles: "Choose Files",
+        startFresh: "Start fresh"
+      },
+      
+      // Project Types
+      types: {
+        websiteRedesign: "Website Redesign",
+        newWebsite: "New Website",
+        ecommerce: "E-commerce Store",
+        webApp: "Web Application",
+        mobileApp: "Mobile Application",
+        branding: "Branding & Identity"
+      },
+      
+      // Urgency Levels
+      urgencyLevels: [
+        { 
+          value: "low", 
+          label: "No Rush", 
+          description: "Flexible timeline, planning for future" 
+        },
+        { 
+          value: "medium", 
+          label: "Standard", 
+          description: "Typical project timeline" 
+        },
+        { 
+          value: "high", 
+          label: "Urgent", 
+          description: "Need as soon as possible" 
+        },
+        { 
+          value: "urgent", 
+          label: "Critical", 
+          description: "Immediate attention required" 
+        }
+      ],
+      
+      // Industries
+      industries: [
+        { value: "technology", label: "Technology" },
+        { value: "healthcare", label: "Healthcare" },
+        { value: "finance", label: "Finance & Banking" },
+        { value: "education", label: "Education" },
+        { value: "retail", label: "Retail & E-commerce" },
+        { value: "other", label: "Other" }
+      ],
+      
+      // Project Goals
+      projectGoals: [
+        { value: "increaseSales", label: "Increase Sales/Leads" },
+        { value: "improveBranding", label: "Improve Branding" },
+        { value: "enhanceUserExperience", label: "Enhance User Experience" },
+        { value: "reachNewCustomers", label: "Reach New Customers" },
+        { value: "automateProcesses", label: "Automate Processes" }
+      ],
+      
+      // Common Features
+      commonFeatures: [
+        { value: "user-accounts", label: "User Accounts" },
+        { value: "payment-processing", label: "Payment Processing" },
+        { value: "content-management", label: "Content Management" },
+        { value: "analytics", label: "Analytics Dashboard" },
+        { value: "social-integration", label: "Social Media Integration" }
+      ],
+      
+      // Contact Methods
+      contactMethods: [
+        { 
+          value: "email", 
+          label: "Email", 
+          description: "Best for detailed discussions" 
+        },
+        { 
+          value: "phone", 
+          label: "Phone Call", 
+          description: "Good for quick questions" 
+        },
+        { 
+          value: "video-call", 
+          label: "Video Call", 
+          description: "Best for complex discussions" 
+        }
+      ],
+      
+      // File Upload
+      fileUpload: {
+        title: "Project References & Assets",
+        description: "Upload inspiration images, existing logos, wireframes, or any reference materials",
+        supportedFormats: "Max 10MB per file. Supported: JPG, PNG, GIF, PDF, DOC, TXT"
+      },
+      
+      // Summary Section
+      summary: {
+        title: "Project Consultation Request",
+        projectBasics: "Project Basics",
+        projectDetails: "Project Details",
+        contactInformation: "Contact Information",
+        submitConfirmation: "Submit Project Request"
+      },
+      
+      // Auto-save Messages
+      autosave: {
+        restored: "Previous progress restored. You can continue where you left off.",
+        startFresh: "Start fresh"
+      },
+      
+      // Form Validation
+      validation: {
+        required: "This field is required",
+        minLength: "Must be at least {min} characters",
+        maxLength: "Must be at most {max} characters",
+        invalidEmail: "Please enter a valid email address",
+        invalidUrl: "Please enter a valid URL"
+      },
+      
+      // Success/Error States
+      states: {
+        loading: "Loading...",
+        success: "Success!",
+        error: "An error occurred",
+        connectionLost: "Connection lost. Please check your internet connection."
+      },
+      
+      // Confirmation Dialog
+      confirm: {
+        title: "Are you sure?",
+        message: "You have unsaved changes. Are you sure you want to leave?",
+        yes: "Yes, leave",
+        no: "No, stay"
+      },
+      
+      // Accessibility
+      a11y: {
+        closeButton: "Close",
+        menuButton: "Toggle menu",
+        nextStep: "Next step",
+        previousStep: "Previous step"
+      }
+    },
+
+    // Services
+    services: {
+      pageTitle: "Our Services",
+      pageDescription: "Comprehensive digital solutions to transform your business and drive growth",
+      whyChooseUs: {
+        title: "Why Choose Us",
+        description: "We are committed to delivering exceptional results for every project we undertake. Here's why our clients trust us with their digital needs.",
+        expertTeam: {
+          title: "Expert Team",
+          description: "Our team of experienced professionals is dedicated to delivering high-quality solutions tailored to your needs."
+        },
+        fastDelivery: {
+          title: "Fast Delivery",
+          description: "We understand the importance of time and ensure timely delivery of all our projects without compromising on quality."
+        },
+        ongoingSupport: {
+          title: "Ongoing Support",
+          description: "Our relationship doesn't end with project delivery. We provide continuous support to ensure your success."
+        }
+      },
+      allCategories: "All Categories",
+      viewModes: {
+        grid: "Grid view",
+        list: "List view"
+      },
+      filters: {
+        searchPlaceholder: "Search services...",
+        status: "Status",
+        type: "Type",
+        urgency: "Urgency",
+        allStatuses: "All Statuses",
+        allTypes: "All Types",
+        allUrgencies: "All Urgencies"
+      },
+      stats: {
+        servicesOffered: "Services Offered",
+        projectsCompleted: "Projects Completed",
+        clientSatisfaction: "Client Satisfaction",
+        yearsExperience: "Years Experience"
+      },
+      serviceCard: {
+        startingAt: "Starting at",
+        timeline: "Timeline",
+        complexity: "Complexity",
+        learnMore: "Learn More",
+        freeForNGOs: "Free for NGOs",
+        premiumService: "Premium Service"
+      },
+      resultsCount: "Showing {count} of {total} services",
+      cta: {
+        title: "Ready to bring your ideas to life?",
+        description: "Whether you have a project in mind or just want to explore possibilities, we're here to help. Let's create something amazing together!",
+        startProject: "Start Your Project",
+        getFreeConsultation: "Get Free Consultation"
+      }
+    },
+
+      // Service Template
+    serviceTemplate: {
+      startingPrice: "Starting Price",
+      timeline: "Timeline",
+      complexity: "Complexity",
+      category: "Category",
+      targetAudience: "Perfect For",
+      technologies: "Technologies We Use",
+      deliverables: "What You'll Receive",
+      features: "Service Features",
+      featuresDescription: "Comprehensive features designed to meet your specific needs",
+      process: "Our Process",
+      processDescription: "A proven methodology that ensures successful project delivery",
+      pricing: "Transparent Pricing",
+      pricingDescription: "Choose the package that best fits your needs and budget",
+      portfolio: {
+        title: "Portfolio",
+        cta: "View All Projects",
+        description: "See how we've helped other businesses succeed with {service}"
+      },
+      faq: "Frequently Asked Questions",
+      faqDescription: "Everything you need to know about our {service} service",
+      recommended: "Recommended",
+      customPricing: "Need a Custom Solution?",
+      customPricingDescription: "Every project is unique. Contact us for a personalized quote based on your specific requirements.",
+      portfolioComingSoon: "Portfolio Coming Soon",
+      portfolioComingSoonDescription: "We're working on showcasing our latest {service} projects.",
+      stillHaveQuestions: "Still Have Questions?",
+      stillHaveQuestionsDescription: "We're here to help! Get in touch with our team for personalized answers.",
+      relatedServices: "You Might Also Like",
+      relatedServicesStartingAt: "Starting at",
+      relatedServicesLearnMore: "Learn More",
+      finalCta: "Ready to Get Started?",
+      finalCtaDescription: "Let's discuss how our {service} services can help transform your business and achieve your goals.",
+      cta: {
+        startProject: "Start Your Project",
+        viewPricing: "View Pricing",
+        getStarted: "Get Started",
+        customQuote: "Get Custom Quote",
+        contactUs: "Contact Us",
+        scheduleConsultation: "Schedule Consultation"
+      },
+      tabs: {
+        overview: "Overview",
+        features: "Features",
+        process: "Process",
+        pricing: "Pricing",
+        portfolio: "Portfolio",
+        faq: "FAQ"
+      },
+      whyChoose: "Why Choose Our {service}?"
+    },
 
     // Hero
-    "hero.title": "We craft digital experiences with purpose",
-    "hero.subtitle":
-      "Minimalist design. Maximum impact. We build websites that convert visitors into customers.",
-    "hero.startProject": "Start a project",
-    "hero.viewWork": "View our work",
+    hero: {
+      title: "We craft digital experiences with purpose",
+      subtitle: "Minimalist design. Maximum impact. We build websites that convert visitors into customers.",
+      startProject: "Start a project",
+      viewWork: "View our work"
+    },
 
     // Services
     "services.title": "Services",
     "services.subtitle":
-      "We specialize in creating digital experiences that are both modern and functional, focusing off what matters most to your business.",
+      "We specialize in creating digital experiences that are both modern and functional, focusing on what matters most to your business.",
     "services.design.title": "Design",
     "services.design.description":
       "Intuitive interfaces that engage users and drive conversions through thoughtful design and seamless interactions.",
@@ -57,18 +370,20 @@ const translations = {
     "services.ngo-support.description": "Free design, development and hosting for NGOs from SEE that don't receive foreign funding",
 
     // Service Template
-    "serviceTemplate.overview": "Service Overview",
-    "serviceTemplate.keyFeatures": "Key Features",
-    "serviceTemplate.businessBenefits": "Business Benefits",
-    "serviceTemplate.increasedEfficiency": "Increased Efficiency",
-    "serviceTemplate.competitiveAdvantage": "Competitive Advantage",
-    "serviceTemplate.customSolutions": "Customized solutions for your requirements",
-    "serviceTemplate.industryExpertise": "Industry-leading expertise and best practices",
-    "serviceTemplate.seamlessIntegration": "Seamless integration with existing systems",
-    "serviceTemplate.ongoingSupport": "Ongoing support and maintenance",
-    "serviceTemplate.comprehensiveSolutions": "Our comprehensive {service} solutions are tailored to meet your specific business needs, delivering measurable results and exceptional value.",
-    "serviceTemplate.efficiencyDescription": "Streamline your operations and reduce costs through our optimized {service} solutions.",
-    "serviceTemplate.advantageDescription": "Gain an edge over competitors with innovative {service} implementations.",
+    serviceTemplate: {
+      overview: "Service Overview",
+      keyFeatures: "Key Features",
+      businessBenefits: "Business Benefits",
+      increasedEfficiency: "Increased Efficiency",
+      competitiveAdvantage: "Competitive Advantage",
+      customSolutions: "Customized solutions for your requirements",
+      industryExpertise: "Industry-leading expertise and best practices",
+      seamlessIntegration: "Seamless integration with existing systems",
+      ongoingSupport: "Ongoing support and maintenance",
+      comprehensiveSolutions: "Our comprehensive {service} solutions are tailored to meet your specific business needs, delivering measurable results and exceptional value.",
+      efficiencyDescription: "Streamline your operations and reduce costs through our optimized {service} solutions.",
+      advantageDescription: "Gain an edge over competitors with innovative {service} implementations.",
+    },
 
     // Portfolio
     "portfolio.title": "Selected Work",
@@ -331,21 +646,332 @@ const translations = {
     "nav.services": "Услуги",
     "nav.work": "Работа",
     "nav.clients": "Клиенти",
+
+    // Иницирање на проект
+    initializeProject: {
+      title: "Започнете го вашиот проект",
+      subtitle: "Кажете ни за вашиот проект и ќе ви испратиме прилагодена понуда",
+      
+      // Чекори
+      steps: {
+        step1: "Основни информации",
+        step2: "Детали за проектот",
+        step3: "Временска рамка и буџет",
+        step4: "Контакт информации",
+        step5: "Преглед и поднесување"
+      },
+      
+      // Полиња на формуларот
+      fields: {
+        name: "Име на проектот",
+        description: "Опис на проектот",
+        type: "Тип на проект",
+        urgency: "Итност на проектот",
+        industry: "Вид на дејност/бизнис",
+        targetAudience: "Целна публика",
+        existingWebsite: "URL на постоечки веб-сајт",
+        goals: "Цели на проектот",
+        features: "Посакувани функционалности",
+        timeline: "Временска рамка на проектот",
+        budget: "Буџет на проектот",
+        hasContent: "Подготовка на содржини",
+        designPreferences: "Преференции за дизајн",
+        contactName: "Вашето име",
+        contactEmail: "Е-пошта",
+        contactPhone: "Телефонски број",
+        company: "Компанија/Организација",
+        preferredContact: "Префериран начин на контакт",
+        additionalInfo: "Дополнителни информации",
+        projectFiles: "Референци и материјали за проектот"
+      },
+      
+      // Полесни текстови
+      placeholders: {
+        name: "Внесете го името на вашиот проект",
+        description: "Кажете ни за целите и барањата на вашиот проект...",
+        industry: "Изберете ја вашата дејност",
+        targetAudience: "Опишете ја вашата целна публика (на пр. млади професионалци, мали бизниси, студенти...)",
+        existingWebsite: "https://vashiot.sajt.com.mk",
+        designPreferences: "Опишете го вашиот префериран стил на дизајн, бои, примери на веб-сајтови што ви се допаѓаат, итн.",
+        contactName: "Внесете го вашето целосно име",
+        contactEmail: "vash.email@primer.com",
+        contactPhone: "+389 70 123 456",
+        company: "Име на вашата компанија",
+        preferredContact: "Како би сакале да ве контактираме? (Опционално)",
+        additionalInfo: "Дополнителни детали, специјални барања или прашања што би сакале да ги споделите?"
+      },
+      
+      // Копчиња и акции
+      buttons: {
+        next: "Следно",
+        previous: "Претходно",
+        submit: "Поднесете го проектот",
+        chooseFiles: "Изберете датотеки",
+        startFresh: "Започнете од почеток"
+      },
+      
+      // Типови на проекти
+      types: {
+        websiteRedesign: "Редизајн на веб-сајт",
+        newWebsite: "Нов веб-сајт",
+        ecommerce: "Е-трговија",
+        webApp: "Веб апликација",
+        mobileApp: "Мобилна апликација",
+        branding: "Брендирање и идентитет"
+      },
+      
+      // Нивоа на итност
+      urgencyLevels: [
+        { 
+          value: "low", 
+          label: "Не е итно", 
+          description: "Флексибилен рок, планирање за иднината" 
+        },
+        { 
+          value: "medium", 
+          label: "Стандардно", 
+          description: "Стандарден рок за проект" 
+        },
+        { 
+          value: "high", 
+          label: "Итно", 
+          description: "Потребно е што побрзо" 
+        },
+        { 
+          value: "urgent", 
+          label: "Критично", 
+          description: "Потребна е идна веднашна интервенција" 
+        }
+      ],
+      
+      // Индустрии
+      industries: [
+        { value: "technology", label: "Технологии" },
+        { value: "healthcare", label: "Здравство" },
+        { value: "finance", label: "Финансии и банкарство" },
+        { value: "education", label: "Образование" },
+        { value: "retail", label: "Малопродажба и е-трговија" },
+        { value: "other", label: "Друго" }
+      ],
+      
+      // Цели на проектот
+      projectGoals: [
+        { value: "increaseSales", label: "Зголемување на продажбата/лидовите" },
+        { value: "improveBranding", label: "Подобрување на брендот" },
+        { value: "enhanceUserExperience", label: "Подобрување на корисничкото искуство" },
+        { value: "reachNewCustomers", label: "Досегнување на нови клиенти" },
+        { value: "automateProcesses", label: "Автоматизација на процеси" }
+      ],
+      
+      // Заеднички функционалности
+      commonFeatures: [
+        { value: "user-accounts", label: "Кориснички сметки" },
+        { value: "payment-processing", label: "Обработка на плаќања" },
+        { value: "content-management", label: "Управување со содржини" },
+        { value: "analytics", label: "Аналитички панел" },
+        { value: "social-integration", label: "Интеграција со социјални мрежи" }
+      ],
+      
+      // Начини на контакт
+      contactMethods: [
+        { 
+          value: "email", 
+          label: "Е-пошта", 
+          description: "Најдобро за детални дискусии" 
+        },
+        { 
+          value: "phone", 
+          label: "Телефонски повик", 
+          description: "Добро за брзи прашања" 
+        },
+        { 
+          value: "video-call", 
+          label: "Видео повик", 
+          description: "Најдобро за сложени дискусии" 
+        }
+      ],
+      
+      // Прикачување датотеки
+      fileUpload: {
+        title: "Референци и материјали за проектот",
+        description: "Прикачете инспиративни слики, постоечки логоа, скици или било какви референтни материјали",
+        supportedFormats: "Макс. 10MB по датотека. Поддржани формати: JPG, PNG, GIF, PDF, DOC, TXT"
+      },
+      
+      // Резиме
+      summary: {
+        title: "Барање за консултација за проект",
+        projectBasics: "Основни информации",
+        projectDetails: "Детали за проектот",
+        contactInformation: "Контакт информации",
+        submitConfirmation: "Поднесете го барањето за проект"
+      },
+      
+      // Пораки за автоматско зачувување
+      autosave: {
+        restored: "Претходниот напредок е обновен. Можете да продолжите од каде што застанавте.",
+        startFresh: "Започнете од почеток"
+      },
+      
+      // Валидација на формуларот
+      validation: {
+        required: "Ова поле е задолжително",
+        minLength: "Мора да има најмалку {min} карактери",
+        maxLength: "Може да има најмногу {max} карактери",
+        invalidEmail: "Ве молам внесете валидна е-пошта",
+        invalidUrl: "Ве молам внесете валидна URL адреса"
+      },
+      
+      // Состојби на успех/грешка
+      states: {
+        loading: "Се вчитува...",
+        success: "Успешно!",
+        error: "Се случи грешка",
+        connectionLost: "Ја изгубивме врската. Ве молиме проверете ја вашата интернет врска."
+      },
+      
+      // Потврден дијалог
+      confirm: {
+        title: "Дали сте сигурни?",
+        message: "Имате незачувани промени. Дали сте сигурни дека сакате да заминете?",
+        yes: "Да, заминете",
+        no: "Не, останете"
+      },
+      
+      // Пристапност
+      a11y: {
+        closeButton: "Затвори",
+        menuButton: "Прикачи/скриј мени",
+        nextStep: "Следен чекор",
+        previousStep: "Претходен чекор"
+      }
+    },
     "nav.contact": "Контакт",
     "nav.home": "Дома",
     "nav.startProject": "Започни проект",
 
+    // Services
+    services: {
+      pageTitle: "Наши Услуги",
+      pageDescription: "Сеобфатни дигитални решенија за трансформација на вашиот бизнис и поттикнување на растот",
+      whyChooseUs: {
+        title: "Зошто да нè изберете",
+        description: "Посветени сме на остварување исклучителни резултати за секој проект. Еве зошто нашите клиенти ни веруваат за нивните дигитални потреби.",
+        expertTeam: {
+          title: "Стручен Тим",
+          description: "Нашиот тим од искусни професионалци е посветен на доставување висококвалитетни решенија прилагодени на вашите потреби."
+        },
+        fastDelivery: {
+          title: "Брза Испорака",
+          description: "Г разбираме значењето на времето и обезбедуваме навремена испорака на сите наши проекти без компрромиси во однос на квалитетот."
+        },
+        ongoingSupport: {
+          title: "Континуирана Поддршка",
+          description: "Нашата соработка не завршува со испораката на проектот. Обезбедуваме континуирана поддршка за да го обезбедиме вашиот успех."
+        }
+      },
+      allCategories: "Сите категории",
+      viewModes: {
+        grid: "Мрежен приказ",
+        list: "Листа приказ"
+      },
+      filters: {
+        searchPlaceholder: "Пребарувај услуги...",
+        status: "Статус",
+        type: "Тип",
+        urgency: "Итност",
+        allStatuses: "Сите статуси",
+        allTypes: "Сите типови",
+        allUrgencies: "Сите итности"
+      },
+      stats: {
+        servicesOffered: "Понудени Услуги",
+        projectsCompleted: "Завршени Проекти",
+        clientSatisfaction: "Задоволство на Клиенти",
+        yearsExperience: "Години Искуство"
+      },
+      serviceCard: {
+        startingAt: "Цена од",
+        timeline: "Времетраење",
+        complexity: "Комплексност",
+        learnMore: "Дознај Повеќе",
+        freeForNGOs: "Бесплатно за НВО",
+        premiumService: "Премиум Услуга"
+      },
+      resultsCount: "Прикажани се {count} од вкупно {total} услуги",
+      cta: {
+        title: "Подготвени сте да ги оживеете вашите идеи?",
+        description: "Без разлика дали имате конкретен проект или сакате само да ги истражите можностите, ние сме тука за да ви помогнеме. Ајде заедно да создадеме нешто неверојатно!",
+        startProject: "Започнете го вашиот проект",
+        getFreeConsultation: "Добијте бесплатна консултација"
+      }
+    },
+
+    // Service Template
+    serviceTemplate: {
+      startingPrice: "Почетна Цена",
+      timeline: "Времетраење",
+      complexity: "Комплексност",
+      category: "Категорија",
+      targetAudience: "Совршено за",
+      technologies: "Технологии што ги користиме",
+      deliverables: "Што ќе добиете",
+      features: "Карактеристики на Услугата",
+      featuresDescription: "Сеопфатни карактеристики дизајнирани да ги исполнат вашите специфични потреби",
+      process: "Нашиот Процес",
+      processDescription: "Докажан пристап што обезбедува успешна имплементација на проектот",
+      pricing: "Транспарентни Цени",
+      pricingDescription: "Изберете го пакетот што најмногу одговара на вашите потреби и буџет",
+      portfolio: {
+        title: "Портфолио",
+        cta: "Види ги сите проекти",
+        description: "Погледнете како им помогнавме на други бизниси да успеат со {service}"
+      },
+      faq: "Често Поставувани Прашања",
+      faqDescription: "Сè што треба да знаете за нашата {service} услуга",
+      recommended: "Препорачано",
+      customPricing: "Дали ви треба прилагодено решение?",
+      customPricingDescription: "Секој проект е уникатен. Контактирајте не за персонализирана понуда според вашите специфични потреби.",
+      portfolioComingSoon: "Портфолиото наскоро",
+      portfolioComingSoonDescription: "Работиме на прикажување на нашите најнови проекти од областа {service}.",
+      stillHaveQuestions: "Сè уште имате прашања?",
+      stillHaveQuestionsDescription: "Тука сме да ви помогнеме! Контактирајте не за персонализирани одговори.",
+      relatedServices: "Можеби ќе ве интересира",
+      relatedServicesStartingAt: "Цени од",
+      relatedServicesLearnMore: "Дознајте повеќе",
+      finalCta: "Подготвени сте да започнете?",
+      finalCtaDescription: "Разговарајте со нас за тоа како нашите {service} услуги можат да го трансформираат вашиот бизнис и да ви помогнат да ги постигнете вашите цели.",
+      cta: {
+        startProject: "Започнете го вашиот проект",
+        viewPricing: "Види цени",
+        getStarted: "Започнете",
+        customQuote: "Побарајте понуда",
+        contactUs: "Контактирајте не",
+        scheduleConsultation: "Закажете консултација"
+      },
+      tabs: {
+        overview: "Преглед",
+        features: "Карактеристики",
+        process: "Процес",
+        pricing: "Цени",
+        portfolio: "Портфолио",
+      },
+      whyChoose: "Зошто да ја изберете нашата {service}?"
+    },
+
     // Херој
-    "hero.title": "Создаваме дигитални искуства со цел",
-    "hero.subtitle":
-      "Минималистички дизајн. Максимален ефект. Создаваме веб-страници што ги претвораат посетителите во клиенти.",
-    "hero.startProject": "Започни проект",
-    "hero.viewWork": "Погледни ја нашата работа",
+    hero: {
+      title: "Создаваме дигитални искуства со цел",
+      subtitle: "Минималистички дизајн. Максимален ефект. Создаваме веб-страници што ги претвораат посетителите во клиенти.",
+      startProject: "Започни проект",
+      viewWork: "Погледни ја нашата работа"
+    },
 
     // Услуги
     "services.title": "Услуги",
     "services.subtitle":
       "Специјализирани сме во создавање дигитални искуства што се модерни и функционални, фокусирани на најважното за вашиот бизнис.",
+{{ ... }}
     "services.design.title": "Дизајн",
     "services.design.description":
       "Интуитивни интерфејси што ги ангажираат корисниците и ги зголемуваат конверзиите преку внимателен дизајн и беспрекорни интеракции.",
@@ -356,30 +982,8 @@ const translations = {
     "services.mobile.description":
       "Нативни и крос-платформски апликации што нудат конзистентно искуство на сите уреди.",
     "services.poc.title": "Доказ за Концепт",
-    "services.poc.description": "Остварете ги вашите идеи",
+    "services.poc.description": "Бринете ги вашите идеи",
     "services.ai.title": "Интеграција на Вештачка Интелигенција",
-    "services.ai.description": "Интегрирање на вештачка интелигенција во работните текови на клиентите со локални и облачни решенија",
-    "services.ngo-support.title": "Поддршка за НВО",
-    "services.ngo-support.description": "Бесплатен дизајн, развој и хостинг за НВО од SEE кои не примаат странско финансирање",
-
-    // Service Template
-    "serviceTemplate.overview": "Преглед на Услугата",
-    "serviceTemplate.keyFeatures": "Клучни Карактеристики",
-    "serviceTemplate.businessBenefits": "Бизнис Користи",
-    "serviceTemplate.increasedEfficiency": "Зголемена Ефикасност",
-    "serviceTemplate.competitiveAdvantage": "Конкурентска Предност",
-    "serviceTemplate.customSolutions": "Прилагодени решенија за вашите потреби",
-    "serviceTemplate.industryExpertise": "Стручност и најдобри практики во индустријата",
-    "serviceTemplate.seamlessIntegration": "Беспрекорна интеграција со постоечки системи",
-    "serviceTemplate.ongoingSupport": "Континуирана поддршка и одржување",
-    "serviceTemplate.comprehensiveSolutions": "Нашите сеопфатни {service} решенија се прилагодени за да ги исполнат вашите специфични бизнис потреби, доставувајќи мерливи резултати и исклучителна вредност.",
-    "serviceTemplate.efficiencyDescription": "Поедностави ги вашите операции и намали ги трошоците преку нашите оптимизирани {service} решенија.",
-    "serviceTemplate.advantageDescription": "Добијте предност над конкуренцијата со иновативни {service} имплементации.",
-
-    // Портфолио
-    "portfolio.title": "Избрани Проекти",
-    "portfolio.subtitle":
-      "Разгледајте го нашето портфолио со проекти што го прикажуваат нашиот пристап кон решавање на комплексни дизајн и развојни предизвици.",
     "portfolio.project1.title": "Редизајн на е-продавница",
     "portfolio.project1.category": "Дизајн",
     "portfolio.project1.description":
@@ -634,24 +1238,332 @@ const translations = {
   },
   sr: {
     // Navigacija
-    "nav.services": "Usluge",
-    "nav.work": "Rad",
-    "nav.clients": "Klijenti",
+    nav: {
+      services: "Usluge",
+      work: "Rad",
+      clients: "Klijenti",
+      contact: "Kontakt",
+      home: "Početna",
+      startProject: "Započni projekat"
+    },
+    // Inicijalizacija projekta
+    initializeProject: {
+      title: "Započnite svoj projekat",
+      subtitle: "Recite nam više o svom projektu i vratićemo vam se sa prilagođenom ponudom",
+      
+      // Koraci
+      steps: {
+        step1: "Osnovne informacije",
+        step2: "Detalji projekta",
+        step3: "Rokovi i budžet",
+        step4: "Kontakt podaci",
+        step5: "Pregled i slanje"
+      },
+      
+      // Polja formulara
+      fields: {
+        name: "Naziv projekta",
+        description: "Opis projekta",
+        type: "Vrsta projekta",
+        urgency: "Hitnost projekta",
+        industry: "Vrsta delatnosti/poslovanja",
+        targetAudience: "Ciljna grupa",
+        existingWebsite: "URL postojećeg sajta",
+        goals: "Ciljevi projekta",
+        features: "Željene funkcionalnosti",
+        timeline: "Rokovi realizacije",
+        budget: "Budžet projekta",
+        hasContent: "Priprema sadržaja",
+        designPreferences: "Željeni stil dizajna",
+        contactName: "Vaše ime",
+        contactEmail: "Email adresa",
+        contactPhone: "Broj telefona",
+        company: "Kompanija/Organizacija",
+        preferredContact: "Preferirani način kontakta",
+        additionalInfo: "Dodatne informacije",
+        projectFiles: "Reference i materijali za projekat"
+      },
+      
+      // Objašnjenja polja
+      placeholders: {
+        name: "Unesite naziv vašeg projekta",
+        description: "Opisite ciljeve i zahteve vašeg projekta...",
+        industry: "Izaberite vašu delatnost",
+        targetAudience: "Opisite vašu ciljnu grupu (npr. mladi profesionalci, mala preduzeća, studenti...)",
+        existingWebsite: "https://vas-sajt.rs",
+        designPreferences: "Opisite vaš željeni stil dizajna, boje, primere sajtova koji vam se sviđaju itd.",
+        contactName: "Unesite vaše puno ime",
+        contactEmail: "vas.email@primer.rs",
+        contactPhone: "+381 60 123 4567",
+        company: "Ime vaše kompanije",
+        preferredContact: "Kako biste želeli da vas kontaktiramo? (Opciono)",
+        additionalInfo: "Dodatni detalji, posebni zahtevi ili pitanja koja želite da podelite?"
+      },
+      
+      // Dugmići i akcije
+      buttons: {
+        next: "Sledeće",
+        previous: "Prethodno",
+        submit: "Pošaljite projekat",
+        chooseFiles: "Izaberite fajlove",
+        startFresh: "Započnite ispočetka"
+      },
+      
+      // Vrste projekata
+      types: {
+        websiteRedesign: "Redizajn veb sajta",
+        newWebsite: "Novi veb sajt",
+        ecommerce: "Prodavnica na internetu",
+        webApp: "Veb aplikacija",
+        mobileApp: "Mobilna aplikacija",
+        branding: "Brendiranje i identitet"
+      },
+      
+      // Nivoi hitnosti
+      urgencyLevels: [
+        { 
+          value: "low", 
+          label: "Nije hitno", 
+          description: "Fleksibilan rok, planiranje za budućnost" 
+        },
+        { 
+          value: "medium", 
+          label: "Standardno", 
+          description: "Uobičajeni rok za projekat" 
+        },
+        { 
+          value: "high", 
+          label: "Hitno", 
+          description: "Potrebno što pre" 
+        },
+        { 
+          value: "urgent", 
+          label: "Kritično", 
+          description: "Potrebna je hitna intervencija" 
+        }
+      ],
+      
+      // Industrije
+      industries: [
+        { value: "technology", label: "Tehnologije" },
+        { value: "healthcare", label: "Zdravstvo" },
+        { value: "finance", label: "Finansije i bankarstvo" },
+        { value: "education", label: "Obrazovanje" },
+        { value: "retail", label: "Maloprodaja i e-trgovina" },
+        { value: "other", label: "Drugo" }
+      ],
+      
+      // Ciljevi projekta
+      projectGoals: [
+        { value: "increaseSales", label: "Povećanje prodaje/leadova" },
+        { value: "improveBranding", label: "Unapređenje brenda" },
+        { value: "enhanceUserExperience", label: "Poboljšanje korisničkog iskustva" },
+        { value: "reachNewCustomers", label: "Dopremanje do novih klijenata" },
+        { value: "automateProcesses", label: "Automatizacija procesa" }
+      ],
+      
+      // Uobičajene funkcionalnosti
+      commonFeatures: [
+        { value: "user-accounts", label: "Korisnički nalozi" },
+        { value: "payment-processing", label: "Obrada plaćanja" },
+        { value: "content-management", label: "Upravljanje sadržajem" },
+        { value: "analytics", label: "Analitički panel" },
+        { value: "social-integration", label: "Integracija društvenih mreža" }
+      ],
+      
+      // Načini kontakta
+      contactMethods: [
+        { 
+          value: "email", 
+          label: "Email", 
+          description: "Najbolje za detaljne razgovore" 
+        },
+        { 
+          value: "phone", 
+          label: "Telefonski poziv", 
+          description: "Dobro za brza pitanja" 
+        },
+        { 
+          value: "video-call", 
+          label: "Video poziv", 
+          description: "Najbolje za složene razgovore" 
+        }
+      ],
+      
+      // Otpremanje fajlova
+      fileUpload: {
+        title: "Reference i materijali za projekat",
+        description: "Otpremite inspiracijske slike, postojeće logoe, skice ili bilo koje referentne materijale",
+        supportedFormats: "Maks. 10MB po fajlu. Podržani formati: JPG, PNG, GIF, PDF, DOC, TXT"
+      },
+      
+      // Rezime
+      summary: {
+        title: "Zahtev za konsultacije o projektu",
+        projectBasics: "Osnovne informacije",
+        projectDetails: "Detalji projekta",
+        contactInformation: "Kontakt podaci",
+        submitConfirmation: "Pošaljite zahtev za projekat"
+      },
+      
+      // Poruke o automatskom čuvanju
+      autosave: {
+        restored: "Prethodni napredak je obnovljen. Možete da nastavite od mesta na kome ste stali.",
+        startFresh: "Započnite ispočetka"
+      },
+      
+      // Validacija
+      validation: {
+        required: "Ovo polje je obavezno",
+        minLength: "Mora imati najmanje {min} karaktera",
+        maxLength: "Može imati najviše {max} karaktera",
+        invalidEmail: "Molimo unesite ispravnu email adresu",
+        invalidUrl: "Molimo unesite ispravan URL"
+      },
+      
+      // Statusi uspeha/greške
+      states: {
+        loading: "Učitavanje...",
+        success: "Uspešno!",
+        error: "Došlo je do greške",
+        connectionLost: "Izgubili smo vezu. Molimo proverite vašu internet vezu."
+      },
+      
+      // Dijalog za potvrdu
+      confirm: {
+        title: "Da li ste sigurni?",
+        message: "Imate nesačuvane promene. Da li ste sigurni da želite da napustite stranicu?",
+        yes: "Da, napustite",
+        no: "Ne, ostanite"
+      },
+      
+      // Pristupačnost
+      a11y: {
+        closeButton: "Zatvori",
+        menuButton: "Prikaži/sakrij meni",
+        nextStep: "Sledeći korak",
+        previousStep: "Prethodni korak"
+      }
+    },
     "nav.contact": "Kontakt",
     "nav.home": "Početna",
     "nav.startProject": "Započni projekat",
 
-    // Heroj
-    "hero.title": "Stvaramo digitalna iskustva sa svrhom",
-    "hero.subtitle":
-      "Minimalistički dizajn. Maksimalan uticaj. Pravimo veb-sajtove koji pretvaraju posetioce u klijente.",
-    "hero.startProject": "Započni projekat",
-    "hero.viewWork": "Pogledaj naš rad",
+    // Services
+    services: {
+      pageTitle: "Naše Usluge",
+      pageDescription: "Sveobuhvatna digitalna rešenja za transformaciju vašeg poslovanja i podsticanje rasta",
+      whyChooseUs: {
+        title: "Zašto Izabrati Nas",
+        description: "Posvećeni smo pružanju izuzetnih rezultata za svaki projekat. Evo zašto nam naši klijenti veruju kada je u pitanju njihove digitalne potrebe.",
+        expertTeam: {
+          title: "Stručni Tim",
+          description: "Naš tim iskusnih profesionalaca posvećen je pružanju visokokvalitetnih rešenja prilagođenih vašim potrebama."
+        },
+        fastDelivery: {
+          title: "Brza Isporuka",
+          description: "Razumemo važnost vremena i obezbeđujemo pravovremenu isporuku svih naših projekata bez kompromisa u pogledu kvaliteta."
+        },
+        ongoingSupport: {
+          title: "Kontinuirana Podrška",
+          description: "Naša saradnja ne završava se isporukom projekta. Pružamo kontinuiranu podršku kako bismo osigurali vaš uspeh."
+        }
+      },
+      allCategories: "Sve Kategorije",
+      viewModes: {
+        grid: "Mrežni prikaz",
+        list: "Lista prikaz"
+      },
+      filters: {
+        searchPlaceholder: "Pretražite usluge...",
+        status: "Status",
+        type: "Tip",
+        urgency: "Hitnost",
+        allStatuses: "Svi Statusi",
+        allTypes: "Svi Tipovi",
+        allUrgencies: "Sve Hitnosti"
+      },
+      stats: {
+        servicesOffered: "Ponudjene Usluge",
+        projectsCompleted: "Završeni Projekti",
+        clientSatisfaction: "Zadovoljstvo Klijenata",
+        yearsExperience: "Godine Iskustva"
+      },
+      serviceCard: {
+        startingAt: "Cena od",
+        timeline: "Trajanje",
+        complexity: "Složenost",
+        learnMore: "Saznajte Više",
+        freeForNGOs: "Besplatno za NVO",
+        premiumService: "Premium Usluga"
+      },
+      resultsCount: "Prikazano {count} od ukupno {total} usluga",
+      cta: {
+        title: "Spremni da oživite svoje ideje?",
+        description: "Bez obzira da li imate konkretan projekat na umu ili samo želite da istražite mogućnosti, mi smo tu da vam pomognemo. Zajedno možemo stvoriti nešto neverovatno!",
+        startProject: "Započnite svoj projekat",
+        getFreeConsultation: "Zakažite besplatnu konsultaciju"
+      }
+    },
 
-    // Usluge
-    "services.title": "Usluge",
-    "services.subtitle":
-      "Specijalizovani smo za kreiranje digitalnih iskustava koja su i lepa i funkcionalna, fokusirajući se na ono što je najvažnije za vaš posao.",
+    // Service Template
+    serviceTemplate: {
+      startingPrice: "Početna Cena",
+      timeline: "Trajanje",
+      complexity: "Složenost",
+      category: "Kategorija",
+      targetAudience: "Savršeno za",
+      technologies: "Tehnologije koje koristimo",
+      deliverables: "Šta dobijate",
+      features: "Karakteristike Usluge",
+      featuresDescription: "Sveobuhvatne karakteristike dizajnirane da zadovolje vaše specifične potrebe",
+      process: "Naš Proces",
+      processDescription: "Dokazan pristup koji osigurava uspešnu implementaciju projekta",
+      pricing: "Transparentne Cene",
+      pricingDescription: "Izaberite paket koji najbolje odgovara vašim potrebama i budžetu",
+      portfolio: {
+        title: "Portfolio",
+        cta: "Pogledaj sve projekte",
+        description: "Pogledajte kako smo pomogli drugim kompanijama da uspeju sa {service}"
+      },
+      faq: "Često Postavljana Pitanja",
+      faqDescription: "Sve što treba da znate o našoj uslzi {service}",
+      recommended: "Preporučeno",
+      customPricing: "Trebate prilagođeno rešenje?",
+      customPricingDescription: "Svaki projekat je jedinstven. Kontaktirajte nas za personalizovanu ponudu prema vašim specifičnim potrebama.",
+      portfolioComingSoon: "Portfolio uskoro",
+      portfolioComingSoonDescription: "Radimo na prikazivanju naših najnovijih projekata iz oblasti {service}.",
+      stillHaveQuestions: "Još uvek imate pitanja?",
+      stillHaveQuestionsDescription: "Tu smo da vam pomognemo! Kontaktirajte nas za personalizovane odgovore.",
+      relatedServices: "Možda vas zanima",
+      relatedServicesStartingAt: "Cene od",
+      relatedServicesLearnMore: "Saznajte više",
+      finalCta: "Spremni da započnete?",
+      finalCtaDescription: "Razgovarajte s nama o tome kako naše usluge {service} mogu transformisati vaše poslovanje i pomoći vam da postignete vaše ciljeve.",
+      cta: {
+        startProject: "Započnite vaš projekat",
+        viewPricing: "Pogledajte cene",
+        getStarted: "Započnite",
+        customQuote: "Zatražite ponudu",
+        contactUs: "Kontaktirajte nas",
+        scheduleConsultation: "Zakažite konsultacije"
+      },
+      tabs: {
+        overview: "Pregled",
+        features: "Karakteristike",
+        process: "Proces",
+        pricing: "Cene",
+        portfolio: "Portfolio",
+
+    // Hero
+    hero: {
+      title: "Kreiramo digitalna iskustva sa svrhom",
+      subtitle: "Minimalistički dizajn. Maksimalan uticaj. Gradimo veb sajtove koji pretvaraju posetioce u klijente.",
+      startProject: "Započni projekat",
+      viewWork: "Pogledaj naš rad"
+    },
+
+
     "services.design.title": "Dizajn",
     "services.design.description":
       "Intuitivni interfejsi koji angažuju korisnike i povećavaju konverzije kroz pažljiv dizajn i besprekornu interakciju.",
@@ -669,23 +1581,26 @@ const translations = {
     "services.ngo-support.description": "Besplatan dizajn, razvoj i hosting za NVO iz JIE koje ne primaju strana finansiranja",
 
     // Service Template
-    "serviceTemplate.overview": "Pregled Usluge",
-    "serviceTemplate.keyFeatures": "Ključne Karakteristike",
-    "serviceTemplate.businessBenefits": "Poslovne Prednosti",
-    "serviceTemplate.increasedEfficiency": "Povećana Efikasnost",
-    "serviceTemplate.competitiveAdvantage": "Konkurentska Prednost",
-    "serviceTemplate.customSolutions": "Prilagođena rešenja za vaše potrebe",
-    "serviceTemplate.industryExpertise": "Stručnost i najbolje prakse u industriji",
-    "serviceTemplate.seamlessIntegration": "Besprekorna integracija sa postojećim sistemima",
-    "serviceTemplate.ongoingSupport": "Kontinuirana podrška i održavanje",
-    "serviceTemplate.comprehensiveSolutions": "Naša sveobuhvatna {service} rešenja su prilagođena da zadovolje specifične poslovne potrebe, pružajući merljive rezultate i izuzetnu vrednost.",
-    "serviceTemplate.efficiencyDescription": "Pojednostavite svoje operacije i smanjite troškove kroz naše optimizovane {service} rešenja.",
-    "serviceTemplate.advantageDescription": "Steknite prednost nad konkurencijom sa inovativnim {service} implementacijama.",
+    serviceTemplate: {
+      overview: "Преглед на Услугата",
+      keyFeatures: "Клучни Карактеристики",
+      businessBenefits: "Бизнис Користи",
+      increasedEfficiency: "Зголемена Ефикасност",
+      competitiveAdvantage: "Конкурентска Предност",
+      customSolutions: "Прилагодени решенија за вашите потреби",
+      industryExpertise: "Стручност и најдобри практики во индустријата",
+      seamlessIntegration: "Беспрекорна интеграција со постоечки системи",
+      ongoingSupport: "Континуирана поддршка и одржување",
+      comprehensiveSolutions: "Нашите сеопфатни {service} решенија се прилагодени за да ги исполнат вашите специфични бизнис потреби, нудејќи мерливи резултати и исклучителна вредност.",
+      efficiencyDescription: "Поедноставете ги вашите операции и намалете ги трошоците преку нашите оптимизирани {service} решенија.",
+      advantageDescription: "Добијте предност над конкуренцијата со иновативни {service} имплементации.",
+    },implementacijama.",
 
     // Portfolio
     "portfolio.title": "Izabrani Projekti",
     "portfolio.subtitle":
       "Istražite naš portfolio projekata koji prikazuju naš pristup rešavanju složenih dizajnerskih i razvojnih izazova.",
+{{ ... }}
     "portfolio.project1.title": "Redizajn e-trgovine",
     "portfolio.project1.category": "Dizajn",
     "portfolio.project1.description":
@@ -857,7 +1772,7 @@ const translations = {
     projectConsultations: {
       title: "Консултације о пројектима",
       filters: {
-        searchPlaceholder: "Претражи пројекте...",
+        searchPlaceholder: "Претражи пројекте...", // Used in project consultations search
         statusLabel: "Статус",
         typeLabel: "Тип пројекта",
         urgencyLabel: "Хитност",
@@ -938,127 +1853,8 @@ const translations = {
       }
     }
   },
-  // Services moved to individual language objects
-  // services: {
-  //   en: {
-  //     pageTitle: "Our Services",
-  //     pageDescription: "Comprehensive digital solutions to transform your business and drive growth",
-      searchPlaceholder: "Search services...",
-      allCategories: "All Categories",
-      viewModes: {
-        grid: "Grid view",
-        list: "List view"
-      },
-      filters: {
-        status: "Status",
-        type: "Type",
-        urgency: "Urgency",
-        allStatuses: "All Statuses",
-        allTypes: "All Types",
-        allUrgencies: "All Urgencies"
-      },
-      stats: {
-        servicesOffered: "Services Offered",
-        projectsCompleted: "Projects Completed",
-        clientSatisfaction: "Client Satisfaction",
-        yearsExperience: "Years Experience"
-      },
-      serviceCard: {
-        startingAt: "Starting at",
-        timeline: "Timeline",
-        complexity: "Complexity",
-        learnMore: "Learn More",
-        freeForNGOs: "Free for NGOs",
-        premiumService: "Premium Service"
-      },
-      resultsCount: "Showing {count} of {total} services"
-    },
-    mk: {
-      pageTitle: "Наши Услуги",
-      pageDescription: "Сеобфатни дигитални решенија за трансформација на вашиот бизнис и поттикнување на растот",
-      searchPlaceholder: "Пребарувај услуги...",
-      allCategories: "Сите категории",
-      viewModes: {
-        grid: "Мрежен приказ",
-        list: "Листа приказ"
-      },
-      filters: {
-        status: "Статус",
-        type: "Тип",
-        urgency: "Итност",
-        allStatuses: "Сите статуси",
-        allTypes: "Сите типови",
-        allUrgencies: "Сите итности"
-      },
-      stats: {
-        servicesOffered: "Понудени Услуги",
-        projectsCompleted: "Завршени Проекти",
-        clientSatisfaction: "Задоволство на Клиенти",
-        yearsExperience: "Години Искуство"
-      },
-      serviceCard: {
-        startingAt: "Цена од",
-        timeline: "Времетраење",
-        complexity: "Комплексност",
-        learnMore: "Дознај Повеќе",
-        freeForNGOs: "Бесплатно за НВО",
-        premiumService: "Премиум Услуга"
-      },
-      resultsCount: "Прикажани се {count} од вкупно {total} услуги"
-    },
-    sr: {
-      pageTitle: "Naše Usluge",
-      pageDescription: "Sveobuhvatna digitalna rešenja za transformaciju vašeg poslovanja i podsticanje rasta",
-      searchPlaceholder: "Pretražite usluge...",
-      allCategories: "Sve Kategorije",
-      viewModes: {
-        grid: "Mrežni prikaz",
-        list: "Lista prikaz"
-      },
-      filters: {
-        status: "Status",
-        type: "Tip",
-        urgency: "Hitnost",
-        allStatuses: "Svi Statusi",
-        allTypes: "Svi Tipovi",
-        allUrgencies: "Sve Hitnosti"
-      },
-      stats: {
-        servicesOffered: "Ponudjene Usluge",
-        projectsCompleted: "Završeni Projekti",
-        clientSatisfaction: "Zadovoljstvo Klijenata",
-        yearsExperience: "Godine Iskustva"
-      },
-      serviceCard: {
-        startingAt: "Cena od",
-        timeline: "Trajanje",
-        complexity: "Složenost",
-        learnMore: "Saznajte Više",
-        freeForNGOs: "Besplatno za NVO",
-        premiumService: "Premium Usluga"
-      },
-      resultsCount: "Prikazano {count} od ukupno {total} usluga",
-      serviceTemplate: {
-        startingPrice: "Početna Cena",
-        timeline: "Trajanje",
-        complexity: "Složenost",
-        category: "Kategorija",
-        cta: {
-          startProject: "Započnite Vaš Projekat",
-          viewPricing: "Pogledajte Cene"
-        },
-        tabs: {
-          overview: "Pregled",
-          features: "Karakteristike",
-          process: "Proces",
-          pricing: "Cene",
-          portfolio: "Portfolio",
-          faq: "Često Postavljana Pitanja"
-        },
-        whyChoose: "Zašto izabrati našu {service}?"
-      }
-    }
-  }
+  // Services and serviceTemplate translations are now properly structured
+  // with nested objects for better organization and maintainability
 };
 
 // Provider component
@@ -1078,9 +1874,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", language);
   }, [language]);
 
-  // Translation function with support for nested keys and interpolation
+  // Translation function with support for both flat and nested keys
   const t = <T = string>(key: string, params?: Record<string, any> & { returnObjects?: boolean }): T => {
-    // Split the key by dots to handle nested objects
+    // First try to find the key as a flat key (e.g., "nav.services")
+    if (translations[language] && key in translations[language]) {
+      const result = (translations[language] as any)[key];
+      // If the result is a string and we have params, perform interpolation
+      if (typeof result === 'string' && params) {
+        return Object.entries(params).reduce(
+          (str, [param, value]) => str.replace(new RegExp(`\\{${param}\\}`, 'g'), String(value)),
+          result
+        ) as unknown as T;
+      }
+      return result as unknown as T;
+    }
+    
+    // If not found as a flat key, try as a nested key
     const keys = key.split('.');
     let result: any = translations[language];
     

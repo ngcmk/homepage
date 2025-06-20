@@ -76,10 +76,10 @@ export default function Portfolio() {
   ];
 
   const projectTypes = [
-    { value: "all", label: "All Projects" },
-    { value: "web", label: "Web Development" },
-    { value: "mobile", label: "Mobile Apps" },
-    { value: "design", label: "UI/UX Design" },
+    { value: "all", label: t("portfolio.allProjects") },
+    { value: "web", label: t("portfolio.webDevelopment") },
+    { value: "mobile", label: t("portfolio.mobileApps") },
+    { value: "design", label: t("portfolio.uiuxDesign") },
   ];
 
   const getFilteredProjects = (type: string) => {
@@ -166,7 +166,7 @@ export default function Portfolio() {
 
                         <div>
                           <h4 className="font-semibold mb-2">
-                            Project Overview
+                            {t("portfolio.projectOverview")}
                           </h4>
                           <p className="text-muted-foreground">
                             {project.fullDescription}
@@ -177,19 +177,19 @@ export default function Portfolio() {
                           <div className="flex items-center space-x-2">
                             <Calendar className="h-4 w-4 text-primary" />
                             <span className="text-sm">
-                              Duration: {project.duration}
+                              {t("portfolio.duration")}: {project.duration}
                             </span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Users className="h-4 w-4 text-primary" />
                             <span className="text-sm">
-                              Team: {project.teamSize}
+                              {t("portfolio.team")}: {project.teamSize}
                             </span>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-semibold mb-2">Key Features</h4>
+                          <h4 className="font-semibold mb-2">{t("portfolio.keyFeatures")}</h4>
                           <div className="flex flex-wrap gap-2">
                             {project.features.map((feature, index) => (
                               <Badge
@@ -204,9 +204,7 @@ export default function Portfolio() {
                         </div>
 
                         <div>
-                          <h4 className="font-semibold mb-2">
-                            Technologies Used
-                          </h4>
+                          <h4 className="font-semibold mb-2">{t("portfolio.technologies")}</h4>
                           <div className="flex flex-wrap gap-2">
                             {project.technologies.map((tech, index) => (
                               <Badge
@@ -228,8 +226,8 @@ export default function Portfolio() {
                               rel="noopener noreferrer"
                               className="flex items-center space-x-2"
                             >
-                              <ExternalLink className="h-4 w-4" />
-                              <span>View Project</span>
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              {t("portfolio.visitWebsite")}
                             </a>
                           </Button>
                         </div>

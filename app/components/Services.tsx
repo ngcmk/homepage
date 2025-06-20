@@ -126,8 +126,8 @@ export default function Services() {
   return (
     <ServiceGrid
       services={services}
-      title={t("services.title")}
-      subtitle={t("services.subtitle")}
+      title={t("services.pageTitle")}
+      subtitle={t("services.pageDescription")}
       className="bg-gradient-to-b from-background to-muted/20"
     />
   );

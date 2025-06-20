@@ -38,7 +38,7 @@ interface FilterState {
 }
 
 export function ProjectConsultationsList() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     status: "all",
     type: "all",
@@ -75,23 +75,23 @@ export function ProjectConsultationsList() {
   const handleStatusChange = async (projectId: Id<"projectConsultations">, newStatus: string) => {
     try {
       if (newStatus === "reviewing") {
-        await markAsReviewing(projectId, t('projectConsultations.success.markedReviewing'));
-        toast.success(t('projectConsultations.success.markedReviewing'));
+        await markAsReviewing(projectId, t('project.consultations.success.markedReviewing'));
+        toast.success(t('project.consultations.success.markedReviewing'));
       } else if (newStatus === "quoted") {
-        await markAsQuoted(projectId, t('projectConsultations.success.markedQuoted'));
-        toast.success(t('projectConsultations.success.markedQuoted'));
+        await markAsQuoted(projectId, t('project.consultations.success.markedQuoted'));
+        toast.success(t('project.consultations.success.markedQuoted'));
       }
     } catch (error) {
-      toast.error(t('projectConsultations.errors.updateStatus'));
+      toast.error(t('project.consultations.errors.updateStatus'));
     }
   };
 
   const handleAddNote = async (projectId: Id<"projectConsultations">, note: string) => {
     try {
       await addProjectNote(projectId, note, "Admin", "note");
-      toast.success(t('projectConsultations.success.noteAdded'));
+      toast.success(t('project.consultations.success.noteAdded'));
     } catch (error) {
-      toast.error(t('projectConsultations.errors.addNote'));
+      toast.error(t('project.consultations.errors.addNote'));
     }
   };
 
@@ -121,8 +121,8 @@ export function ProjectConsultationsList() {
 
   const formatDate = (timestamp: number) => {
     return new Date(timestamp).toLocaleDateString(
-      t('languageCode') === 'mk' ? 'mk-MK' : 
-      t('languageCode') === 'sr' ? 'sr-RS' : 'en-US',
+      language === 'mk' ? 'mk-MK' : 
+      language === 'sr' ? 'sr-RS' : 'en-US',
       {
         year: "numeric",
         month: "short",
@@ -135,12 +135,12 @@ export function ProjectConsultationsList() {
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(
-      t('languageCode') === 'mk' ? 'mk-MK' : 
-      t('languageCode') === 'sr' ? 'sr-RS' : 'en-US',
+      language === 'mk' ? 'mk-MK' : 
+      language === 'sr' ? 'sr-RS' : 'en-US',
       {
         style: "currency",
-        currency: t('languageCode') === 'mk' ? 'MKD' : 
-                t('languageCode') === 'sr' ? 'RSD' : 'USD',
+        currency: language === 'mk' ? 'MKD' :
+                language === 'sr' ? 'RSD' : 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       }
@@ -149,26 +149,24 @@ export function ProjectConsultationsList() {
 
   // Helper to get status display text
   const getStatusText = (status: string) => {
-    const statuses = t('projectConsultations.filters.statuses') as Record<string, string>;
+    const statuses = t('project.consultations.filters.statuses') as Record<string, string>;
     return statuses[status] || status.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
-  // Helper to get type display text
   const getTypeText = (type: string) => {
-    const types = t('projectConsultations.filters.types') as Record<string, string>;
+    const types = t('project.consultations.filters.types') as Record<string, string>;
     return types[type] || type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
-  // Helper to get urgency display text
   const getUrgencyText = (urgency: string) => {
-    const urgencies = t('projectConsultations.filters.urgencies') as Record<string, string>;
+    const urgencies = t('project.consultations.filters.urgencies') as Record<string, string>;
     return urgencies[urgency] || urgency.charAt(0).toUpperCase() + urgency.slice(1);
   };
 
   // Get filter options with proper typing
-  const statusOptions = Object.entries(t('projectConsultations.filters.statuses') as Record<string, string>);
-  const typeOptions = Object.entries(t('projectConsultations.filters.types') as Record<string, string>);
-  const urgencyOptions = Object.entries(t('projectConsultations.filters.urgencies') as Record<string, string>);
+  const statusOptions = Object.entries(t('project.consultations.filters.statuses') as Record<string, string>);
+  const typeOptions = Object.entries(t('project.consultations.filters.types') as Record<string, string>);
+  const urgencyOptions = Object.entries(t('project.consultations.filters.urgencies') as Record<string, string>);
 
   return (
     <div className="space-y-6">
