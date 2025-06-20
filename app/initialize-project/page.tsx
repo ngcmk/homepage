@@ -114,7 +114,6 @@ export default function InitializeProject() {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
-  // Explicitly define status type to fix TypeScript errors
   type ConvexStatus = "connected" | "error" | "unknown";
   const [convexStatus, setConvexStatus] =
     React.useState<ConvexStatus>("unknown");
@@ -122,15 +121,11 @@ export default function InitializeProject() {
   const { submitProjectConsultation } = useProjectConsultationForm();
   const router = useRouter();
 
-  // Auto-save key for localStorage
   const AUTOSAVE_KEY = "ngc-project-form-data";
 
-  // Check Convex connection status
   React.useEffect(() => {
     const checkConvexConnection = async () => {
       try {
-        // Try to make a simple API call to check connection
-        // This is just a ping to see if Convex is accessible
         await fetch(process.env.NEXT_PUBLIC_CONVEX_URL || "", {
           method: "HEAD",
           mode: "no-cors",
