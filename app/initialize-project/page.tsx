@@ -114,7 +114,7 @@ export default function InitializeProject() {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
-  type ConvexStatus = "connected" | "error" | "unknown";
+  type ConvexStatus = "idle" | "connected" | "error" | "unknown";
   const [convexStatus, setConvexStatus] =
     React.useState<ConvexStatus>("unknown");
   const { t } = useLanguage();
