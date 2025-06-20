@@ -170,13 +170,17 @@ export default function InitializeProject() {
   type ProjectFormValues = z.infer<typeof projectFormSchema>;
 
   // Explicitly define status type to fix TypeScript errors
-  type ConvexStatus = "idle" | "connected" | "error" | "unknown";
+  // type ConvexStatus = "idle" | "connected" | "error" | "unknown";
 
   const [hasAutoSaved, setHasAutoSaved] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   // const [convexStatus, setConvexStatus] =
   //   React.useState<ConvexStatus>("unknown");
+  type ConvexStatus = "connected" | "error" | "unknown";
+  const [convexStatus, setConvexStatus] =
+    React.useState<ConvexStatus>("unknown");
+
   const router = useRouter();
   const [submissionAttempts, setSubmissionAttempts] = React.useState(0);
   const { submitProjectConsultation } = useProjectConsultationForm();
