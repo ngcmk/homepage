@@ -46,7 +46,7 @@ export default function HeroSection() {
               size="lg"
               className="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform duration-200"
             >
-              <Link href="/contact">
+              <Link href="/initialize-project">
                 {t("hero.startProject")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
