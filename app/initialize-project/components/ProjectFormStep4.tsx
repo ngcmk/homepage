@@ -1,8 +1,20 @@
 import React from "react";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface ProjectFormStep4Props {
   form: any;
@@ -23,7 +35,10 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.contactName")}</FormLabel>
           <FormControl>
-            <Input placeholder={t("project.initialize.placeholders.contactName")} {...field} />
+            <Input
+              placeholder={t("project.initialize.placeholders.contactName")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -36,7 +51,10 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.contactEmail")}</FormLabel>
           <FormControl>
-            <Input placeholder={t("project.initialize.placeholders.contactEmail")} {...field} />
+            <Input
+              placeholder={t("project.initialize.placeholders.contactEmail")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -49,7 +67,10 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.contactPhone")}</FormLabel>
           <FormControl>
-            <Input placeholder={t("project.initialize.placeholders.contactPhone")} {...field} />
+            <Input
+              placeholder={t("project.initialize.placeholders.contactPhone")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -62,7 +83,10 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.company")}</FormLabel>
           <FormControl>
-            <Input placeholder={t("project.initialize.placeholders.company")} {...field} />
+            <Input
+              placeholder={t("project.initialize.placeholders.company")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -73,14 +97,20 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
       name="preferredContact"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{t("project.initialize.fields.preferredContact")}</FormLabel>
+          <FormLabel>
+            {t("project.initialize.fields.preferredContact")}
+          </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder={t("project.initialize.placeholders.preferredContact")} />
+                <SelectValue
+                  placeholder={t(
+                    "project.initialize.placeholders.preferredContact",
+                  )}
+                />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 shadow-lg text-black dark:text-white">
+            <SelectContent>
               {contactMethods.map((method) => (
                 <SelectItem key={method.value} value={method.value}>
                   {method.label}
@@ -99,7 +129,10 @@ const ProjectFormStep4: React.FC<ProjectFormStep4Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.additionalInfo")}</FormLabel>
           <FormControl>
-            <Textarea placeholder={t("project.initialize.placeholders.additionalInfo")} {...field} />
+            <Textarea
+              placeholder={t("project.initialize.placeholders.additionalInfo")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

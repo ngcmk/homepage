@@ -1,8 +1,21 @@
 import React from "react";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface ProjectFormStep1Props {
   form: any;
@@ -25,7 +38,11 @@ const ProjectFormStep1: React.FC<ProjectFormStep1Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.name")}</FormLabel>
           <FormControl>
-            <Input placeholder={t("project.initialize.placeholders.name")} {...field} className="transition-all duration-200 focus:ring-2 focus:ring-primary/20" />
+            <Input
+              placeholder={t("project.initialize.placeholders.name")}
+              {...field}
+              className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -38,10 +55,15 @@ const ProjectFormStep1: React.FC<ProjectFormStep1Props> = ({
         <FormItem>
           <FormLabel>{t("project.initialize.fields.description")}</FormLabel>
           <FormControl>
-            <Textarea placeholder={t("project.initialize.placeholders.description")} className="min-h-[120px] transition-all duration-200 focus:ring-2 focus:ring-primary/20" {...field} />
+            <Textarea
+              placeholder={t("project.initialize.placeholders.description")}
+              className="min-h-[120px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              {...field}
+            />
           </FormControl>
           <FormDescription>
-            {field.value?.length || 0}/1000 {t("project.initialize.labels.characters")}
+            {field.value?.length || 0}/1000{" "}
+            {t("project.initialize.labels.characters")}
           </FormDescription>
           <FormMessage />
         </FormItem>
@@ -55,11 +77,13 @@ const ProjectFormStep1: React.FC<ProjectFormStep1Props> = ({
           <FormLabel>{t("project.initialize.fields.type")}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                <SelectValue placeholder={t("project.initialize.placeholders.type")} className="text-black dark:text-white" />
+              <SelectTrigger>
+                <SelectValue
+                  placeholder={t("project.initialize.placeholders.type")}
+                />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 shadow-lg text-black dark:text-white">
+            <SelectContent>
               {projectTypes.map((type) => (
                 <SelectItem key={type.value} value={type.value}>
                   {type.label}
@@ -79,11 +103,13 @@ const ProjectFormStep1: React.FC<ProjectFormStep1Props> = ({
           <FormLabel>{t("project.initialize.fields.urgency")}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                <SelectValue placeholder={t("project.initialize.placeholders.urgency")} className="text-black dark:text-white" />
+              <SelectTrigger>
+                <SelectValue
+                  placeholder={t("project.initialize.placeholders.urgency")}
+                />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 shadow-lg text-black dark:text-white">
+            <SelectContent>
               {urgencyLevels.map((urgency) => (
                 <SelectItem key={urgency.value} value={urgency.value}>
                   {urgency.label}

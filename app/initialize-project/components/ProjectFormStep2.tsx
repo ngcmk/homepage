@@ -1,8 +1,21 @@
 import React from "react";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface ProjectFormStep2Props {
   form: any;
@@ -41,7 +54,7 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
                   <SelectValue placeholder={placeholders.industry} />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 shadow-lg text-black dark:text-white">
+              <SelectContent>
                 {industries.map((industry) => (
                   <SelectItem key={industry.value} value={industry.value}>
                     {industry.label}
@@ -63,7 +76,11 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
           <FormItem>
             <FormLabel>{labels.targetAudience}</FormLabel>
             <FormControl>
-              <Textarea placeholder={placeholders.targetAudience} className="min-h-[80px] transition-all duration-200 focus:ring-2 focus:ring-primary/20" {...field} />
+              <Textarea
+                placeholder={placeholders.targetAudience}
+                className="min-h-[80px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                {...field}
+              />
             </FormControl>
             <FormDescription>
               {t("project.initialize.descriptions.targetAudience")}
@@ -79,7 +96,11 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
           <FormItem>
             <FormLabel>{labels.existingWebsite}</FormLabel>
             <FormControl>
-              <Input placeholder={placeholders.existingWebsite} {...field} className="transition-all duration-200 focus:ring-2 focus:ring-primary/20" />
+              <Input
+                placeholder={placeholders.existingWebsite}
+                {...field}
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
             </FormControl>
             <FormDescription>
               {t("project.initialize.descriptions.existingWebsite")}
@@ -114,7 +135,15 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
                   }}
                 >
                   <span
-                    style={!field.value?.includes(goal.value) ? { color: '#000', WebkitTextFillColor: '#000', filter: 'none' } : {}}
+                    style={
+                      !field.value?.includes(goal.value)
+                        ? {
+                            color: "#000",
+                            WebkitTextFillColor: "#000",
+                            filter: "none",
+                          }
+                        : {}
+                    }
                     className={`font-medium flex items-center gap-2 ${
                       field.value?.includes(goal.value)
                         ? "text-primary"
@@ -122,7 +151,19 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
                     }`}
                   >
                     {field.value?.includes(goal.value) && (
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      <svg
+                        className="w-4 h-4 text-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
                     )}
                     {goal.label}
                   </span>
@@ -159,7 +200,15 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
                   }}
                 >
                   <span
-                    style={!field.value?.includes(feature.value) ? { color: '#000', WebkitTextFillColor: '#000', filter: 'none' } : {}}
+                    style={
+                      !field.value?.includes(feature.value)
+                        ? {
+                            color: "#000",
+                            WebkitTextFillColor: "#000",
+                            filter: "none",
+                          }
+                        : {}
+                    }
                     className={`font-medium flex items-center gap-2 ${
                       field.value?.includes(feature.value)
                         ? "text-primary"
@@ -167,7 +216,19 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
                     }`}
                   >
                     {field.value?.includes(feature.value) && (
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      <svg
+                        className="w-4 h-4 text-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
                     )}
                     {feature.label}
                   </span>

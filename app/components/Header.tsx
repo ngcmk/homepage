@@ -175,19 +175,20 @@ export default function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0 bg-white h-[60%]">
+              {/* <SheetContent side="right" className="w-80 p-0 bg-white h-[60%]"> */}
+              <SheetContent side="right" className="w-80 p-0 glass">
                 <div className="flex flex-col h-full">
-                  <SheetHeader className="px-6 py-6 border-b bg-background">
+                  <SheetHeader className="px-6 py-6 border-b glass">
                     <SheetTitle className="text-left text-xl font-bold">
                       <span className="gradient-text">ngc</span>
                     </SheetTitle>
                   </SheetHeader>
 
-                  <div className="flex-1 px-6 py-6 bg-background">
+                  <div className="flex-1 px-6 py-6 glass">
                     <MobileNavigationItems />
                   </div>
 
-                  <div className="px-6 py-6 border-t bg-muted/50">
+                  <div className="px-6 py-6 border-t glass">
                     <Button
                       asChild
                       className="w-full h-12 text-base font-medium"
