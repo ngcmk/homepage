@@ -99,13 +99,13 @@ const en: Translation = {
         ceoPhone: {
           label: "CEO Direct Line",
           value: "+389 70 123 456",
-          description: "Martin, CEO & Co-founder",
+          description: "Aleksandar, CEO & Co-founder",
         },
-        ctoPhone: {
-          label: "CTO Direct Line",
-          value: "+389 70 456 789",
-          description: "Stefan, CTO & Co-founder",
-        },
+        // ctoPhone: {
+        //   label: "CTO Direct Line",
+        //   value: "+389 70 456 789",
+        //   description: "Stefan, CTO & Co-founder",
+        // },
         hours: {
           label: "Business Hours",
           value: "Mon-Fri: 9AM - 6PM CET",
@@ -114,7 +114,7 @@ const en: Translation = {
         languages: {
           label: "Languages",
           value: "English, Macedonian, Serbian",
-          description: "German & Dutch also available",
+          // description: "German & Dutch also available",
         },
       },
       social: {
@@ -324,16 +324,14 @@ const en: Translation = {
           "Your request was submitted with minor errors, but don't worry - we'll be in touch soon!",
       },
       errors: {
-        connectionError:
-          "We couldn't connect to our server. Please try again.",
+        connectionError: "We couldn't connect to our server. Please try again.",
         validationError:
           "Some fields contain errors. Please check and try again.",
         connectionErrorContact:
           "If the problem persists, please contact us directly at:",
         submissionError:
           "There was a problem submitting your request. Please try again later.",
-        emailRequired:
-          "Please enter a contact email to submit your request.",
+        emailRequired: "Please enter a contact email to submit your request.",
       },
 
       // Autosave Messages
@@ -358,7 +356,8 @@ const en: Translation = {
   // Footer
   footer: {
     copyright: "All rights reserved.",
-    description: "We create digital solutions that drive growth and results for businesses of all sizes.",
+    description:
+      "We create digital solutions that drive growth and results for businesses of all sizes.",
     social: {
       facebook: "Facebook",
       twitter: "Twitter",

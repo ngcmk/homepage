@@ -107,13 +107,13 @@ const sr: Translation = {
         ceoPhone: {
           label: "Direktna linija CEO-a",
           value: "+389 70 123 456",
-          description: "Martin, izvršni direktor i suosnivač",
+          description: "Aleksandar, izvršni direktor i suosnivač",
         },
-        ctoPhone: {
-          label: "Direktna linija CTO-a",
-          value: "+389 70 456 789",
-          description: "Stefan, tehnički direktor i suosnivač",
-        },
+        // ctoPhone: {
+        //   label: "Direktna linija CTO-a",
+        //   value: "+389 70 456 789",
+        //   description: "Stefan, tehnički direktor i suosnivač",
+        // },
         hours: {
           label: "Radno vreme",
           value: "Pon-Pet: 9-18h",

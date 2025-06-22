@@ -163,21 +163,21 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
         default: "+389 70 123 456",
       }),
       description: t("contact.hub.info.ceoPhone.description", {
-        default: "Martin, CEO & Co-founder",
+        default: "Aleksandar, CEO & Co-founder",
       }),
     },
-    {
-      icon: Phone,
-      label: t("contact.hub.info.ctoPhone.label", {
-        default: "CTO Direct Line",
-      }),
-      value: t("contact.hub.info.ctoPhone.value", {
-        default: "+389 70 456 789",
-      }),
-      description: t("contact.hub.info.ctoPhone.description", {
-        default: "Stefan, CTO & Co-founder",
-      }),
-    },
+    // {
+    //   icon: Phone,
+    //   label: t("contact.hub.info.ctoPhone.label", {
+    //     default: "CTO Direct Line",
+    //   }),
+    //   value: t("contact.hub.info.ctoPhone.value", {
+    //     default: "+389 70 456 789",
+    //   }),
+    // description: t("contact.hub.info.ctoPhone.description", {
+    //   default: "Stefan, CTO & Co-founder",
+    // }),
+    // },
     {
       icon: Clock,
       label: t("contact.hub.info.hours.label", { default: "Business Hours" }),
