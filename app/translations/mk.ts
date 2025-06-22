@@ -1,4 +1,4 @@
-import { projectNew } from "next/dist/build/swc/generated-native";
+// import { projectNew } from "next/dist/build/swc/generated-native";
 import { Translation } from "../types/translation";
 
 const mk: Translation = {
@@ -221,6 +221,20 @@ const mk: Translation = {
 
   // Project Initialization
   project: {
+    thankYou: {
+      title: "Ви благодариме за вашата порака!",
+      subtitle: "Вашето барање е успешно испратено.",
+      whatHappensNext: "Што следува следно?",
+      nextSteps: [
+        "Ќе ја разгледаме вашата порака и ќе ве контактираме во најкраток можен рок.",
+        "Нашиот тим ќе го анализира вашето барање и ќе ве контактира за да дискутираме следните чекори.",
+        "Во меѓувреме, можете да ги разгледате нашите услуги или да не контактирате директно преку телефон."
+      ],
+      actions: {
+        returnHome: "Вратете се на почетна страница",
+        exploreServices: "Истражете ги нашите услуги"
+      }
+    },
     initialize: {
       title: "Започнете го вашиот проект",
       subtitle:
@@ -263,6 +277,8 @@ const mk: Translation = {
       placeholders: {
         name: "Внесете го името на проектот",
         description: "Опишете ги целите и барањата на вашиот проект...",
+        type: "Изберете тип на проект",
+        urgency: "Изберете временска рамка",
         industry: "Изберете индустрија",
         targetAudience:
           "Опишете ја вашата целна публика (пр. млади професионалци, сопственици на мали бизниси, студенти...)",
@@ -276,6 +292,9 @@ const mk: Translation = {
         preferredContact: "Како би сакале да ве контактираме? (опционално)",
         additionalInfo:
           "Дополнителни информации, посебни барања или прашања што ги имате?",
+        timeline: "Кога треба да биде завршен проектот?",
+        budget: "Кој е вашиот приближен буџет?",
+        hasContent: "Дали имате подготвена содржина?",
       },
 
       // Buttons & Actions
@@ -338,6 +357,22 @@ const mk: Translation = {
       projectGoals: [
         { value: "increase-traffic", label: "Зголемување на собраќајот" },
         { value: "increase-conversions", label: "Зголемување на конверзиите" },
+        { value: "improve-ux", label: "Подобрување на корисничкото искуство" },
+        { value: "rebrand", label: "Ребрендирање/освежување на дизајнот" },
+        { value: "add-features", label: "Додавање нови функционалности" },
+        { value: "mobile-friendly", label: "Мобилна прилагодливост" },
+        { value: "seo", label: "Подобрување на SEO" },
+      ],
+
+      // Common Features
+      commonFeatures: [
+        { value: "responsive", label: "Респонзивен дизајн" },
+        { value: "cms", label: "Систем за управување со содржина (CMS)" },
+        { value: "ecommerce", label: "Е-трговија" },
+        { value: "blog", label: "Блог" },
+        { value: "contact-form", label: "Контакт форма" },
+        { value: "seo", label: "SEO оптимизација" },
+        { value: "analytics", label: "Интеграција со аналитика" },
       ],
 
       // Budget Ranges

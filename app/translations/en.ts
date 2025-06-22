@@ -1,3 +1,4 @@
+import ThankYou from "../thank-you/page";
 import { Translation } from "../types/translation";
 
 const en: Translation = {
@@ -198,9 +199,9 @@ const en: Translation = {
         under5k: "Under $5,000",
         fiveToTenK: "$5,000 - $10,000",
         tenToTwentyFiveK: "$10,000 - $25,000",
-        twentyFiveToFiftyK: "$25,000 - $50,000",
-        fiftyToHundredK: "$50,000 - $100,000",
-        overHundredK: "Over $100,000",
+        // twentyFiveToFiftyK: "$25,000 - $50,000",
+        // fiftyToHundredK: "$50,000 - $100,000",
+        // overHundredK: "Over $100,000",
         letsDiscuss: "Let's discuss",
       },
       errors: {
@@ -217,6 +218,20 @@ const en: Translation = {
 
   // Project Initialization
   project: {
+    thankYou: {
+      title: "Thank You for Your Message!",
+      subtitle: "Your request has been successfully submitted.",
+      whatHappensNext: "What Happens Next?",
+      nextSteps: [
+        "We'll review your message and get back to you as soon as possible.",
+        "Our team will analyze your request and contact you to discuss the next steps.",
+        "In the meantime, feel free to explore our services or contact us directly by phone."
+      ],
+      actions: {
+        returnHome: "Return to Homepage",
+        exploreServices: "Explore Our Services"
+      }
+    },
     initialize: {
       title: "Start Your Project",
       subtitle:
@@ -274,6 +289,9 @@ const en: Translation = {
         preferredContact: "How would you like us to contact you? (Optional)",
         additionalInfo:
           "Any additional details, special requirements, or questions you'd like to share?",
+        timeline: "When do you need this completed?",
+        budget: "What is your approximate budget?",
+        hasContent: "Do you have content ready?",
       },
 
       // Buttons & Actions
@@ -390,6 +408,7 @@ const en: Translation = {
       // Summary Section
       summary: {
         title: "Project Consultation Request",
+        description: "Thank you for submitting your project details. Our team will review your request and contact you soon.",
         projectBasics: "Project Basics",
         projectDetails: "Project Details",
         contactInformation: "Contact Information",
@@ -534,6 +553,9 @@ const en: Translation = {
           preferredContact: "How would you like us to contact you? (Optional)",
           additionalInfo:
             "Any additional details, special requirements, or questions you'd like to share?",
+          timeline: "When do you need this completed?",
+          budget: "What is your approximate budget?",
+          hasContent: "Do you have content ready?",
         },
 
         // Buttons & Actions
@@ -819,7 +841,7 @@ const en: Translation = {
       },
     },
   },
-
+ 
   // Footer
   footer: {
     description:

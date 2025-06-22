@@ -29,7 +29,14 @@ export default function ThankYou() {
               {t('project.thankYou.whatHappensNext')}
             </h2>
             <ul className="space-y-3 text-left">
-              {(t('project.thankYou.nextSteps', { returnObjects: true }) as string[]).map((step: string, index: number) => (
+              {(
+                ((): string[] => {
+                  const steps = t('project.thankYou.nextSteps', { returnObjects: true });
+                  if (Array.isArray(steps)) return steps;
+                  if (typeof steps === 'string') return [steps];
+                  return [];
+                })()
+              ).map((step: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <span className="mr-2 mt-1">•</span>
                   <span>{step}</span>

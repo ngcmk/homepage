@@ -1,5 +1,6 @@
 export type TranslationValue =
   | string
+  | string[]
   | { [key: string]: TranslationValue }
   | Array<{ [key: string]: string | number }>;
 

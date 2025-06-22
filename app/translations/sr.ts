@@ -158,6 +158,20 @@ const sr: Translation = {
 
   // Project Initialization
   project: {
+    thankYou: {
+      title: "Hvala Vam na poruci!",
+      subtitle: "Vaš zahtev je uspešno poslat.",
+      whatHappensNext: "Šta sledi dalje?",
+      nextSteps: [
+        "Pregledaćemo vašu poruku i javićemo vam se u najkraćem mogućem roku.",
+        "Naš tim će analizirati vaš zahtev i kontaktirati vas kako bismo razgovarali o sledećim koracima.",
+        "U međuvremenu, možete pogledati naše usluge ili nas kontaktirati direktno putem telefona."
+      ],
+      actions: {
+        returnHome: "Vratite se na početnu stranicu",
+        exploreServices: "Istražite naše usluge"
+      }
+    },
     initialize: {
       title: "Započnite svoj projekat",
       subtitle:
@@ -200,6 +214,8 @@ const sr: Translation = {
       placeholders: {
         name: "Unesite naziv projekta",
         description: "Opisite ciljeve i zahteve vašeg projekta...",
+        type: "Izaberite tip projekta",
+        urgency: "Izaberite vremenski okvir",
         industry: "Izaberite delatnost",
         targetAudience:
           "Opisite ciljnu grupu (npr. mladi profesionalci, vlasnici malih preduzeća, studenti...)",
@@ -213,6 +229,9 @@ const sr: Translation = {
         preferredContact: "Kako biste želeli da vas kontaktiramo? (opciono)",
         additionalInfo:
           "Dodatne informacije, posebni zahtevi ili pitanja koja imate?",
+        timeline: "Kada treba da bude završen projekat?",
+        budget: "Koliki je vaš okvirni budžet?",
+        hasContent: "Da li imate pripremljen sadržaj?",
       },
 
       // Buttons & Actions
@@ -267,15 +286,25 @@ const sr: Translation = {
         asap: "Vrlo hitno (1-2 nedelje)",
       },
 
-      // Budget Ranges
-      budgetRanges: {
-        range1: "Do 1.000€",
-        range2: "1.000€ - 3.000€",
-        range3: "3.000€ - 5.000€",
-        range4: "5.000€ - 10.000€",
-        range5: "10.000€ - 20.000€",
-        range6: "20.000€+",
-        custom: "Drugačiji iznos (navedite u dodatnim informacijama)",
+      // Timelines
+      timelines: {
+        urgent: "Hitno (što pre)",
+        oneToTwoMonths: "1-2 meseca",
+        twoToFourMonths: "2-4 meseca",
+        fourToSixMonths: "4-6 meseci",
+        sixMonthsPlus: "6+ meseci",
+        flexible: "Fleksibilan rok",
+      },
+
+      // Budgets
+      budgets: {
+        under5k: "Ispod 5.000$",
+        fiveTo15k: "5.000$ - 15.000$",
+        fifteenTo30k: "15.000$ - 30.000$",
+        thirtyTo50k: "30.000$ - 50.000$",
+        fiftyTo100k: "50.000$ - 100.000$",
+        over100k: "Preko 100.000$",
+        discuss: "Po dogovoru",
       },
 
       // Content Readiness

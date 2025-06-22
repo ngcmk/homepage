@@ -44,106 +44,13 @@ import * as z from "zod";
 import PageBreadcrumb from "../components/Breadcrumb";
 import { useLanguage } from "../contexts/language-context";
 import { useProjectConsultationForm } from "../hooks/use-project-consultations";
-
-// Define schema creation function that takes validation functions as parameters
-const createProjectFormSchema = (
-  getValidationMessage: (
-    key: string,
-    defaultMessage: string,
-    params?: Record<string, any>,
-  ) => string,
-) =>
-  z.object({
-    name: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || (val.length >= 2 && val.length <= 100),
-        (val) => ({
-          message: getValidationMessage(
-            val && val.length < 2 ? "minLength" : "maxLength",
-            val && val.length < 2
-              ? "Must be at least 2 characters"
-              : "Must be 100 characters or less",
-            { min: 2, max: 100 },
-          ),
-        }),
-      ),
-    description: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || (val.length >= 10 && val.length <= 1000),
-        (val) => ({
-          message: getValidationMessage(
-            val && val.length < 10 ? "minLength" : "maxLength",
-            val && val.length < 10
-              ? "Must be at least 10 characters"
-              : "Must be 1000 characters or less",
-            { min: 10, max: 1000 },
-          ),
-        }),
-      ),
-    type: z.string().optional(),
-    urgency: z.string().optional(),
-    industry: z.string().optional(),
-    targetAudience: z.string().optional(),
-    existingWebsite: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || /^https?:\/\/.+/.test(val),
-        getValidationMessage(
-          "invalidUrl",
-          "Please enter a valid URL starting with http:// or https://",
-        ),
-      ),
-    goals: z.array(z.string()).optional(),
-    features: z.array(z.string()).optional(),
-    timeline: z.string().optional(),
-    budget: z.string().optional(),
-    hasContent: z.string().optional(),
-    designPreferences: z.string().optional(),
-    contactName: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || (val.length >= 2 && val.length <= 100),
-        (val) => ({
-          message: getValidationMessage(
-            val && val.length < 2 ? "minLength" : "maxLength",
-            val && val.length < 2
-              ? "Must be at least 2 characters"
-              : "Must be 100 characters or less",
-            { min: 2, max: 100 },
-          ),
-        }),
-      ),
-    contactEmail: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
-        getValidationMessage(
-          "invalidEmail",
-          "Please enter a valid email address",
-        ),
-      ),
-    contactPhone: z
-      .string()
-      .optional()
-      .refine(
-        (val) => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
-        getValidationMessage(
-          "invalidPhone",
-          "Please enter a valid phone number",
-        ),
-      ),
-    company: z.string().optional(),
-    preferredContact: z.string().optional(),
-    additionalInfo: z.string().optional(),
-    projectFiles: z.array(z.any()).optional(),
-  });
+import StepProgressBar from "./components/StepProgressBar";
+import ProjectFormStep1 from "./components/ProjectFormStep1";
+import ProjectFormStep2 from "./components/ProjectFormStep2";
+import ProjectFormStep3 from "./components/ProjectFormStep3";
+import ProjectFormStep4 from "./components/ProjectFormStep4";
+import ProjectFormStep5 from "./components/ProjectFormStep5";
+import { createProjectFormSchema, ProjectFormValues } from "./schema";
 
 // We'll define the type inside the component
 
@@ -166,8 +73,6 @@ export default function InitializeProject() {
 
   // Create the schema with our validation function
   const projectFormSchema = createProjectFormSchema(getValidationMessage);
-  // Define the type based on the schema
-  type ProjectFormValues = z.infer<typeof projectFormSchema>;
 
   // Explicitly define status type to fix TypeScript errors
   // type ConvexStatus = "idle" | "connected" | "error" | "unknown";
@@ -390,12 +295,10 @@ export default function InitializeProject() {
 
   // Prepare data structures for the form
   const budgets = [
-    { value: "under-5k", label: t("project.initialize.budgets.under5k") },
-    { value: "5k-15k", label: t("project.initialize.budgets.fiveTo15k") },
-    { value: "15k-30k", label: t("project.initialize.budgets.fifteenTo30k") },
-    { value: "30k-50k", label: t("project.initialize.budgets.thirtyTo50k") },
-    { value: "50k-100k", label: t("project.initialize.budgets.fiftyTo100k") },
-    { value: "over-100k", label: t("project.initialize.budgets.over100k") },
+    { value: "under-5k", label: t("under-5k") },
+    { value: "5k-15k", label: t("5k-10") },
+    { value: "15k-30k", label: t("10-20") },
+
     { value: "discuss", label: t("project.initialize.budgets.discuss") },
   ];
 
@@ -1077,20 +980,6 @@ export default function InitializeProject() {
     form.setValue("projectFiles", [...uploadedFiles, ...validFiles]);
   };
 
-  const removeFile = (index: number) => {
-    const newFiles = uploadedFiles.filter((_, i) => i !== index);
-    setUploadedFiles(newFiles);
-    form.setValue("projectFiles", newFiles);
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
-
   return (
     <div className="min-h-screen bg-neutral-50 pt-24">
       <PageBreadcrumb />
@@ -1104,8 +993,6 @@ export default function InitializeProject() {
             <p className="text-neutral-600 text-lg">
               {t("project.initialize.subtitle")}
             </p>
-
-            {/* Auto-save indicator */}
             {hasAutoSaved && (
               <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex flex-col sm:flex-row sm:items-center gap-2">
                 <div className="flex items-center">
@@ -1125,86 +1012,12 @@ export default function InitializeProject() {
           </div>
 
           {/* Progress Section */}
-          <div className="mb-12">
-            {/* Step Progress Bar */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm font-medium text-gray-600">
-                  {t("project.initialize.progress.step", {
-                    current: currentStep,
-                    total: steps.length,
-                  })}
-                </span>
-                <span className="text-sm font-medium text-primary">
-                  {t("project.initialize.progress.percentage", {
-                    percentage: Math.round(getStepProgress()),
-                  })}
-                </span>
-              </div>
-              <Progress value={getStepProgress()} className="h-3 mb-2" />
-              <div className="text-center">
-                <span className="text-lg font-semibold text-gray-900">
-                  {steps[currentStep - 1].title}
-                </span>
-              </div>
-            </div>
-
-            {/* Step Indicators */}
-            <div className="hidden md:flex justify-between items-center overflow-x-auto pb-2">
-              {steps.map((step, index) => (
-                <div
-                  key={step.number}
-                  className={`flex items-center ${index < steps.length - 1 ? "flex-1 min-w-0" : "shrink-0"}`}
-                >
-                  <div className="flex flex-col items-center">
-                    <div
-                      className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 text-sm font-medium mb-2 ${
-                        currentStep >= step.number
-                          ? "bg-primary border-primary text-primary-foreground shadow-lg"
-                          : currentStep === step.number - 1
-                            ? "border-primary text-primary bg-primary/10"
-                            : "border-neutral-300 text-neutral-500"
-                      }`}
-                    >
-                      {currentStep > step.number ? (
-                        <CheckCircle className="w-6 h-6" />
-                      ) : (
-                        step.number
-                      )}
-                    </div>
-                    <span
-                      className={`text-xs text-center font-medium px-2 ${
-                        currentStep >= step.number
-                          ? "text-primary"
-                          : "text-neutral-500"
-                      }`}
-                    >
-                      {t(`project.initialize.steps.step${step.number}`)}
-                    </span>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`flex-1 h-0.5 mx-4 rounded transition-all duration-300 ${
-                        currentStep > step.number ? "bg-primary" : "bg-muted"
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Mobile Step Indicators */}
-            <div className="md:hidden flex justify-center space-x-2 mt-4">
-              {steps.map((step, index) => (
-                <div
-                  key={step.number}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentStep >= step.number ? "bg-primary" : "bg-muted"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+          <StepProgressBar
+            steps={steps}
+            currentStep={currentStep}
+            t={t}
+            getStepProgress={getStepProgress}
+          />
 
           {/* Form Card */}
           <Card className="shadow-lg border-0 bg-background/95 backdrop-blur-sm form-card">
@@ -1228,7 +1041,7 @@ export default function InitializeProject() {
                       {t("project.initialize.errors.connectionError")}
                     </p>
                     <p className="mt-2 text-sm">
-                      {t("project.initialize.errors.connectionErrorContact")}{" "}
+                      {t("project.initialize.errors.connectionErrorContact")} {" "}
                       <a
                         href={`mailto:${t("project.initialize.contactEmail")}`}
                         className="font-medium underline"
@@ -1241,1101 +1054,57 @@ export default function InitializeProject() {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    console.log("Form submit event triggered");
                     form.handleSubmit((data) => {
-                      console.log("Form data validated successfully", data);
                       handleSubmit(data);
                     })(e);
                   }}
                   className="space-y-6 project-form"
                 >
-                  {/* Step 1: Project Basics */}
                   {currentStep === 1 && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.projectName}</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder={placeholders.projectName}
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.projectDescription}</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder={placeholders.projectDescription}
-                                className="min-h-[120px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              {field.value?.length || 0}/1000{" "}
-                              {t("project.initialize.labels.characters")}
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="type"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.projectType}</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue
-                                    placeholder={t(
-                                      "project.initialize.placeholders.type",
-                                    )}
-                                  />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {projectTypes.map((type) => (
-                                  <SelectItem
-                                    key={type.value}
-                                    value={type.value}
-                                  >
-                                    {type.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="urgency"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.projectUrgency}</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue
-                                    placeholder={t(
-                                      "project.initialize.placeholders.urgency",
-                                    )}
-                                  />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {urgencyLevels.map((urgency) => (
-                                  <SelectItem
-                                    key={urgency.value}
-                                    value={urgency.value}
-                                  >
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">
-                                        {urgency.label}
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              {t("project.initialize.descriptions.urgency")}
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <ProjectFormStep1
+                      form={form}
+                      t={t}
+                      projectTypes={projectTypes}
+                      urgencyLevels={urgencyLevels}
+                    />
                   )}
-
-                  {/* Step 2: Project Details */}
                   {currentStep === 2 && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      <FormField
-                        control={form.control}
-                        name="industry"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.industry}</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue
-                                    placeholder={placeholders.industry}
-                                  />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {industries.map((industry) => (
-                                  <SelectItem
-                                    key={industry.value}
-                                    value={industry.value}
-                                  >
-                                    {industry.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              {t("project.initialize.descriptions.industry")}
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="targetAudience"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.targetAudience}</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder={placeholders.targetAudience}
-                                className="min-h-[80px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              {t(
-                                "project.initialize.descriptions.targetAudience",
-                              )}
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="existingWebsite"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.existingWebsite}</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder={placeholders.existingWebsite}
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              {t(
-                                "project.initialize.descriptions.existingWebsite",
-                              )}
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="goals"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.projectGoals}</FormLabel>
-                            <FormDescription className="mb-4">
-                              {t("project.initialize.descriptions.goals")}
-                            </FormDescription>
-                            <div className="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto">
-                              {projectGoals.map((goal) => (
-                                <div
-                                  key={goal.value}
-                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation project-selection-item ${
-                                    field.value?.includes(goal.value)
-                                      ? "border-primary bg-primary/5 selected"
-                                      : "border-border hover:border-primary/30 active:bg-muted/50"
-                                  }`}
-                                  onClick={() => {
-                                    const currentGoals = field.value || [];
-                                    if (currentGoals.includes(goal.value)) {
-                                      field.onChange(
-                                        currentGoals.filter(
-                                          (g) => g !== goal.value,
-                                        ),
-                                      );
-                                    } else {
-                                      field.onChange([
-                                        ...currentGoals,
-                                        goal.value,
-                                      ]);
-                                    }
-                                  }}
-                                >
-                                  <div
-                                    className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                                      field.value?.includes(goal.value)
-                                        ? "border-primary bg-primary"
-                                        : "border-gray-300"
-                                    }`}
-                                  >
-                                    {field.value?.includes(goal.value) && (
-                                      <CheckCircle className="w-3 h-3 text-white" />
-                                    )}
-                                  </div>
-                                  <span className="text-sm font-medium">
-                                    {goal.label}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="features"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{labels.features}</FormLabel>
-                            <FormDescription className="mb-4">
-                              {t("project.initialize.descriptions.features")}
-                            </FormDescription>
-                            <div className="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto">
-                              {commonFeatures.map((feature) => (
-                                <div
-                                  key={feature.value}
-                                  className={`flex items-center space-x-3 p-3 border rounded-lg cursor-pointer transition-all touch-manipulation project-selection-item ${
-                                    field.value?.includes(feature.value)
-                                      ? "border-primary bg-primary/5 selected"
-                                      : "border-border hover:border-primary/30 active:bg-muted/50"
-                                  }`}
-                                  onClick={() => {
-                                    const currentFeatures = field.value || [];
-                                    if (
-                                      currentFeatures.includes(feature.value)
-                                    ) {
-                                      field.onChange(
-                                        currentFeatures.filter(
-                                          (f) => f !== feature.value,
-                                        ),
-                                      );
-                                    } else {
-                                      field.onChange([
-                                        ...currentFeatures,
-                                        feature.value,
-                                      ]);
-                                    }
-                                  }}
-                                >
-                                  <div
-                                    className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                                      field.value?.includes(feature.value)
-                                        ? "border-primary bg-primary"
-                                        : "border-gray-300"
-                                    }`}
-                                  >
-                                    {field.value?.includes(feature.value) && (
-                                      <CheckCircle className="w-3 h-3 text-white" />
-                                    )}
-                                  </div>
-                                  <span className="text-sm font-medium">
-                                    {feature.label}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <ProjectFormStep2
+                      form={form}
+                      labels={labels}
+                      placeholders={placeholders}
+                      t={t}
+                      industries={industries}
+                    />
                   )}
-
-                  {/* Step 3: Timeline & Budget */}
                   {currentStep === 3 && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      <FormField
-                        control={form.control}
-                        name="timeline"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Project Timeline</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="When do you need this completed?" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {timelines.map((timeline) => (
-                                  <SelectItem
-                                    key={timeline.value}
-                                    value={timeline.value}
-                                  >
-                                    {timeline.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              This helps us plan resources and provide accurate
-                              timelines
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="budget"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Project Budget</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="Select your budget range" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {budgets.map((budget) => (
-                                  <SelectItem
-                                    key={budget.value}
-                                    value={budget.value}
-                                  >
-                                    {budget.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              Budget ranges help us provide appropriate
-                              solutions and recommendations
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {/* Smart Estimates Card - Always show */}
-                      <Card className="bg-blue-50 border-blue-200 project-estimate-card">
-                        <CardContent className="p-4">
-                          <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4" />
-                            Smart Project Estimates
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-blue-800 card-value">
-                                ${calculateEstimatedBudget().toLocaleString()}
-                              </div>
-                              <div className="text-blue-600 card-label">
-                                Estimated Cost
-                              </div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-blue-800 card-value">
-                                {calculateEstimatedTimeline()} weeks
-                              </div>
-                              <div className="text-blue-600 card-label">
-                                Estimated Timeline
-                              </div>
-                            </div>
-                            <div className="text-center">
-                              <div
-                                className={`text-lg font-bold ${getComplexityScore().color}`}
-                              >
-                                {getComplexityScore().level}
-                              </div>
-                              <div className="text-blue-600">Complexity</div>
-                            </div>
-                          </div>
-                          <p className="text-xs text-blue-700 mt-3 text-center">
-                            *These are preliminary estimates. More details will
-                            improve accuracy. Final pricing provided after
-                            consultation.
-                          </p>
-                        </CardContent>
-                      </Card>
-
-                      <FormField
-                        control={form.control}
-                        name="hasContent"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Content Preparation</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="Do you have content ready?" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="ready">
-                                  Content is ready (text, images, etc.)
-                                </SelectItem>
-                                <SelectItem value="partial">
-                                  Some content ready, need help with rest
-                                </SelectItem>
-                                <SelectItem value="need-help">
-                                  Need help creating all content
-                                </SelectItem>
-                                <SelectItem value="not-sure">
-                                  Not sure what content is needed
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              This affects timeline and helps us plan content
-                              creation services
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="designPreferences"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Design Style Preferences</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Describe your preferred design style, colors, examples of websites you like, etc."
-                                className="min-h-[100px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Optional - Any design preferences, inspiration, or
-                              style guidelines
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <ProjectFormStep3
+                      form={form}
+                      t={t}
+                      calculateEstimatedBudget={calculateEstimatedBudget}
+                    />
                   )}
-
-                  {/* Step 4: Contact Information */}
                   {currentStep === 4 && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      <FormField
-                        control={form.control}
-                        name="contactName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Your Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Enter your full name"
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="contactEmail"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email Address</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="your.email@example.com"
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Optional - We'll use this to send you project
-                              updates and communicate about your project
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="contactPhone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="tel"
-                                placeholder="+1 (555) 123-4567"
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Optional - We may call to discuss project details
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="company"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company/Organization</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Your company name"
-                                {...field}
-                                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Optional - Tell us about your organization
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="preferredContact"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Preferred Contact Method</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary/20">
-                                  <SelectValue placeholder="How would you like us to contact you? (Optional)" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {contactMethods.map((method) => (
-                                  <SelectItem
-                                    key={method.value}
-                                    value={method.value}
-                                  >
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">
-                                        {method.label}
-                                      </span>
-                                      <span className="text-xs text-muted-foreground">
-                                        {method.description}
-                                      </span>
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="additionalInfo"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Additional Information</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Any additional details, special requirements, or questions you'd like to share?"
-                                className="min-h-[100px] transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Optional - Anything else you think we should know
-                              about your project
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {/* File Upload */}
-                      <div>
-                        <label className="block text-sm font-medium mb-2">
-                          Project References & Assets
-                        </label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
-                          <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                          <p className="text-sm text-gray-600 mb-2">
-                            Upload inspiration images, existing logos,
-                            wireframes, or any reference materials
-                          </p>
-                          <input
-                            type="file"
-                            multiple
-                            accept="image/*,.pdf,.doc,.docx,.txt"
-                            onChange={handleFileUpload}
-                            className="hidden"
-                            id="file-upload"
-                          />
-                          <label
-                            htmlFor="file-upload"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary bg-primary/10 hover:bg-primary/20 cursor-pointer transition-colors"
-                          >
-                            Choose Files
-                          </label>
-                          <p className="text-xs text-gray-500 mt-2">
-                            Max 10MB per file. Supported: JPG, PNG, GIF, PDF,
-                            DOC, TXT
-                          </p>
-                        </div>
-
-                        {/* Display uploaded files */}
-                        {uploadedFiles.length > 0 && (
-                          <div className="mt-4 space-y-2">
-                            <p className="text-sm font-medium">
-                              Uploaded Files:
-                            </p>
-                            {uploadedFiles.map((file, index) => (
-                              <div
-                                key={index}
-                                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <File className="w-4 h-4 text-gray-500" />
-                                  <span className="text-sm font-medium">
-                                    {file.name}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    ({formatFileSize(file.size)})
-                                  </span>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() => removeFile(index)}
-                                  className="text-red-500 hover:text-red-700 transition-colors"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    <ProjectFormStep4
+                      form={form}
+                      t={t}
+                      contactMethods={contactMethods}
+                    />
                   )}
-
-                  {/* Step 5: Summary */}
                   {currentStep === 5 && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      <div className="text-center mb-6">
-                        <Rocket className="w-16 h-16 mx-auto mb-4 text-primary" />
-                        <h3 className="text-2xl font-semibold mb-2">
-                          Project Consultation Request
-                        </h3>
-                        <p className="text-neutral-600">
-                          Review your information before submitting your
-                          consultation request
-                        </p>
-                      </div>
-
-                      <div className="grid gap-6">
-                        {/* Project Basics */}
-                        <div className="bg-neutral-50 p-6 rounded-lg">
-                          <h4 className="font-semibold mb-4 text-lg">
-                            Project Basics
-                          </h4>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Project Name:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("name") || "To be determined"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Project Type:
-                              </span>
-                              <p className="text-neutral-900">
-                                {projectTypes.find(
-                                  (t) => t.value === form.getValues("type"),
-                                )?.label || "General Project"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Urgency Level:
-                              </span>
-                              <p className="text-neutral-900">
-                                {urgencyLevels.find(
-                                  (u) => u.value === form.getValues("urgency"),
-                                )?.label || "Standard Priority"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Industry:
-                              </span>
-                              <p className="text-neutral-900">
-                                {industries.find(
-                                  (i) => i.value === form.getValues("industry"),
-                                )?.label || "General Business"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Description:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("description") ||
-                                  "Will be discussed during consultation"}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Project Details */}
-                        <div className="bg-neutral-50 p-6 rounded-lg">
-                          <h4 className="font-semibold mb-4 text-lg">
-                            Project Details
-                          </h4>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Target Audience:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("targetAudience") ||
-                                  "To be defined during planning"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Existing Website:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("existingWebsite") ||
-                                  "Starting fresh"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Project Goals:
-                              </span>
-                              <div className="mt-1">
-                                {form.getValues("goals")?.length ? (
-                                  <div className="flex flex-wrap gap-2">
-                                    {form
-                                      .getValues("goals")
-                                      ?.map((goalValue) => (
-                                        <Badge
-                                          key={goalValue}
-                                          variant="secondary"
-                                        >
-                                          {
-                                            projectGoals.find(
-                                              (g) => g.value === goalValue,
-                                            )?.label
-                                          }
-                                        </Badge>
-                                      ))}
-                                  </div>
-                                ) : (
-                                  <p className="text-neutral-900">
-                                    Will define during consultation
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Desired Features:
-                              </span>
-                              <div className="mt-1">
-                                {form.getValues("features")?.length ? (
-                                  <div className="flex flex-wrap gap-2">
-                                    {form
-                                      .getValues("features")
-                                      ?.map((featureValue) => (
-                                        <Badge
-                                          key={featureValue}
-                                          variant="outline"
-                                        >
-                                          {
-                                            commonFeatures.find(
-                                              (f) => f.value === featureValue,
-                                            )?.label
-                                          }
-                                        </Badge>
-                                      ))}
-                                  </div>
-                                ) : (
-                                  <p className="text-neutral-900">
-                                    Standard features package
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Timeline & Budget */}
-                        <div className="bg-neutral-50 p-6 rounded-lg">
-                          <h4 className="font-semibold mb-4 text-lg">
-                            Timeline & Budget
-                          </h4>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Timeline:
-                              </span>
-                              <p className="text-neutral-900">
-                                {timelines.find(
-                                  (t) => t.value === form.getValues("timeline"),
-                                )?.label || "Flexible timeline"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Budget:
-                              </span>
-                              <p className="text-neutral-900">
-                                {budgets.find(
-                                  (b) => b.value === form.getValues("budget"),
-                                )?.label || "Let's discuss"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Content Preparation:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("hasContent") === "ready" &&
-                                  "Content is ready"}
-                                {form.getValues("hasContent") === "partial" &&
-                                  "Some content ready, need help with rest"}
-                                {form.getValues("hasContent") === "need-help" &&
-                                  "Need help creating all content"}
-                                {form.getValues("hasContent") === "not-sure" &&
-                                  "Not sure what content is needed"}
-                                {!form.getValues("hasContent") &&
-                                  "Will assess during planning"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Design Preferences:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("designPreferences") ||
-                                  "Open to recommendations"}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Contact Information */}
-                        <div className="bg-neutral-50 p-6 rounded-lg">
-                          <h4 className="font-semibold mb-4 text-lg">
-                            Contact Information
-                          </h4>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Name:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("contactName") ||
-                                  "Will collect during follow-up"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Email:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("contactEmail") ||
-                                  "Will collect during follow-up"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Phone:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("contactPhone") ||
-                                  "Email preferred"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Company:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("company") ||
-                                  "Individual/Personal"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Preferred Contact Method:
-                              </span>
-                              <p className="text-neutral-900">
-                                {contactMethods.find(
-                                  (m) =>
-                                    m.value ===
-                                    form.getValues("preferredContact"),
-                                )?.label || "Any method"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Additional Information:
-                              </span>
-                              <p className="text-neutral-900">
-                                {form.getValues("additionalInfo") ||
-                                  "Will discuss during consultation"}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="font-medium text-neutral-700">
-                                Project Files:
-                              </span>
-                              <div className="mt-1">
-                                {uploadedFiles.length > 0 ? (
-                                  <div className="space-y-1">
-                                    {uploadedFiles.map((file, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex items-center gap-2 text-sm"
-                                      >
-                                        <File className="w-3 h-3 text-gray-500" />
-                                        <span>{file.name}</span>
-                                        <span className="text-gray-500">
-                                          ({formatFileSize(file.size)})
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                ) : (
-                                  <p className="text-neutral-900">
-                                    Can share references during consultation
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Final Estimates Summary */}
-                      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-                        <CardContent className="p-6">
-                          <h4 className="font-semibold text-blue-900 mb-4 flex items-center gap-2">
-                            <Rocket className="w-5 h-5" />
-                            Final Project Analysis
-                          </h4>
-                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                            <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                              <div className="text-2xl font-bold text-blue-800">
-                                ${calculateEstimatedBudget().toLocaleString()}
-                              </div>
-                              <div className="text-sm text-blue-600">
-                                Estimated Investment
-                              </div>
-                            </div>
-                            <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                              <div className="text-2xl font-bold text-green-800">
-                                {calculateEstimatedTimeline()} weeks
-                              </div>
-                              <div className="text-sm text-green-600">
-                                Project Duration
-                              </div>
-                            </div>
-                            <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                              <div
-                                className={`text-2xl font-bold ${getComplexityScore().color}`}
-                              >
-                                {getComplexityScore().level}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                Complexity Level
-                              </div>
-                            </div>
-                            <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                              <div className="text-2xl font-bold text-purple-800">
-                                {urgencyLevels.find(
-                                  (u) => u.value === form.getValues("urgency"),
-                                )?.label || "Standard"}
-                              </div>
-                              <div className="text-sm text-purple-600">
-                                Priority Level
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <Badge variant="secondary" className="mb-2">
-                              Next Steps: Free Consultation & Custom Proposal
-                            </Badge>
-                            <p className="text-xs text-blue-700">
-                              We'll review your information and contact you
-                              within 24 hours to discuss your project and
-                              provide a custom proposal.
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <div className="bg-primary/5 border border-primary/20 p-4 rounded-lg">
-                        <p className="text-sm text-neutral-700">
-                          By submitting this consultation request, you agree to
-                          be contacted by our team. This is not a binding
-                          commitment - it's simply to start a conversation about
-                          your project needs.
-                        </p>
-                      </div>
-                    </div>
+                    <ProjectFormStep5
+                      t={t}
+                      formValues={form.getValues()}
+                      labels={labels}
+                      projectTypes={projectTypes}
+                      urgencyLevels={urgencyLevels}
+                      industries={industries}
+                      projectGoals={projectGoals}
+                      commonFeatures={commonFeatures}
+                      timelines={timelines}
+                      budgets={budgets}
+                    />
                   )}
-
                   {/* Navigation Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6 border-t">
                     {currentStep > 1 && (
@@ -2349,7 +1118,6 @@ export default function InitializeProject() {
                         {t("project.initialize.buttons.back")}
                       </Button>
                     )}
-
                     {currentStep < steps.length ? (
                       <Button
                         type="button"
@@ -2366,10 +1134,7 @@ export default function InitializeProject() {
                           className="flex items-center gap-2 justify-center bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 ml-auto text-lg px-8 py-4 h-auto font-semibold shadow-lg touch-manipulation w-full"
                           disabled={isSubmitting}
                           onClick={() => {
-                            console.log("Submit button clicked directly");
-                            // Get clean form data
                             const formData = form.getValues();
-                            // Only send fields that are in the schema
                             handleSubmit(formData);
                           }}
                         >
@@ -2406,7 +1171,6 @@ export default function InitializeProject() {
               </Form>
             </CardContent>
           </Card>
-
           {/* Direct Contact Alternative */}
           {submissionAttempts > 0 && (
             <div className="mt-8 bg-muted p-6 rounded-lg">
@@ -2421,7 +1185,7 @@ export default function InitializeProject() {
                 <div className="flex items-center gap-2">
                   <Mail className="w-5 h-5 text-primary" />
                   <span>
-                    Email:{" "}
+                    Email: {" "}
                     <a
                       href="mailto:projects@ngc.com"
                       className="text-primary hover:underline"
@@ -2433,7 +1197,7 @@ export default function InitializeProject() {
                 <div className="flex items-center gap-2">
                   <Phone className="w-5 h-5 text-primary" />
                   <span>
-                    Phone:{" "}
+                    Phone: {" "}
                     <a
                       href="tel:+1234567890"
                       className="text-primary hover:underline"
@@ -2447,7 +1211,6 @@ export default function InitializeProject() {
                   className="mt-2"
                   onClick={() => {
                     const data = form.getValues();
-                    // Create a mailto link with form data
                     const subject = encodeURIComponent(
                       "Project Consultation Request",
                     );
