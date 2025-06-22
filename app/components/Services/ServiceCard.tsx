@@ -184,7 +184,7 @@ export default function ServiceCard({
             )}
 
             {/* Action Buttons */}
-            <div className="flex flex-col space-y-2 mt-auto">
+            {/* <div className="flex flex-col space-y-2 mt-auto">
               <Button
                 asChild
                 className="w-full group/btn bg-primary/90 hover:bg-primary transition-all duration-300 transform hover:scale-105"
@@ -204,6 +204,18 @@ export default function ServiceCard({
                 <Link href={`/initialize-project?service=${service.id}`}>
                   <Zap className="w-3 h-3 mr-1" />
                   Quick Start
+                </Link>
+              </Button>
+            </div> */}
+            <div className="mx-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-xs hover:bg-primary/50"
+              >
+                <Link href={`/initialize-project`}>
+                  {/* <Zap className="w-3 h-3 mr-1" /> */}
+                  <p>Quick Start</p>
                 </Link>
               </Button>
             </div>

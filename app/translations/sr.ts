@@ -13,9 +13,12 @@ const sr: Translation = {
 
   // Hero Section
   hero: {
-    title: "Stvaramo digitalna rešenja koja podstiču rast",
+    title: "Stvaramo digitalna iskustva sa svrhom",
     subtitle:
-      "Transformišemo ideje u izuzetna digitalna rešenja koja podstiču rast i donose rezultate.",
+      "Minimalistički dizajn. Maksimalan uticaj. Pravimo veb-sajtove koji pretvaraju posetioce u klijente.",
+    // title: "Stvaramo digitalna rešenja koja podstiču rast",
+    // subtitle:
+    //   "Transformišemo ideje u izuzetna digitalna rešenja koja podstiču rast i donose rezultate.",
     startProject: "Započnite svoj projekat",
     viewWork: "Pogledajte naše projekte",
   },
@@ -98,7 +101,7 @@ const sr: Translation = {
       info: {
         location: {
           label: "Lokacija kancelarije",
-          value: "Skoplje, Severna Makedonija",
+          value: "Skoplje, Makedonija",
           description: "Centralno evropsko vreme (CET)",
         },
         ceoPhone: {
@@ -119,7 +122,7 @@ const sr: Translation = {
         languages: {
           label: "Jezici",
           value: "Engleski, makedonski, srpski",
-          description: "Nemački i holandski takođe dostupni",
+          // description: "Nemački i holandski takođe dostupni",
         },
       },
       social: {
@@ -165,12 +168,12 @@ const sr: Translation = {
       nextSteps: [
         "Pregledaćemo vašu poruku i javićemo vam se u najkraćem mogućem roku.",
         "Naš tim će analizirati vaš zahtev i kontaktirati vas kako bismo razgovarali o sledećim koracima.",
-        "U međuvremenu, možete pogledati naše usluge ili nas kontaktirati direktno putem telefona."
+        "U međuvremenu, možete pogledati naše usluge ili nas kontaktirati direktno putem telefona.",
       ],
       actions: {
         returnHome: "Vratite se na početnu stranicu",
-        exploreServices: "Istražite naše usluge"
-      }
+        exploreServices: "Istražite naše usluge",
+      },
     },
     initialize: {
       title: "Započnite svoj projekat",

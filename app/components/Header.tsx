@@ -97,7 +97,7 @@ export default function Header() {
           >
             {t("nav.services")}
           </a>
-          <a
+          {/* <a
             href="#portfolio"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -110,7 +110,7 @@ export default function Header() {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.clients")}
-          </a>
+          </a> */}
           <a
             href="#contact"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
@@ -175,7 +175,7 @@ export default function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0">
+              <SheetContent side="right" className="w-80 p-0 bg-white h-[60%]">
                 <div className="flex flex-col h-full">
                   <SheetHeader className="px-6 py-6 border-b bg-background">
                     <SheetTitle className="text-left text-xl font-bold">

@@ -14,9 +14,11 @@ const en: Translation = {
 
   // Hero Section
   hero: {
-    title: "We Create Digital Solutions That Drive Growth",
+    title: "We craft digital experiences with purpose",
+
     subtitle:
-      "We transform ideas into exceptional digital solutions that drive growth and deliver results.",
+      "Minimalist design. Maximum impact. We build websites that convert visitors into customers.",
+
     startProject: "Start Your Project",
     viewWork: "View Our Work",
   },
@@ -97,19 +99,19 @@ const en: Translation = {
       info: {
         location: {
           label: "Office Location",
-          value: "Skopje, North Macedonia",
+          value: "Skopje, Macedonia",
           description: "Central European Time (CET)",
         },
         ceoPhone: {
           label: "CEO Direct Line",
           value: "+389 70 123 456",
-          description: "Martin, CEO & Co-founder",
+          description: "Aleksandar, CEO & Co-founder",
         },
-        ctoPhone: {
-          label: "CTO Direct Line",
-          value: "+389 70 456 789",
-          description: "Stefan, CTO & Co-founder",
-        },
+        // ctoPhone: {
+        //   label: "CTO Direct Line",
+        //   value: "+389 70 456 789",
+        //   description: "Stefan, CTO & Co-founder",
+        // },
         hours: {
           label: "Business Hours",
           value: "Mon-Fri: 9AM - 6PM CET",
@@ -118,7 +120,7 @@ const en: Translation = {
         languages: {
           label: "Languages",
           value: "English, Macedonian, Serbian",
-          description: "German & Dutch also available",
+          // description: "German & Dutch also available",
         },
       },
       social: {
@@ -225,12 +227,12 @@ const en: Translation = {
       nextSteps: [
         "We'll review your message and get back to you as soon as possible.",
         "Our team will analyze your request and contact you to discuss the next steps.",
-        "In the meantime, feel free to explore our services or contact us directly by phone."
+        "In the meantime, feel free to explore our services or contact us directly by phone.",
       ],
       actions: {
         returnHome: "Return to Homepage",
-        exploreServices: "Explore Our Services"
-      }
+        exploreServices: "Explore Our Services",
+      },
     },
     initialize: {
       title: "Start Your Project",
@@ -408,7 +410,8 @@ const en: Translation = {
       // Summary Section
       summary: {
         title: "Project Consultation Request",
-        description: "Thank you for submitting your project details. Our team will review your request and contact you soon.",
+        description:
+          "Thank you for submitting your project details. Our team will review your request and contact you soon.",
         projectBasics: "Project Basics",
         projectDetails: "Project Details",
         contactInformation: "Contact Information",
@@ -841,7 +844,7 @@ const en: Translation = {
       },
     },
   },
- 
+
   // Footer
   footer: {
     description:
