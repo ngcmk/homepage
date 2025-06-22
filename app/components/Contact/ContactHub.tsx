@@ -195,7 +195,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
         default: "English, Macedonian, Serbian",
       }),
       description: t("contact.hub.info.languages.description", {
-        default: "German & Dutch also available",
+        // default: "German & Dutch also available",
       }),
     },
   ];
