@@ -76,33 +76,33 @@ const ProjectFormStep3: React.FC<ProjectFormStep3Props> = ({
     {
       value: "5k-15k",
       label: t("project.initialize.budgets.fiveTo15k", {
-        default: "$5,000 - $15,000",
+        default: "$5,000 - $10,000",
       }),
     },
     {
       value: "15k-30k",
       label: t("project.initialize.budgets.fifteenTo30k", {
-        default: "$15,000 - $30,000",
+        default: "$10,000 - $25,000",
       }),
     },
     {
       value: "30k-50k",
       label: t("project.initialize.budgets.thirtyTo50k", {
-        default: "$30,000 - $50,000",
+        default: "$25,000 +",
       }),
     },
-    {
-      value: "50k-100k",
-      label: t("project.initialize.budgets.fiftyTo100k", {
-        default: "$50,000 - $100,000",
-      }),
-    },
-    {
-      value: "over-100k",
-      label: t("project.initialize.budgets.over100k", {
-        default: "Over $100,000",
-      }),
-    },
+    // {
+    //   value: "50k-100k",
+    //   label: t("project.initialize.budgets.fiftyTo100k", {
+    //     default: "$50,000 - $100,000",
+    //   }),
+    // },
+    // {
+    //   value: "over-100k",
+    //   label: t("project.initialize.budgets.over100k", {
+    //     default: "Over $100,000",
+    //   }),
+    // },
     {
       value: "discuss",
       label: t("project.initialize.budgets.discuss", {

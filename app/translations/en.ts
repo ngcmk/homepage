@@ -197,11 +197,11 @@ const en: Translation = {
         support: "Technical Support",
         other: "Other",
       },
-      budgetOptions: {
+      budgets: {
         under5k: "Under $5,000",
         fiveToTenK: "$5,000 - $10,000",
-        tenToTwentyFiveK: "$10,000 - $25,000",
-        // twentyFiveToFiftyK: "$25,000 - $50,000",
+        tenToTwentyFiveK: "$10,000 - $20,000",
+        twentyFiveToFiftyK: "$25,000 +",
         // fiftyToHundredK: "$50,000 - $100,000",
         // overHundredK: "Over $100,000",
         letsDiscuss: "Let's discuss",

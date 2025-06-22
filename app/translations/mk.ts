@@ -105,15 +105,15 @@ const mk: Translation = {
         support: "Техничка поддршка",
         other: "Друго",
       },
-      budgetOptions: {
-        under5k: "Под 5.000€",
-        fiveToTenK: "5.000€ - 10.000€",
-        tenToTwentyFiveK: "10.000€ - 25.000€",
-        twentyFiveToFiftyK: "25.000€ - 50.000€",
-        fiftyToHundredK: "50.000€ - 100.000€",
-        overHundredK: "Над 100.000€",
-        letsDiscuss: "Да дискутираме",
-      },
+      // budgets: {
+      //   under5k: "Под 5.000€",
+      //   fiveToTenK: "5.000€ - 10.000€",
+      //   tenToTwentyFiveK: "10.000€ - 20.000€",
+      //   twentyFiveToFiftyK: "25.000€ +",
+      //   // fiftyToHundredK: "50.000€ - 100.000€",
+      //   // overHundredK: "Над 100.000€",
+      //   letsDiscuss: "Да дискутираме",
+      // },
       errors: {
         submissionError:
           "Имаше проблем со испраќањето на вашата порака. Ве молиме обидете се повторно.",
@@ -276,6 +276,15 @@ const mk: Translation = {
         projectFiles: "Референци и материјали",
       },
 
+      budgets: {
+        under5k: "Под 5.000€",
+        fiveToTenK: "5.000€ - 10.000€",
+        tenToTwentyFiveK: "10.000€ - 20.000€",
+        twentyFiveToFiftyK: "25.000€ +",
+        // fiftyToHundredK: "50.000€ - 100.000€",
+        // overHundredK: "Над 100.000€",
+        letsDiscuss: "Да дискутираме",
+      },
       // Placeholders
       placeholders: {
         name: "Внесете го името на проектот",

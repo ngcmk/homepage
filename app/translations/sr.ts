@@ -302,11 +302,11 @@ const sr: Translation = {
       // Budgets
       budgets: {
         under5k: "Ispod 5.000$",
-        fiveTo15k: "5.000$ - 15.000$",
-        fifteenTo30k: "15.000$ - 30.000$",
-        thirtyTo50k: "30.000$ - 50.000$",
-        fiftyTo100k: "50.000$ - 100.000$",
-        over100k: "Preko 100.000$",
+        fiveTo15k: "5.000$ - 10.000$",
+        fifteenTo30k: "10.000$ - 20.000$",
+        thirtyTo50k: "25.000$ +",
+        // fiftyTo100k: "50.000$ - 100.000$",
+        // over100k: "Preko 100.000$",
         discuss: "Po dogovoru",
       },
 
