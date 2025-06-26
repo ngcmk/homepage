@@ -85,7 +85,7 @@ export default function Footer() {
     },
     {
       name: t("footer.social.instagram", { default: "Instagram" }),
-      href: "https://instagram.com/ngc_solutions",
+      href: "https://www.instagram.com/next.generation.code?igsh=MW54bjYyZjl5Z3k1eQ==",
       icon: Instagram,
     },
   ];

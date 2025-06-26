@@ -216,7 +216,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     {
       icon: Instagram,
       name: t("contact.hub.social.instagram.name", { default: "Instagram" }),
-      href: "https://instagram.com/ngc_solutions",
+      href: "https://www.instagram.com/next.generation.code?igsh=MW54bjYyZjl5Z3k1eQ==",
       color: "hover:text-pink-600",
     },
     {
