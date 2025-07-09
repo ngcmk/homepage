@@ -10,6 +10,7 @@ const en: Translation = {
     contact: "Contact",
     home: "Home",
     startProject: "Start Project",
+     about: "About Us"
   },
 
   // Hero Section
@@ -104,14 +105,10 @@ const en: Translation = {
         },
         ceoPhone: {
           label: "CEO Direct Line",
-          value: "+389 70 123 456",
+          value: "+389 78 209046",
           description: "Aleksandar, CEO & Co-founder",
         },
-        // ctoPhone: {
-        //   label: "CTO Direct Line",
-        //   value: "+389 70 456 789",
-        //   description: "Stefan, CTO & Co-founder",
-        // },
+       
         hours: {
           label: "Business Hours",
           value: "Mon-Fri: 9AM - 6PM CET",
@@ -873,6 +870,26 @@ const en: Translation = {
         cookies: "Cookie Policy",
       },
     },
+      // About Page
+  about: {
+    title: "About Us",
+    subtitle: "Learn more about our team and mission",
+    ourMission: {
+      title: "Our Mission",
+      content: "We are dedicated to delivering exceptional digital experiences that help businesses grow and succeed in the digital landscape."
+    },
+    ourTeam: {
+      title: "Our Team",
+      content: "Our team consists of passionate professionals who are experts in their respective fields, working together to bring your vision to life."
+    },
+    whyChooseUs: "Why Choose Us",
+    benefits: {
+      experience: "Years of industry experience",
+      quality: "Commitment to quality",
+      support: "Dedicated support",
+      innovation: "Innovative solutions"
+    }
+  },
     social: {
       facebook: "Facebook",
       twitter: "Twitter",
