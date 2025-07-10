@@ -380,6 +380,24 @@ const sr: Translation = {
     },
   },
 
+  // About Page
+  about: {
+    title: "O nama",
+    subtitle: "Saznajte više o našoj kompaniji, misiji i timu koji stoji iza našeg uspeha.",
+    ourMission: {
+      title: "Naša misija",
+      content: "Posvećeni smo pružanju izuzetnih digitalnih rešenja koja pomažu kompanijama da uspeju u digitalnom svetu. Naša misija je da kombinujemo kreativnost sa najsavremenijim tehnologijama kako bismo stvorili značajna iskustva koja donose rezultate."
+    },
+    ourTeam: {
+      title: "Naš tim",
+      content: "Naš tim čine strastveni profesionalci koji su stručnjaci u svojim oblastima, a koji sarađuju kako bi ostvarili vašu viziju."
+    },
+    getInTouch: {
+      title: "Spremni ste da započnete svoj projekat?",
+      button: "Kontaktirajte nas"
+    }
+  },
+
   // Contact Extra
   contactExtra: {
     hub: {

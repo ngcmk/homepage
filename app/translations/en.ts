@@ -842,6 +842,31 @@ const en: Translation = {
     },
   },
 
+  // About Page
+  about: {
+    title: "About Us",
+    subtitle: "Learn more about our company, mission, and the team behind our success.",
+    ourMission: {
+      title: "Our Mission",
+      content: "We are dedicated to delivering exceptional digital solutions that help businesses thrive in the digital landscape. Our mission is to combine creativity with cutting-edge technology to create meaningful experiences that drive results."
+    },
+    ourTeam: {
+      title: "Our Team",
+      content: "Our team consists of passionate professionals who are experts in their respective fields, working together to bring your vision to life."
+    },
+    // whyChooseUs: "Why Choose Us",
+    // benefits: [
+    //   "Years of industry experience",
+    //   "Commitment to quality",
+    //   "Dedicated support",
+    //   "Innovative solutions"
+    // ],
+    getInTouch: {
+      title: "Ready to start your project?",
+      button: "Get in Touch"
+    }
+  },
+
   // Footer
   footer: {
     description:
@@ -869,32 +894,6 @@ const en: Translation = {
         terms: "Terms of Service",
         cookies: "Cookie Policy",
       },
-    },
-      // About Page
-  about: {
-    title: "About Us",
-    subtitle: "Learn more about our team and mission",
-    ourMission: {
-      title: "Our Mission",
-      content: "We are dedicated to delivering exceptional digital experiences that help businesses grow and succeed in the digital landscape."
-    },
-    ourTeam: {
-      title: "Our Team",
-      content: "Our team consists of passionate professionals who are experts in their respective fields, working together to bring your vision to life."
-    },
-    whyChooseUs: "Why Choose Us",
-    benefits: {
-      experience: "Years of industry experience",
-      quality: "Commitment to quality",
-      support: "Dedicated support",
-      innovation: "Innovative solutions"
-    }
-  },
-    social: {
-      facebook: "Facebook",
-      twitter: "Twitter",
-      linkedin: "LinkedIn",
-      instagram: "Instagram",
     },
   },
 };
