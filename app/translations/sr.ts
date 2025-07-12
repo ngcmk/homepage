@@ -106,7 +106,7 @@ const sr: Translation = {
         },
         ceoPhone: {
           label: "Direktna linija CEO-a",
-          value: "+389 70 123 456",
+          value: "+389 78 209 046",
           description: "Aleksandar, izvršni direktor i suosnivač",
         },
         // ctoPhone: {
