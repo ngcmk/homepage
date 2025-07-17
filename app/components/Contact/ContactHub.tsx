@@ -160,12 +160,24 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
         default: "CEO Direct Line",
       }),
       value: t("contact.hub.info.ceoPhone.value", {
-        default: "+389 70 123 456",
+        default: "+389 78 209 046",
       }),
       description: t("contact.hub.info.ceoPhone.description", {
         default: "Aleksandar, CEO & Co-founder",
       }),
     },
+    {
+  icon: Phone,
+  label: t("contact.hub.info.coFounderPhone.label", {
+    default: "Co-founder Contact",
+  }),
+  value: t("contact.hub.info.coFounderPhone.value", {
+    default: "+389 70 294 386",
+  }),
+  description: t("contact.hub.info.coFounderPhone.description", {
+    default: "Dimitar, CTO & Co-founder",
+  }),
+}
     // {
     //   icon: Phone,
     //   label: t("contact.hub.info.ctoPhone.label", {
@@ -178,7 +190,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     //   default: "Stefan, CTO & Co-founder",
     // }),
     // },
-    {
+    ,{
       icon: Clock,
       label: t("contact.hub.info.hours.label", { default: "Business Hours" }),
       value: t("contact.hub.info.hours.value", {

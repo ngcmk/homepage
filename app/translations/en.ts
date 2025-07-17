@@ -10,6 +10,7 @@ const en: Translation = {
     contact: "Contact",
     home: "Home",
     startProject: "Start Project",
+     about: "About Us"
   },
 
   // Hero Section
@@ -104,14 +105,10 @@ const en: Translation = {
         },
         ceoPhone: {
           label: "CEO Direct Line",
-          value: "+389 70 123 456",
+          value: "+389 78 209046",
           description: "Aleksandar, CEO & Co-founder",
         },
-        // ctoPhone: {
-        //   label: "CTO Direct Line",
-        //   value: "+389 70 456 789",
-        //   description: "Stefan, CTO & Co-founder",
-        // },
+       
         hours: {
           label: "Business Hours",
           value: "Mon-Fri: 9AM - 6PM CET",
@@ -845,6 +842,32 @@ const en: Translation = {
     },
   },
 
+  about: {
+  title: "About Us",
+  subtitle: `NGC – Next Generation Code is a digital agency specialized in crafting modern, fast, and functional websites and applications. We are a team of young, creative, and experienced developers and designers focused on quality, performance, and unique user experiences.
+
+Our mission is to help businesses, brands, and individuals stand out in the digital world through innovative solutions and modern design. Using cutting-edge technologies like Next.js, React, Tailwind CSS, and WordPress, we deliver optimized and sustainable digital products.`,
+
+  ourMission: {
+    title: "Our Mission",
+    content: `At NGC, our mission is to provide top-tier digital solutions that transform businesses and simplify daily operations for our clients. We believe technology drives innovation and growth, so we are dedicated to developing creative and technically sophisticated products tailored to individual needs. Our goal is to build long-term partnerships based on trust, quality, and continuous support, helping companies stand out in today's digital landscape.`
+  },
+
+  ourTeam: {
+    title: "Our Team",
+    content: `Our team consists of skilled and dedicated professionals with expertise in web development, design, marketing, and project management. With a clear vision and strong teamwork, we strive to exceed our clients' expectations through innovative and effective solutions. Each team member brings unique expertise and creativity, creating strong synergy and guaranteeing project success. At NGC, we value honesty, transparency, and continuous improvement because we believe that’s the way to achieve real results.`
+  },
+
+  whyChooseUs: "Why Choose Us",
+  benefits: {
+    experience: "Years of industry experience",
+    quality: "Commitment to quality",
+    support: "Dedicated support",
+    innovation: "Innovative solutions"
+  }
+},
+
+
   // Footer
   footer: {
     description:
@@ -872,12 +895,6 @@ const en: Translation = {
         terms: "Terms of Service",
         cookies: "Cookie Policy",
       },
-    },
-    social: {
-      facebook: "Facebook",
-      twitter: "Twitter",
-      linkedin: "LinkedIn",
-      instagram: "Instagram",
     },
   },
 };
