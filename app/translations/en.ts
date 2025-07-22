@@ -105,7 +105,7 @@ const en: Translation = {
         },
         ceoPhone: {
           label: "CEO Direct Line",
-          value: "+389 78 209046",
+          value: "+389 78 209 046",
           description: "Aleksandar, CEO & Co-founder",
         },
        

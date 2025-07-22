@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
@@ -23,7 +23,12 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function Header() {
+// ✅ Прима className како проп
+interface HeaderProps {
+  className?: string;
+}
+
+export default function Header({ className = "" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -135,7 +140,7 @@ export default function Header() {
         scrolled
           ? "bg-background/95 backdrop-blur-sm shadow-sm border-b py-3"
           : "bg-transparent py-6"
-      }`}
+      } ${className}`}
     >
       <nav className="container mx-auto px-6">
         <div className="flex justify-between items-center">
