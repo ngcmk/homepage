@@ -104,10 +104,16 @@ const en: Translation = {
           description: "Central European Time (CET)",
         },
         ceoPhone: {
-          label: "CEO Direct Line",
-          value: "+389 78 209 046",
-          description: "Aleksandar, CEO & Co-founder",
-        },
+  label: "Direct line to the Chief Executive Officer",
+  value: "+389 78 209 046",
+  description: "Aleksandar, CEO & Co-founder",
+},
+ctoPhone: {
+  label: "Direct line to the Chief Technology Officer",
+  value: "+389 70 456 789",
+  description: "Dimitar, CTO & Co-founder",
+},
+
        
         hours: {
           label: "Business Hours",

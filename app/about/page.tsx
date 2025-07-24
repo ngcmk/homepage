@@ -20,7 +20,7 @@ export default function AboutUsPage() {
       <main className="relative z-10 pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         {/* Title & Subtitle */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">
+          <h1 className="text-4xl font-bold gradient-text mb-4">
             {t("about.title")}
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -33,7 +33,7 @@ export default function AboutUsPage() {
           {/* Left: Mission & Team */}
           <div className="space-y-10">
             {/* Mission */}
-            <section>
+            <section className="hover-lift">
               <h2 className="text-2xl font-semibold text-foreground mb-3">
                 {t("about.ourMission.title")}
               </h2>
@@ -43,7 +43,7 @@ export default function AboutUsPage() {
             </section>
 
             {/* Team */}
-            <section>
+            <section className="hover-lift">
               <h2 className="text-2xl font-semibold text-foreground mb-3">
                 {t("about.ourTeam.title")}
               </h2>
@@ -54,25 +54,25 @@ export default function AboutUsPage() {
           </div>
 
           {/* Right: Why Choose Us */}
-          <div className="bg-muted/60 border border-border rounded-2xl p-8 shadow-md backdrop-blur-md space-y-6">
+          <div className="bg-muted/60 border border-border rounded-2xl p-8 shadow-md backdrop-blur-md space-y-6 hover-lift">
             <h3 className="text-xl font-semibold text-foreground">
               {t("about.whyChooseUs")}
             </h3>
             <ul className="space-y-4 text-base text-muted-foreground">
               <li className="flex items-start">
-                <span className="text-primary font-bold mr-2">✓</span>
+                <span className="text-primary font-bold mr-2 text-glow">✓</span>
                 <span>{t("about.benefits.experience")}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary font-bold mr-2">✓</span>
+                <span className="text-primary font-bold mr-2 text-glow">✓</span>
                 <span>{t("about.benefits.quality")}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary font-bold mr-2">✓</span>
+                <span className="text-primary font-bold mr-2 text-glow">✓</span>
                 <span>{t("about.benefits.support")}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary font-bold mr-2">✓</span>
+                <span className="text-primary font-bold mr-2 text-glow">✓</span>
                 <span>{t("about.benefits.innovation")}</span>
               </li>
             </ul>

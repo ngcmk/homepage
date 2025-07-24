@@ -9,6 +9,7 @@ const sr: Translation = {
     contact: "Kontakt",
     bookConsultation: "Zakažite konsultacije",
     startProject: "Započnite projekat",
+    about: "O nama"
   },
 
   // Hero Section
@@ -105,10 +106,16 @@ const sr: Translation = {
           description: "Centralno evropsko vreme (CET)",
         },
         ceoPhone: {
-          label: "Direktna linija CEO-a",
-          value: "+389 78 209 046",
-          description: "Aleksandar, izvršni direktor i suosnivač",
-        },
+  label: "Direktna linija izvršnog direktora",
+  value: "+389 78 209 046",
+  description: "Aleksandar, izvršni direktor i suosnivač",
+},
+ctoPhone: {
+  label: "Direktna linija tehničkog direktora",
+  value: "+389 70 456 789",
+  description: "Dimitrije, tehnički direktor i suosnivač",
+},
+
         // ctoPhone: {
         //   label: "Direktna linija CTO-a",
         //   value: "+389 70 456 789",
