@@ -40,7 +40,6 @@ import {
   Lightbulb,
   Heart,
   ChevronRight,
-  Play,
   Download,
   ExternalLink,
   MessageSquare,
