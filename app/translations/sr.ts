@@ -109,11 +109,11 @@ const sr: Translation = {
           value: "+389 78 209 046",
           description: "Aleksandar, izvršni direktor i suosnivač",
         },
-        // ctoPhone: {
-        //   label: "Direktna linija CTO-a",
-        //   value: "+389 70 456 789",
-        //   description: "Stefan, tehnički direktor i suosnivač",
-        // },
+        ctoPhone: {
+          label: "Direktna linija CTO-a",
+          value: "+389 70 294 386",
+          description: "Dimitar, tehnički direktor i suosnivač",
+        },
         hours: {
           label: "Radno vreme",
           value: "Pon-Pet: 9-18h",
@@ -381,29 +381,29 @@ const sr: Translation = {
   },
 
   about: {
-  title: "O nama",
-  subtitle: `NGC – Next Generation Code je digitalna agencija specijalizovana za izradu modernih, brzih i funkcionalnih veb sajtova i aplikacija. Mi smo tim mladih, kreativnih i iskusnih developera i dizajnera fokusiranih na kvalitet, performanse i jedinstveno korisničko iskustvo.
+    title: "O nama",
+    subtitle: `NGC – Next Generation Code je digitalna agencija specijalizovana za izradu modernih, brzih i funkcionalnih veb sajtova i aplikacija. Mi smo tim mladih, kreativnih i iskusnih developera i dizajnera fokusiranih na kvalitet, performanse i jedinstveno korisničko iskustvo.
 
 Naša misija je da pomognemo kompanijama, brendovima i pojedincima da se izdvoje u digitalnom svetu kroz inovativna rešenja i moderan dizajn. Koristeći najnovije tehnologije kao što su Next.js, React, Tailwind CSS i WordPress, isporučujemo optimizovane i održive digitalne proizvode.`,
 
-  ourMission: {
-    title: "Naša misija",
-    content: `U NGC-u je naša misija da pružimo vrhunska digitalna rešenja koja transformišu poslovanja i pojednostavljuju svakodnevne aktivnosti naših klijenata. Verujemo da tehnologija pokreće inovacije i rast, te smo posvećeni razvoju kreativnih i tehnički sofisticiranih proizvoda prilagođenih individualnim potrebama. Cilj nam je da gradimo dugoročna partnerstva zasnovana na poverenju, kvalitetu i kontinuiranoj podršci, pomažući kompanijama da se izdvoje na današnjem digitalnom tržištu.`
-  },
+    ourMission: {
+      title: "Naša misija",
+      content: `U NGC-u je naša misija da pružimo vrhunska digitalna rešenja koja transformišu poslovanja i pojednostavljuju svakodnevne aktivnosti naših klijenata. Verujemo da tehnologija pokreće inovacije i rast, te smo posvećeni razvoju kreativnih i tehnički sofisticiranih proizvoda prilagođenih individualnim potrebama. Cilj nam je da gradimo dugoročna partnerstva zasnovana na poverenju, kvalitetu i kontinuiranoj podršci, pomažući kompanijama da se izdvoje na današnjem digitalnom tržištu.`
+    },
 
-  ourTeam: {
-    title: "Naš tim",
-    content: `Naš tim čine vešti i posvećeni profesionalci sa ekspertizom u web razvoju, dizajnu, marketingu i upravljanju projektima. Sa jasnom vizijom i snažnim timskim duhom, težimo da prevaziđemo očekivanja klijenata kroz inovativna i efektivna rešenja. Svaki član tima donosi jedinstvene veštine i kreativnost, stvarajući snažnu sinergiju i garantujući uspeh projekta. U NGC-u cenimo iskrenost, transparentnost i kontinuirani razvoj jer verujemo da je to put ka stvarnim rezultatima.`
-  },
+    ourTeam: {
+      title: "Naš tim",
+      content: `Naš tim čine vešti i posvećeni profesionalci sa ekspertizom u web razvoju, dizajnu, marketingu i upravljanju projektima. Sa jasnom vizijom i snažnim timskim duhom, težimo da prevaziđemo očekivanja klijenata kroz inovativna i efektivna rešenja. Svaki član tima donosi jedinstvene veštine i kreativnost, stvarajući snažnu sinergiju i garantujući uspeh projekta. U NGC-u cenimo iskrenost, transparentnost i kontinuirani razvoj jer verujemo da je to put ka stvarnim rezultatima.`
+    },
 
-  whyChooseUs: "Zašto baš mi",
-  benefits: {
-    experience: "Godine iskustva u industriji",
-    quality: "Posvećenost kvalitetu",
-    support: "Posvećena podrška",
-    innovation: "Inovativna rešenja"
-  }
-},
+    whyChooseUs: "Zašto baš mi",
+    benefits: {
+      experience: "Godine iskustva u industriji",
+      quality: "Posvećenost kvalitetu",
+      support: "Posvećena podrška",
+      innovation: "Inovativna rešenja"
+    }
+  },
 
 
   // Contact Extra

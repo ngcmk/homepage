@@ -51,11 +51,11 @@ export default function Header() {
               {t("nav.services")}
             </NavigationMenuLink>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/about">{t("nav.about")}</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+          {/* <NavigationMenuItem> */}
+          {/*   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}> */}
+          {/*     <Link href="/about">{t("nav.about")}</Link> */}
+          {/*   </NavigationMenuLink> */}
+          {/* </NavigationMenuItem> */}
           <NavigationMenuItem>
             <NavigationMenuLink
               href="#contact"
@@ -72,11 +72,11 @@ export default function Header() {
               <Link href="/">{t("nav.home")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/about">{t("nav.about")}</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+          {/* <NavigationMenuItem> */}
+          {/*   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}> */}
+          {/*     <Link href="/about">{t("nav.about")}</Link> */}
+          {/*   </NavigationMenuLink> */}
+          {/* </NavigationMenuItem> */}
         </>
       )}
     </>
@@ -93,13 +93,13 @@ export default function Header() {
           >
             {t("nav.services")}
           </a>
-          <Link
-            href="/about"
-            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            {t("nav.about")}
-          </Link>
+          {/* <Link */}
+          {/*   href="/about" */}
+          {/*   className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium" */}
+          {/*   onClick={() => setIsMobileMenuOpen(false)} */}
+          {/* > */}
+          {/*   {t("nav.about")} */}
+          {/* </Link> */}
           <a
             href="#contact"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
@@ -131,11 +131,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled
           ? "bg-background/95 backdrop-blur-sm shadow-sm border-b py-3"
           : "bg-transparent py-6"
-      }`}
+        }`}
     >
       <nav className="container mx-auto px-6">
         <div className="flex justify-between items-center">

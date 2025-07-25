@@ -10,21 +10,15 @@ import { Separator } from "@/components/ui/separator";
 import {
   Mail,
   Phone,
-  MessageSquare,
-  Calendar,
   MapPin,
   Clock,
   Send,
   Zap,
   Heart,
-  Star,
   ArrowRight,
-  CheckCircle,
   Globe,
   Linkedin,
-  Github,
   Twitter,
-  AlertCircle,
   Wifi,
   WifiOff,
   Instagram,
@@ -167,17 +161,17 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       }),
     },
     {
-  icon: Phone,
-  label: t("contact.hub.info.coFounderPhone.label", {
-    default: "Co-founder Contact",
-  }),
-  value: t("contact.hub.info.coFounderPhone.value", {
-    default: "+389 70 294 386",
-  }),
-  description: t("contact.hub.info.coFounderPhone.description", {
-    default: "Dimitar, CTO & Co-founder",
-  }),
-}
+      icon: Phone,
+      label: t("contact.hub.info.ctoPhone.label", {
+        default: "Co-founder Contact",
+      }),
+      value: t("contact.hub.info.ctoPhone.value", {
+        default: "+389 70 294 386",
+      }),
+      description: t("contact.hub.info.ctoPhone.description", {
+        default: "Dimitar, CTO & Co-founder",
+      }),
+    }
     // {
     //   icon: Phone,
     //   label: t("contact.hub.info.ctoPhone.label", {
@@ -190,7 +184,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
     //   default: "Stefan, CTO & Co-founder",
     // }),
     // },
-    ,{
+    , {
       icon: Clock,
       label: t("contact.hub.info.hours.label", { default: "Business Hours" }),
       value: t("contact.hub.info.hours.value", {
