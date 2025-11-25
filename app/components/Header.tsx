@@ -56,11 +56,19 @@ export default function Header({ className = "" }: HeaderProps) {
               {t("nav.services")}
             </NavigationMenuLink>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
               <Link href="/about">{t("nav.about")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/blog">Блог</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
           <NavigationMenuItem>
             <NavigationMenuLink
               href="#contact"
@@ -77,9 +85,16 @@ export default function Header({ className = "" }: HeaderProps) {
               <Link href="/">{t("nav.home")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
               <Link href="/about">{t("nav.about")}</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/blog">Блог</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
         </>
@@ -98,6 +113,7 @@ export default function Header({ className = "" }: HeaderProps) {
           >
             {t("nav.services")}
           </a>
+
           <Link
             href="/about"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
@@ -105,6 +121,15 @@ export default function Header({ className = "" }: HeaderProps) {
           >
             {t("nav.about")}
           </Link>
+
+          <Link
+            href="/blog"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Блог
+          </Link>
+
           <a
             href="#contact"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
@@ -122,12 +147,21 @@ export default function Header({ className = "" }: HeaderProps) {
           >
             {t("nav.home")}
           </Link>
+
           <Link
             href="/about"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("nav.about")}
+          </Link>
+
+          <Link
+            href="/blog"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Блог
           </Link>
         </>
       )}
