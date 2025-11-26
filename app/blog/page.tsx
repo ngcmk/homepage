@@ -1,5 +1,7 @@
 "use client";
 
+import { PortableText } from '@portabletext/react';
+
 import { useEffect, useState } from "react";
 import AnimatedBackground from "../components/Hero/AnimatedBackground";
 import { useLanguage } from "../contexts/language-context";
