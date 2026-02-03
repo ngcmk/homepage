@@ -10,6 +10,7 @@ const en: Translation = {
     home: "Home",
     startProject: "Start Project",
     about: "About Us",
+    blog: "Blog",
   },
 
   hero: {
@@ -197,6 +198,227 @@ const en: Translation = {
     },
   },
 
+  // Project Initialization
+  project: {
+    thankYou: {
+      title: "Thank you for your message!",
+      subtitle: "Your request has been successfully sent.",
+      whatHappensNext: "What happens next?",
+      nextSteps: [
+        "We will review your message and get back to you as soon as possible.",
+        "Our team will analyze your request and contact you to discuss the next steps.",
+        "In the meantime, you can explore our services or contact us directly by phone.",
+      ],
+      actions: {
+        returnHome: "Return to home page",
+        exploreServices: "Explore our services",
+      },
+    },
+    initialize: {
+      title: "Start your project",
+      subtitle:
+        "Tell us more about your project and we'll get back to you with a customized quote",
+
+      // Steps
+      steps: {
+        step1: "Basic information",
+        step2: "Project details",
+        step3: "Timeline and budget",
+        step4: "Contact information",
+        step5: "Review and send",
+      },
+
+      // Form Fields
+      fields: {
+        name: "Project name",
+        description: "Project description",
+        type: "Project type",
+        urgency: "Project urgency",
+        industry: "Industry/Business type",
+        targetAudience: "Target audience",
+        existingWebsite: "Existing website (if any)",
+        goals: "Project goals",
+        features: "Desired features",
+        timeline: "Project timeline",
+        budget: "Budget",
+        hasContent: "Content readiness",
+        designPreferences: "Preferred design style",
+        contactName: "Your name",
+        contactEmail: "Email address",
+        contactPhone: "Phone number",
+        company: "Company/Organization",
+        preferredContact: "Preferred contact method",
+        additionalInfo: "Additional information",
+        projectFiles: "References and materials",
+      },
+
+      // Placeholders
+      placeholders: {
+        name: "Enter project name",
+        description: "Describe the goals and requirements of your project...",
+        type: "Select project type",
+        urgency: "Select timeframe",
+        industry: "Select industry",
+        targetAudience:
+          "Describe your target audience (e.g., young professionals, small business owners, students...)",
+        existingWebsite: "https://yoursite.com",
+        designPreferences:
+          "Describe desired design style, colors, website examples you like, etc.",
+        contactName: "Enter your full name",
+        contactEmail: "your.email@example.com",
+        contactPhone: "+1 (555) 123-4567",
+        company: "Your company name",
+        preferredContact: "How would you like us to contact you? (optional)",
+        additionalInfo:
+          "Additional information, special requests, or questions you have?",
+        timeline: "When does the project need to be completed?",
+        budget: "What is your approximate budget?",
+        hasContent: "Do you have content prepared?",
+      },
+
+      // Buttons & Actions
+      buttons: {
+        next: "Next step",
+        previous: "Previous step",
+        submit: "Submit request",
+        chooseFiles: "Choose files",
+        startFresh: "Start over",
+        back: "Back",
+        continue: "Continue",
+      },
+
+      // Progress Messages
+      progress: {
+        step: "Step {current} of {total}",
+        percentage: "{percentage}% Complete",
+      },
+
+      // Labels
+      labels: {
+        characters: "characters",
+      },
+
+      // Field descriptions
+      descriptions: {
+        urgency:
+          "Select the timeframe that best fits your project needs",
+        industry: "Select the industry your company operates in",
+        goals: "Select all goals that apply to your project",
+        features: "Select all features you'd like in your project",
+        targetAudience:
+          "Describe who will be using your website or application",
+        existingWebsite:
+          "If you have a current website, please provide the URL",
+      },
+
+      // Project Types
+      types: {
+        websiteRedesign: "Website Redesign",
+        newWebsite: "New Website",
+        ecommerce: "E-commerce Store",
+        webApp: "Web Application",
+        mobileApp: "Mobile Application",
+        seo: "SEO Optimization",
+        marketing: "Digital Marketing",
+      },
+
+      // Urgency Levels
+      urgencyLevels: {
+        notUrgent: "Not urgent (3+ months)",
+        standard: "Standard (1-3 months)",
+        urgent: "Urgent (2-4 weeks)",
+        asap: "Very urgent (1-2 weeks)",
+      },
+
+      // Timelines
+      timelines: {
+        urgent: "Urgent (ASAP)",
+        oneToTwoMonths: "1-2 months",
+        twoToFourMonths: "2-4 months",
+        fourToSixMonths: "4-6 months",
+        sixMonthsPlus: "6+ months",
+        flexible: "Flexible timeline",
+      },
+
+      // Budgets
+      budgets: {
+        under5k: "Under $5,000",
+        fiveTo15k: "$5,000 - $10,000",
+        fifteenTo30k: "$10,000 - $20,000",
+        thirtyTo50k: "$25,000 +",
+        discuss: "Let's discuss",
+      },
+
+      // Content Readiness
+      contentReadiness: {
+        ready: "Yes, all content is ready",
+        partial: "Partially ready, we need help",
+        none: "No, we need help preparing content",
+      },
+
+      // Contact Methods
+      contactMethods: {
+        email: "Email",
+        phone: "Phone",
+        whatsapp: "WhatsApp",
+        viber: "Viber",
+        zoom: "Zoom",
+        other: "Other (specify in additional info)",
+      },
+
+      // Form Validation
+      validation: {
+        required: "This field is required",
+        invalidEmail: "Please enter a valid email address",
+        invalidUrl: "Please enter a valid URL",
+        minLength: "Must contain at least {min} characters",
+        maxLength: "Must contain at most {max} characters",
+      },
+
+      // Success Message
+      success: {
+        title: "Successfully sent!",
+        message:
+          "Thank you for contacting us. We will get back to you as soon as possible.",
+        returnHome: "Return to home page",
+      },
+
+      // Error Message
+      error: {
+        title: "An error occurred",
+        message:
+          "Unfortunately, an error occurred while sending your request. Please try again later.",
+        tryAgain: "Try again",
+      },
+
+      // File Upload
+      fileUpload: {
+        title: "References and materials",
+        description:
+          "Upload references, logos, sketches, or any other materials that will help us better understand your needs",
+        supportedFormats:
+          "Max. 10MB per file. Supported formats: JPG, PNG, GIF, PDF, DOC, TXT",
+      },
+
+      // Confirmation Dialog
+      confirm: {
+        title: "Are you sure?",
+        message:
+          "You have unsaved changes. Are you sure you want to leave?",
+        yes: "Yes, leave",
+        no: "No, stay",
+      },
+
+      // Accessibility
+      a11y: {
+        closeButton: "Close",
+        menuButton: "Menu",
+        nextStep: "Next step",
+        previousStep: "Previous step",
+      },
+    },
+  },
+
   about: {
     title: "About Us",
     subtitle: `NGC – Next Generation Code is a digital agency specialized in crafting modern, fast, and functional websites and applications. We are a team of young, creative, and experienced developers and designers focused on quality, performance, and unique user experiences.
@@ -216,6 +438,23 @@ Our mission is to help businesses, brands, and individuals stand out in the digi
       quality: "Commitment to quality",
       support: "Dedicated support",
       innovation: "Innovative solutions",
+    },
+  },
+
+  search: {
+    categories: {
+      all: "All Categories",
+      services: "Services",
+      portfolio: "Portfolio",
+      blog: "Blog",
+      about: "About",
+      contact: "Contact",
+    },
+    sort: {
+      relevance: "Most Relevant",
+      recent: "Most Recent",
+      popular: "Most Popular",
+      alphabetical: "A-Z",
     },
   },
 

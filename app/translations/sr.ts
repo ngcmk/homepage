@@ -9,7 +9,8 @@ const sr: Translation = {
     contact: "Kontakt",
     bookConsultation: "Zakažite konsultacije",
     startProject: "Započnite projekat",
-    about: "O nama"
+    about: "O nama",
+    blog: "Blog"
   },
 
   // Hero Section
@@ -113,7 +114,7 @@ const sr: Translation = {
 ctoPhone: {
   label: "Direktna linija tehničkog direktora",
   value: "+389 70 456 789",
-  description: "Dimitrije, tehnički direktor i suosnivač",
+  description: "Dimitar, tehnički direktor i suosnivač",
 },
 
         // ctoPhone: {
@@ -457,6 +458,52 @@ Naša misija je da pomognemo kompanijama, brendovima i pojedincima da se izdvoje
         social: {
           label: "Pratite nas",
         },
+      },
+    },
+  },
+
+  search: {
+    categories: {
+      all: "Sve kategorije",
+      services: "Usluge",
+      portfolio: "Portfolio",
+      blog: "Blog",
+      about: "O nama",
+      contact: "Kontakt",
+    },
+    sort: {
+      relevance: "Najrelevantniji",
+      recent: "Najnoviji",
+      popular: "Najpopularniji",
+      alphabetical: "A-Š",
+    },
+  },
+
+  footer: {
+    description:
+      "Transformišite svoje ideje u izuzetna digitalna iskustva. Hajde da napravimo nešto nevjerovatno zajedno.",
+    copyright: "© {year} NGC. Sva prava zadržana.",
+    sections: {
+      services: "Usluge",
+      company: "Kompanija",
+    },
+    links: {
+      services: {
+        design: "Dizajn",
+        webdev: "Web razvoj",
+        mobile: "Mobilne aplikacije",
+        branding: "Brending",
+      },
+      company: {
+        about: "O nama",
+        careers: "Karijere",
+        blog: "Blog",
+        contact: "Kontaktirajte nas",
+      },
+      legal: {
+        privacy: "Politika privatnosti",
+        terms: "Uslovi korišćenja",
+        cookies: "Politika kolačića",
       },
     },
   },

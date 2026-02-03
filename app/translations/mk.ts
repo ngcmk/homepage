@@ -9,7 +9,8 @@ const mk: Translation = {
     contact: "Контакт",
     bookConsultation: "Закажете консултации",
     startProject: "Започнете проект",
-    about: "За нас"
+    about: "За нас",
+    blog: "Блог"
   },
 
   // Hero Section
@@ -233,6 +234,50 @@ const mk: Translation = {
       support: "Посветена поддршка",
       innovation: "Иновативни решенија"
     }
+  },
+  search: {
+    categories: {
+      all: "Сите категории",
+      services: "Услуги",
+      portfolio: "Портфолио",
+      blog: "Блог",
+      about: "За нас",
+      contact: "Контакт",
+    },
+    sort: {
+      relevance: "Најрелевантни",
+      recent: "Најнови",
+      popular: "Најпопуларни",
+      alphabetical: "А-Ш",
+    },
+  },
+  footer: {
+    description:
+      "Трансформирајте ги вашите идеи во исклучително дигитални искуства. Да направиме нешто невообичајно заедно.",
+    copyright: "© {year} NGC. Сите права се задржани.",
+    sections: {
+      services: "Услуги",
+      company: "Компанија",
+    },
+    links: {
+      services: {
+        design: "Дизајн",
+        webdev: "Веб развој",
+        mobile: "Мобилни апликации",
+        branding: "Брендирање",
+      },
+      company: {
+        about: "За нас",
+        careers: "Кариери",
+        blog: "Блог",
+        contact: "Контактирајте не",
+      },
+      legal: {
+        privacy: "Политика на приватност",
+        terms: "Услови на услуга",
+        cookies: "Политика на колачиња",
+      },
+    },
   },
 };
 

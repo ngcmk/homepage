@@ -82,19 +82,19 @@ export default function SearchForm({
   });
 
   const categories = [
-    { value: "", label: "All Categories" },
-    { value: "services", label: "Services" },
-    { value: "portfolio", label: "Portfolio" },
-    { value: "blog", label: "Blog" },
-    { value: "about", label: "About" },
-    { value: "contact", label: "Contact" },
+    { value: "", label: t("search.categories.all", { default: "All Categories" }) },
+    { value: "services", label: t("search.categories.services", { default: "Services" }) },
+    { value: "portfolio", label: t("search.categories.portfolio", { default: "Portfolio" }) },
+    { value: "blog", label: t("search.categories.blog", { default: "Blog" }) },
+    { value: "about", label: t("search.categories.about", { default: "About" }) },
+    { value: "contact", label: t("search.categories.contact", { default: "Contact" }) },
   ];
 
   const sortOptions = [
-    { value: "relevance", label: "Most Relevant" },
-    { value: "recent", label: "Most Recent" },
-    { value: "popular", label: "Most Popular" },
-    { value: "alphabetical", label: "A-Z" },
+    { value: "relevance", label: t("search.sort.relevance", { default: "Most Relevant" }) },
+    { value: "recent", label: t("search.sort.recent", { default: "Most Recent" }) },
+    { value: "popular", label: t("search.sort.popular", { default: "Most Popular" }) },
+    { value: "alphabetical", label: t("search.sort.alphabetical", { default: "A-Z" }) },
   ];
 
   // Mock search suggestions

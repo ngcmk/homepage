@@ -65,7 +65,7 @@ export default function Header({ className = "" }: HeaderProps) {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/blog">Блог</Link>
+              <Link href="/blog">{t("nav.blog")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
 
@@ -127,7 +127,7 @@ export default function Header({ className = "" }: HeaderProps) {
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Блог
+            {t("nav.blog")}
           </Link>
 
           <a
@@ -161,7 +161,7 @@ export default function Header({ className = "" }: HeaderProps) {
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Блог
+            {t("nav.blog")}
           </Link>
         </>
       )}
