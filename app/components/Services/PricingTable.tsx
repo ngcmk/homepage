@@ -114,9 +114,9 @@ export default function PricingTable() {
             {t("services.pricing.title")}
           </h2>
           <p className="text-lg text-gray-600">
-            {mounted && selectedCurrency === "denari" && "Доследни цени во денари, динари и долари"}
-            {mounted && selectedCurrency === "dinar" && "Доследне цене у динарима, динарима и доларима"}
-            {mounted && selectedCurrency === "dollar" && "Consistent pricing in denari, dinars and dollars"}
+            {mounted && selectedCurrency === "denari" && t("services.pricing.notedenari")}
+            {mounted && selectedCurrency === "dinar" && t("services.pricing.notedinar")}
+            {mounted && selectedCurrency === "dollar" && t("services.pricing.notedollar")}
           </p>
         </motion.div>
 

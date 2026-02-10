@@ -94,7 +94,7 @@ export default function Header({ className = "" }: HeaderProps) {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/blog">Блог</Link>
+              <Link href="/blog">{t("nav.blog")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
         </>

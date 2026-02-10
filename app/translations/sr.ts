@@ -64,6 +64,9 @@ const sr: Translation = {
       duration: "Trajanje",
       startingPrice: "Početna cena",
       note: "Napomena",
+      notedenari: "Dosledne cene u denari, dinari i dolari",
+      notedinar: "Dosledne cene u dinari, dinari i dolari",
+      notedollar: "Dosledne cene u denari, dinari i dolari",
       currency: {
         denari: "denari",
         dinar: "dinara",

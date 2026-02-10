@@ -54,6 +54,9 @@ const en: Translation = {
       duration: "Duration",
       startingPrice: "Starting Price",
       note: "Note",
+      notedenari: "Consistent pricing in denari, dinars and dollars",
+      notedinar: "Consistent pricing in denari, dinars and dollars",
+      notedollar: "Consistent pricing in denari, dinars and dollars",
       currency: {
         denari: "denari",
         dinar: "dinars",

@@ -61,6 +61,9 @@ const mk: Translation = {
       duration: "Времетраење",
       startingPrice: "Почетна цена",
       note: "Забелешка",
+      notedenari: "Доследни цени во денари, динари и долари",
+      notedinar: "Доследне цене у динарима, динарима и доларима",
+      notedollar: "Доследни цени во денари, динари и долари",
       currency: {
         denari: "денари",
         dinar: "динари",
