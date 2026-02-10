@@ -10,6 +10,7 @@ import ServiceCard, { ServiceCardCompact } from "./ServiceCard";
 import { Filter, Grid, List, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "../../contexts/language-context";
+import Image from "next/image";
 
 interface ServiceGridProps {
   services: Array<{
@@ -95,11 +96,16 @@ export default function ServiceGrid({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center space-x-2 bg-primary/10 px-4 py-2 rounded-full mb-6"
+            className="flex justify-center mb-8"
           >
-            {/* <span className="text-primary font-semibold text-sm">
-              ✨ Premium Services
-            </span> */}
+            <Image
+              src="/ngc-logo.svg"
+              alt="NGC Logo"
+              width={150}
+              height={150}
+              className="object-contain"
+              priority
+            />
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text">

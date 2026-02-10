@@ -1,23 +1,37 @@
-<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .hexagon { fill: url(#purpleGradient); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-      .bracket { stroke: url(#blueGradient); stroke-width: 20; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      @media (prefers-color-scheme: dark) {
+        .hexagon-stroke { stroke: #8B5CF6; }
+        .code-left { stroke: #7C3AED; }
+        .code-middle { stroke: #0EA5E9; }
+        .code-right { stroke: #0EA5E9; }
+      }
+      @media (prefers-color-scheme: light) {
+        .hexagon-stroke { stroke: #6D28D9; }
+        .code-left { stroke: #7C3AED; }
+        .code-middle { stroke: #0EA5E9; }
+        .code-right { stroke: #0EA5E9; }
+      }
     </style>
-    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#A855F7" />
-      <stop offset="100%" stopColor="#7C3AED" />
-    </linearGradient>
-    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#3B82F6" />
-      <stop offset="100%" stopColor="#1E40AF" />
-    </linearGradient>
   </defs>
   
-  <!-- Background circle -->
-  <circle cx="256" cy="256" r="250" fill="none" stroke="url(#blueGradient)" stroke-width="2" opacity="0.3"/>
-  
   <!-- Hexagon -->
+  <path class="hexagon-stroke" d="M 100 30 L 160 65 L 160 135 L 100 170 L 40 135 L 40 65 Z" 
+        fill="none" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  
+  <!-- Left bracket < -->
+  <path class="code-left" d="M 70 95 L 55 115 L 70 135" 
+        fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Middle vertical line | -->
+  <path class="code-middle" d="M 100 95 L 100 135" 
+        fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Right bracket > -->
+  <path class="code-right" d="M 130 95 L 145 115 L 130 135" 
+        fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
   <polygon class="hexagon" points="256,80 380,160 380,320 256,400 132,320 132,160"/>
   
   <!-- Code symbol: < / > -->
