@@ -228,6 +228,13 @@ const mk: Translation = {
         support: "Техничка поддршка",
         other: "Друго",
       },
+      budgets: {
+        under5k: "Под $5.000",
+        fiveToTenK: "$5.000 - $10.000",
+        tenToTwentyFiveK: "$10.000 - $20.000",
+        twentyFiveToFiftyK: "$25.000 +",
+        letsDiscuss: "Дозволете да разговараме",
+      },
       errors: {
         submissionError:
           "Имаше проблем со испраќањето на вашата порака. Ве молиме обидете се повторно.",

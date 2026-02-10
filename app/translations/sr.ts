@@ -230,6 +230,13 @@ const sr: Translation = {
         support: "Tehnička podrška",
         other: "Drugo",
       },
+      budgets: {
+        under5k: "Ispod $5.000",
+        fiveToTenK: "$5.000 - $10.000",
+        tenToTwentyFiveK: "$10.000 - $20.000",
+        twentyFiveToFiftyK: "$25.000 +",
+        letsDiscuss: "Hajde da razgovaramo",
+      },
       errors: {
         submissionError:
           "Došlo je do problema pri slanju vaše poruke. Molimo pokušajte ponovo.",
@@ -316,6 +323,18 @@ const sr: Translation = {
           sales: "Pitanje prodaje",
           support: "Tehnička podrška",
           other: "Drugo",
+        },        budgets: {
+          under5k: "Ispod $5.000",
+          fiveToTenK: "$5.000 - $10.000",
+          tenToTwentyFiveK: "$10.000 - $20.000",
+          twentyFiveToFiftyK: "$25.000 +",
+          letsDiscuss: "Hajde da razgovaramo",
+        },        budgets: {
+          under5k: "Ispod $5.000",
+          fiveToTenK: "$5.000 - $10.000",
+          tenToTwentyFiveK: "$10.000 - $20.000",
+          twentyFiveToFiftyK: "$25.000 +",
+          letsDiscuss: "Hajde da razgovaramo",
         },
         errors: {
           submissionError:
