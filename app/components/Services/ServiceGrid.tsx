@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ServiceCard, { ServiceCardCompact } from "./ServiceCard";
 import { Filter, Grid, List, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "../../contexts/language-context";
 
 interface ServiceGridProps {
   services: Array<{
@@ -36,6 +37,7 @@ export default function ServiceGrid({
   subtitle = "Comprehensive solutions for your digital needs",
   className = "",
 }: ServiceGridProps) {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -46,7 +48,7 @@ export default function ServiceGrid({
   const [activeCategory, setActiveCategory] = useState("all");
 
   // Get unique categories
-  const categories = ["all", ...new Set(services.map((s) => s.category))];
+  const categories = ["all", ...new Set(services.map((s) => s.categoryKey || "other"))];
 
   // Filter services
   const filteredServices = services.filter((service) => {
@@ -54,7 +56,7 @@ export default function ServiceGrid({
       service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
-      activeCategory === "all" || service.category === activeCategory;
+      activeCategory === "all" || (service.categoryKey || "other") === activeCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -158,7 +160,9 @@ export default function ServiceGrid({
                     value={category}
                     className="text-sm capitalize"
                   >
-                    {category === "all" ? "All Services" : category}
+                    {category === "all"
+                      ? t("services.categories.all")
+                      : category}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -223,10 +227,10 @@ export default function ServiceGrid({
                   <Search className="w-8 h-8 text-muted-foreground" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">
-                  No services found
+                  {t("services.noResults.title")}
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Try adjusting your search terms or filters
+                  {t("services.noResults.description")}
                 </p>
                 <Button
                   variant="outline"
@@ -235,7 +239,7 @@ export default function ServiceGrid({
                     setActiveCategory("all");
                   }}
                 >
-                  Clear Filters
+                  {t("services.noResults.clearButton")}
                 </Button>
               </div>
             </motion.div>
@@ -250,24 +254,26 @@ export default function ServiceGrid({
           className="mt-20"
         >
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-4">Service Categories</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {t("services.pageTitle")}
+            </h3>
             <p className="text-muted-foreground">
-              Explore our comprehensive range of digital solutions
+              {t("services.pageDescription")}
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {categories.slice(1).map((category, index) => {
               const categoryServices = services.filter(
-                (s) => s.category === category,
+                (s) => (s.categoryKey || "other") === category,
               );
               const categoryColors = {
-                Technical: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
-                Creative:
+                technical: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
+                creative:
                   "from-purple-500/20 to-pink-500/20 border-purple-500/30",
-                Innovation:
+                innovation:
                   "from-green-500/20 to-emerald-500/20 border-green-500/30",
-                "Social Impact":
+                "social-impact":
                   "from-orange-500/20 to-red-500/20 border-orange-500/30",
               };
 
@@ -290,7 +296,15 @@ export default function ServiceGrid({
                       {categoryServices.length}
                     </div>
                     <div className="text-sm text-muted-foreground capitalize">
-                      {category}
+                      {(() => {
+                        const categoryMap: Record<string, string> = {
+                          technical: t("services.categories.technical"),
+                          creative: t("services.categories.creative"),
+                          innovation: t("services.categories.innovation"),
+                          "social-impact": t("services.categories.social-impact"),
+                        };
+                        return categoryMap[category] || category;
+                      })()}
                     </div>
                   </div>
                 </motion.div>
@@ -307,18 +321,23 @@ export default function ServiceGrid({
           className="text-center mt-16"
         >
           <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-2xl p-8 border border-border/50">
-            <h3 className="text-2xl font-bold mb-4">Need a Custom Solution?</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {t("services.custom.title") || "Need a Custom Solution?"}
+            </h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Can't find exactly what you're looking for? Let's discuss your
-              unique requirements and create a tailored solution for your
-              business.
+              {t("services.custom.description") ||
+                "Can't find exactly what you're looking for? Let's discuss your unique requirements and create a tailored solution for your business."}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild size="lg" className="px-8">
-                <a href="/initialize-project">Start Custom Project</a>
+                <a href="/initialize-project">
+                  {t("services.actions.startCustomProject")}
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="px-8">
-                <a href="#contact">Schedule Consultation</a>
+                <a href="#contact">
+                  {t("services.actions.scheduleConsultation")}
+                </a>
               </Button>
             </div>
           </div>

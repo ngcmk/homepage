@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Star, Users, Clock, Zap } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
+import { useLanguage } from "../../contexts/language-context";
 
 interface ServiceCardProps {
   service: {
@@ -15,8 +16,7 @@ interface ServiceCardProps {
     id: string;
     title: string;
     description: string;
-    category: string;
-    // badge: string;
+    category: string;    categoryKey?: string;    // badge: string;
     price?: string;
     duration?: string;
     features?: string[];
@@ -33,6 +33,7 @@ export default function ServiceCard({
   index,
   className = "",
 }: ServiceCardProps) {
+  const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseLeave = () => {
@@ -46,17 +47,34 @@ export default function ServiceCard({
   // };
 
   const getIconColor = () => {
-    switch (service.category) {
-      case "Technical":
+    const categoryKey = service.categoryKey || service.category;
+    switch (categoryKey) {
+      case "technical":
         return "text-blue-500 group-hover:text-blue-400";
-      case "Creative":
+      case "creative":
         return "text-purple-500 group-hover:text-purple-400";
-      case "Innovation":
+      case "innovation":
         return "text-green-500 group-hover:text-green-400";
-      case "Social Impact":
+      case "social-impact":
         return "text-orange-500 group-hover:text-orange-400";
       default:
         return "text-primary group-hover:text-primary/80";
+    }
+  };
+
+  const getGradientColor = () => {
+    const categoryKey = service.categoryKey || service.category;
+    switch (categoryKey) {
+      case "technical":
+        return "#3B82F6";
+      case "creative":
+        return "#8B5CF6";
+      case "innovation":
+        return "#10B981";
+      case "social-impact":
+        return "#F59E0B";
+      default:
+        return "#06B6D4";
     }
   };
 
@@ -79,12 +97,7 @@ export default function ServiceCard({
           <motion.div
             className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
             style={{
-              background: `linear-gradient(135deg,
-                ${service.category === "Technical" ? "#3B82F6" : ""}
-                ${service.category === "Creative" ? "#8B5CF6" : ""}
-                ${service.category === "Innovation" ? "#10B981" : ""}
-                ${service.category === "Social Impact" ? "#F59E0B" : ""}
-                20%, transparent 80%)`,
+              background: `linear-gradient(135deg, ${getGradientColor()} 20%, transparent 80%)`,
             }}
           />
 
@@ -215,7 +228,7 @@ export default function ServiceCard({
               >
                 <Link href={`/initialize-project`}>
                   {/* <Zap className="w-3 h-3 mr-1" /> */}
-                  <p>Quick Start</p>
+                  <p>{t("services.actions.quickStart")}</p>
                 </Link>
               </Button>
             </div>
@@ -235,12 +248,7 @@ export default function ServiceCard({
           <motion.div
             className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
             style={{
-              background: `radial-gradient(circle at 50% 50%,
-                ${service.category === "Technical" ? "#3B82F6" : ""}
-                ${service.category === "Creative" ? "#8B5CF6" : ""}
-                ${service.category === "Innovation" ? "#10B981" : ""}
-                ${service.category === "Social Impact" ? "#F59E0B" : ""}
-                0%, transparent 70%)`,
+              background: `radial-gradient(circle at 50% 50%, ${getGradientColor()} 0%, transparent 70%)`,
               filter: "blur(20px)",
               transform: "scale(1.1)",
             }}

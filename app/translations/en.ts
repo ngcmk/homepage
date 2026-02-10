@@ -49,6 +49,67 @@ const en: Translation = {
       title: "NGO Support",
       description: "Discounted digital services for non-profit organizations",
     },
+    categories: {
+      all: "All Services",
+      technical: "Technical",
+      creative: "Creative",
+      innovation: "Innovation",
+      "social-impact": "Social Impact",
+    },
+    features: {
+      development: [
+        "Custom web applications",
+        "E-commerce platforms",
+        "API development",
+        "Performance optimization",
+      ],
+      design: [
+        "UI/UX design",
+        "Brand identity",
+        "Responsive layouts",
+        "User research",
+      ],
+      mobile: [
+        "iOS & Android apps",
+        "Cross-platform development",
+        "App store optimization",
+        "Push notifications",
+      ],
+      ai: [
+        "AI model integration",
+        "Chatbot development",
+        "Data analysis",
+        "Machine learning",
+      ],
+      poc: [
+        "Rapid prototyping",
+        "MVP development",
+        "Market validation",
+        "Technical feasibility",
+      ],
+      ngo: [
+        "Discounted rates",
+        "Full-service support",
+        "Long-term partnerships",
+        "Impact measurement",
+      ],
+    },
+    actions: {
+      quickStart: "Quick Start",
+      allServices: "All Services",
+      custom: "Custom Solution",
+      startCustomProject: "Start Custom Project",
+      scheduleConsultation: "Schedule Consultation",
+    },
+    custom: {
+      title: "Need a Custom Solution?",
+      description: "Can't find exactly what you're looking for? Let's discuss your unique requirements and create a tailored solution for your business.",
+    },
+    noResults: {
+      title: "No services found",
+      description: "Try adjusting your search terms or filters",
+      clearButton: "Clear Filters",
+    },
     pricing: {
       title: "Service Pricing",
       duration: "Duration",
