@@ -5,6 +5,7 @@ import Hero from "./components/Hero";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Services from "./components/Services";
+import PricingTable from "./components/Services/PricingTable";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
+        <PricingTable />
         {/* <Portfolio /> */}
         {/* <Testimonials /> */}
         <Contact />

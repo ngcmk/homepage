@@ -12,7 +12,43 @@ import { useLanguage } from "../contexts/language-context";
 import ServiceGrid from "./Services/ServiceGrid";
 
 export default function Services() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  // Get prices based on language
+  const getPrices = () => {
+    const pricingData = t("services.pricing.services") as Record<string, any>;
+    
+    if (language === "mk") {
+      return {
+        webdev: pricingData.webdev?.denari || "од 50.000 ден",
+        design: pricingData.design?.denari || "од 18.000 ден",
+        mobile: pricingData.mobile?.denari || "од 600.000 ден",
+        ai: pricingData.ai?.denari || "од 600.000 ден",
+        poc: pricingData.poc?.denari || "од 60.000 ден",
+        ngo: pricingData.ngo?.denari || "Бесплатно",
+      };
+    } else if (language === "sr") {
+      return {
+        webdev: pricingData.webdev?.dinar || "od 800 din",
+        design: pricingData.design?.dinar || "od 300 din",
+        mobile: pricingData.mobile?.dinar || "od 10.000 din",
+        ai: pricingData.ai?.dinar || "od 10.000 din",
+        poc: pricingData.poc?.dinar || "od 1.000 din",
+        ngo: pricingData.ngo?.dinar || "Besplatno",
+      };
+    } else {
+      return {
+        webdev: pricingData.webdev?.dollar || "From $900",
+        design: pricingData.design?.dollar || "From $330",
+        mobile: pricingData.mobile?.dollar || "From $11,000",
+        ai: pricingData.ai?.dollar || "From $11,000",
+        poc: pricingData.poc?.dollar || "From $1,100",
+        ngo: pricingData.ngo?.dollar || "Free",
+      };
+    }
+  };
+
+  const prices = getPrices();
 
   const services = [
     {
@@ -21,9 +57,8 @@ export default function Services() {
       title: t("services.development.title"),
       description: t("services.development.description"),
       category: "Technical",
-      // badge: "Core Service",
-      price: "From $500",
-      duration: "4-8 weeks",
+      price: prices.webdev,
+      duration: t("services.pricing.services.webdev.duration"),
       features: [
         "Custom web applications",
         "E-commerce platforms",
@@ -39,9 +74,8 @@ export default function Services() {
       title: t("services.design.title"),
       description: t("services.design.description"),
       category: "Creative",
-      // badge: "Core Service",
-      price: "From $300",
-      duration: "2-4 weeks",
+      price: prices.design,
+      duration: t("services.pricing.services.design.duration"),
       features: [
         "UI/UX design",
         "Brand identity",
@@ -57,9 +91,8 @@ export default function Services() {
       title: t("services.mobile.title"),
       description: t("services.mobile.description"),
       category: "Technical",
-      // badge: "Popular",
-      price: "From $10,000",
-      duration: "6-12 weeks",
+      price: prices.mobile,
+      duration: t("services.pricing.services.mobile.duration"),
       features: [
         "iOS & Android apps",
         "Cross-platform development",
@@ -75,9 +108,8 @@ export default function Services() {
       title: t("services.ai.title"),
       description: t("services.ai.description"),
       category: "Innovation",
-      // badge: "New",
-      price: "From $10,000",
-      duration: "8-16 weeks",
+      price: prices.ai,
+      duration: t("services.pricing.services.ai.duration"),
       features: [
         "AI model integration",
         // "Machine learning solutions",
@@ -93,9 +125,8 @@ export default function Services() {
       title: t("services.poc.title"),
       description: t("services.poc.description"),
       category: "Innovation",
-      // badge: "Specialized",
-      price: "From $1,000",
-      duration: "1-3 weeks",
+      price: prices.poc,
+      duration: t("services.pricing.services.poc.duration"),
       features: [
         "Rapid prototyping",
         "MVP development",
@@ -110,9 +141,8 @@ export default function Services() {
       title: t("services.ngo-support.title"),
       description: t("services.ngo-support.description"),
       category: "Social Impact",
-      // badge: "Pro Bono",
-      price: "Free",
-      duration: "Varies",
+      price: prices.ngo,
+      duration: t("services.pricing.services.ngo.duration"),
       features: [
         "Discounted rates",
         "Full-service support",
