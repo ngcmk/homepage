@@ -41,6 +41,8 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import AnimatedBackground from "../components/Hero/AnimatedBackground";
+import Header from "../components/Header";
 import PageBreadcrumb from "../components/Breadcrumb";
 import { useLanguage } from "../contexts/language-context";
 import { useProjectConsultationForm } from "../hooks/use-project-consultations";
@@ -981,9 +983,12 @@ export default function InitializeProject() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-24">
-      <PageBreadcrumb />
-      <div className="container mx-auto px-6 pt-4 pb-12">
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      <AnimatedBackground className="fixed inset-0 z-0" />
+      <Header className="relative z-10" />
+      <div className="relative z-10">
+        <PageBreadcrumb />
+        <div className="container mx-auto px-6 pt-4 pb-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
@@ -1226,6 +1231,7 @@ export default function InitializeProject() {
               </div>
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>

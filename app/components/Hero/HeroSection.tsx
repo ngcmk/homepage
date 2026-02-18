@@ -35,7 +35,8 @@ export default function HeroSection() {
               "We transform ideas into exceptional digital solutions that drive growth and deliver results."}
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Removed to reduce redundancy, available in header */}
+          {/* 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -52,19 +53,8 @@ export default function HeroSection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-
-            {/* <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="px-8 py-4 text-lg font-semibold group hover:scale-105 transition-transform duration-200"
-            >
-              <Link href="#work" className="flex items-center">
-                {t("hero.viewWork")}
-                <Play className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button> */}
           </motion.div>
+          */}
 
           {/* Logo Image */}
           <motion.div
