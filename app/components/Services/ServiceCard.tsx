@@ -78,6 +78,22 @@ export default function ServiceCard({
     }
   };
 
+  const getCategoryBadgeClass = () => {
+    const categoryKey = service.categoryKey || service.category;
+    switch (categoryKey) {
+      case "technical":
+        return "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30";
+      case "creative":
+        return "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30";
+      case "innovation":
+        return "bg-green-500/10 text-green-700 dark:text-green-300 border-green-500/30";
+      case "social-impact":
+        return "bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/30";
+      default:
+        return "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30";
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -158,7 +174,7 @@ export default function ServiceCard({
 
             {/* Category Badge */}
             <div className="mb-4">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className={`text-xs font-semibold border ${getCategoryBadgeClass()}`}>
                 {service.category}
               </Badge>
             </div>

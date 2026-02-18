@@ -10,7 +10,6 @@ import ServiceCard, { ServiceCardCompact } from "./ServiceCard";
 import { Filter, Grid, List, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "../../contexts/language-context";
-import Image from "next/image";
 
 interface ServiceGridProps {
   services: Array<{
@@ -19,6 +18,7 @@ interface ServiceGridProps {
     title: string;
     description: string;
     category: string;
+    categoryKey?: string;
     // badge?: string;
     price?: string;
     duration?: string;
@@ -82,7 +82,7 @@ export default function ServiceGrid({
   };
 
   return (
-    <section id="services" className={`py-20 md:py-32 ${className}`}>
+    <section id="services" className={`py-8 md:py-12 ${className}`}>
       <div className="container mx-auto px-6">
         {/* Header Section */}
         <motion.div
@@ -98,22 +98,7 @@ export default function ServiceGrid({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex justify-center mb-8"
           >
-            <Image
-              src="/ngc-logo.svg"
-              alt="NGC Logo"
-              width={150}
-              height={150}
-              className="object-contain"
-              priority
-            />
           </motion.div>
-
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text">
-            {title}
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
         </motion.div>
 
         {/* Controls Section */}
@@ -168,6 +153,14 @@ export default function ServiceGrid({
                   >
                     {category === "all"
                       ? t("services.categories.all")
+                      : category === "technical"
+                      ? t("services.categories.technical")
+                      : category === "creative"
+                      ? t("services.categories.creative")
+                      : category === "innovation"
+                      ? t("services.categories.innovation")
+                      : category === "social-impact"
+                      ? t("services.categories.social-impact")
                       : category}
                   </TabsTrigger>
                 ))}
@@ -257,17 +250,8 @@ export default function ServiceGrid({
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-20"
+          className="mt-12"
         >
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-4">
-              {t("services.pageTitle")}
-            </h3>
-            <p className="text-muted-foreground">
-              {t("services.pageDescription")}
-            </p>
-          </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {categories.slice(1).map((category, index) => {
               const categoryServices = services.filter(
@@ -303,7 +287,7 @@ export default function ServiceGrid({
                     </div>
                     <div className="text-sm text-muted-foreground capitalize">
                       {(() => {
-                        const categoryMap: Record<string, string> = {
+                        const categoryMap: { [key: string]: string } = {
                           technical: t("services.categories.technical"),
                           creative: t("services.categories.creative"),
                           innovation: t("services.categories.innovation"),
@@ -316,36 +300,6 @@ export default function ServiceGrid({
                 </motion.div>
               );
             })}
-          </div>
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.2 }}
-          className="text-center mt-16"
-        >
-          <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-2xl p-8 border border-border/50">
-            <h3 className="text-2xl font-bold mb-4">
-              {t("services.custom.title") || "Need a Custom Solution?"}
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              {t("services.custom.description") ||
-                "Can't find exactly what you're looking for? Let's discuss your unique requirements and create a tailored solution for your business."}
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild size="lg" className="px-8">
-                <a href="/initialize-project">
-                  {t("services.actions.startCustomProject")}
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="px-8">
-                <a href="#contact">
-                  {t("services.actions.scheduleConsultation")}
-                </a>
-              </Button>
-            </div>
           </div>
         </motion.div>
       </div>
