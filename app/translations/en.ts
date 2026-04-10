@@ -96,12 +96,12 @@ const en: Translation = {
         },
 ceoPhone: {
           label: "Direct line to the Chief Executive Officer",
-          value: "+389 78 209 046",
+          value: "+389 78 209046",
           description: "Aleksandar, CEO & Co-founder",
         },
         ctoPhone: {
           label: "Direct line to the Chief Technology Officer",
-          value: "+389 70 456 789",
+          value: "+389 70 294386",
           description: "Dimitar, CTO & Co-founder",
         },
         hours: {
