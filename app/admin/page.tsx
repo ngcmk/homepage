@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useProjectConsultations } from '../hooks/use-project-consultations';
 
 interface ProjectConsultation {
   _id: string;
@@ -32,32 +32,18 @@ export default function AdminPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [projects, setProjects] = useState<ProjectConsultation[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  const projects = useProjectConsultations({ limit: 100 });
+  const loading = projects === undefined;
 
   useEffect(() => {
     const storedAuth = localStorage.getItem('admin_auth');
     if (storedAuth === 'true') {
       setIsAuthenticated(true);
-      fetchProjects();
     }
+    setMounted(true);
   }, []);
-
-  const CONVEX_URL = 'https://grateful-ant-828-site.convex.site';
-
-const fetchProjects = async () => {
-    try {
-      const response = await fetch(`${CONVEX_URL}/project-consultations`);
-      if (response.ok) {
-        const data = await response.json();
-        setProjects(data.data || []);
-      }
-    } catch (err) {
-      console.error('Failed to fetch projects:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +51,6 @@ const fetchProjects = async () => {
       setIsAuthenticated(true);
       localStorage.setItem('admin_auth', 'true');
       setError('');
-      fetchProjects();
     } else {
       setError('Invalid credentials');
     }
@@ -74,7 +59,6 @@ const fetchProjects = async () => {
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('admin_auth');
-    setProjects([]);
   };
 
   const formatDate = (timestamp: number) => {
@@ -104,6 +88,10 @@ const fetchProjects = async () => {
     };
     return colors[urgency || ''] || 'bg-gray-100 text-gray-600';
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   if (!isAuthenticated) {
     return (
@@ -171,13 +159,13 @@ const fetchProjects = async () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">
-              Project Consultations ({projects.length})
+              Project Consultations ({projects?.length || 0})
             </h2>
           </div>
 
           {loading ? (
             <div className="p-6 text-center text-gray-500">Loading...</div>
-          ) : projects.length === 0 ? (
+          ) : !projects || projects.length === 0 ? (
             <div className="p-6 text-center text-gray-500">
               No project consultations yet.
             </div>
