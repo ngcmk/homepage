@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useProjectConsultations } from '../hooks/use-project-consultations';
+import { 
+  useProjectConsultations, 
+  useDeleteProjectConsultation,
+  useProjectConsultation 
+} from '../hooks/use-project-consultations';
+import { Id } from '@/convex/_generated/dataModel';
+import { Eye, Trash2, X } from 'lucide-react';
+
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'ngcmk7654321';
 
 interface ProjectConsultation {
   _id: string;
@@ -15,17 +24,18 @@ interface ProjectConsultation {
   existingWebsite?: string;
   timeline?: string;
   budget?: string;
+  hasContent?: string;
+  designPreferences?: string;
   contactName?: string;
   contactEmail?: string;
   contactPhone?: string;
   company?: string;
+  preferredContact?: string;
+  additionalInfo?: string;
   status?: string;
   priority?: string;
   createdAt: number;
 }
-
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'ngcmk7654321';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,8 +43,13 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
+  
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
   const projects = useProjectConsultations({ limit: 100 });
+  const selectedProject = useProjectConsultation(selectedProjectId as Id<"projectConsultations">);
+  const deleteProject = useDeleteProjectConsultation();
   const loading = projects === undefined;
 
   useEffect(() => {
@@ -59,6 +74,15 @@ export default function AdminPage() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('admin_auth');
+  };
+
+  const handleDelete = async (projectId: string) => {
+    try {
+      await deleteProject({ id: projectId as Id<"projectConsultations"> });
+      setShowDeleteConfirm(null);
+    } catch (err) {
+      console.error('Failed to delete project:', err);
+    }
   };
 
   const formatDate = (timestamp: number) => {
@@ -193,7 +217,7 @@ export default function AdminPage() {
                       Budget
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Description
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -240,8 +264,19 @@ export default function AdminPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {project.budget || 'N/A'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                        {project.description || 'N/A'}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          onClick={() => setSelectedProjectId(project._id)}
+                          className="text-blue-600 hover:text-blue-900 mr-3"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => setShowDeleteConfirm(project._id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -251,6 +286,148 @@ export default function AdminPage() {
           )}
         </div>
       </main>
+
+      {/* View Details Modal */}
+      {selectedProjectId && selectedProject && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="px-6 py-4 border-b flex justify-between items-center">
+              <h3 className="text-lg font-semibold">Project Details</h3>
+              <button
+                onClick={() => setSelectedProjectId(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Project Name</label>
+                  <p className="text-gray-900">{selectedProject.name || 'N/A'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Type</label>
+                  <p className="text-gray-900">{selectedProject.type?.replace('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'N/A'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Status</label>
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedProject.status)}`}>
+                    {selectedProject.status?.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'New'}
+                  </span>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Urgency</label>
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getUrgencyColor(selectedProject.urgency)}`}>
+                    {selectedProject.urgency?.replace(/\b\w/g, (c) => c.toUpperCase()) || 'Medium'}
+                  </span>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Industry</label>
+                  <p className="text-gray-900">{selectedProject.industry || 'N/A'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Budget</label>
+                  <p className="text-gray-900">{selectedProject.budget || 'N/A'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Timeline</label>
+                  <p className="text-gray-900">{selectedProject.timeline || 'N/A'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Has Content</label>
+                  <p className="text-gray-900">{selectedProject.hasContent || 'N/A'}</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-500">Description</label>
+                <p className="text-gray-900">{selectedProject.description || 'N/A'}</p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-500">Target Audience</label>
+                <p className="text-gray-900">{selectedProject.targetAudience || 'N/A'}</p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-500">Design Preferences</label>
+                <p className="text-gray-900">{selectedProject.designPreferences || 'N/A'}</p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-500">Existing Website</label>
+                <p className="text-gray-900">{selectedProject.existingWebsite || 'N/A'}</p>
+              </div>
+
+              <div className="border-t pt-4">
+                <h4 className="text-md font-semibold mb-2">Contact Information</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Name</label>
+                    <p className="text-gray-900">{selectedProject.contactName || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Email</label>
+                    <p className="text-gray-900">{selectedProject.contactEmail || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Phone</label>
+                    <p className="text-gray-900">{selectedProject.contactPhone || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Company</label>
+                    <p className="text-gray-900">{selectedProject.company || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Preferred Contact</label>
+                    <p className="text-gray-900">{selectedProject.preferredContact || 'N/A'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {selectedProject.additionalInfo && (
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Additional Information</label>
+                  <p className="text-gray-900">{selectedProject.additionalInfo}</p>
+                </div>
+              )}
+
+              <div className="text-sm text-gray-500">
+                Created: {formatDate(selectedProject.createdAt)}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-2">Confirm Delete</h3>
+              <p className="text-gray-600 mb-4">
+                Are you sure you want to delete this project consultation? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(null)}
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDelete(showDeleteConfirm)}
+                  className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
