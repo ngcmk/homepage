@@ -9,6 +9,7 @@ const sr: Translation = {
     contact: "Kontakt",
     bookConsultation: "Zakažite konsultacije",
     startProject: "Započnite projekat",
+    blog: "Blog",
   },
 
   // Hero Section

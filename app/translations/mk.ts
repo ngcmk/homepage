@@ -9,7 +9,8 @@ const mk: Translation = {
     contact: "Контакт",
     bookConsultation: "Закажете консултации",
     startProject: "Започнете проект",
-    about: "За нас"
+    about: "За нас",
+    blog: "Блог"
   },
 
   // Hero Section

@@ -10,6 +10,7 @@ const en: Translation = {
     home: "Home",
     startProject: "Start Project",
     about: "About Us",
+    blog: "Blog",
   },
 
   hero: {
