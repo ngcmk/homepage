@@ -43,7 +43,7 @@ export default function AdminPage() {
     }
   }, []);
 
-  const CONVEX_URL = 'https://grateful-ant-828-site.convex.cloud';
+  const CONVEX_URL = 'https://grateful-ant-828-site.convex.site';
 
 const fetchProjects = async () => {
     try {
