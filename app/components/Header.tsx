@@ -51,11 +51,11 @@ export default function Header() {
               {t("nav.services")}
             </NavigationMenuLink>
           </NavigationMenuItem>
-          {/* <NavigationMenuItem> */}
-          {/*   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}> */}
-          {/*     <Link href="/about">{t("nav.about")}</Link> */}
-          {/*   </NavigationMenuLink> */}
-          {/* </NavigationMenuItem> */}
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/blog">{t("nav.blog")}</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
               href="#contact"
@@ -72,11 +72,11 @@ export default function Header() {
               <Link href="/">{t("nav.home")}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
-          {/* <NavigationMenuItem> */}
-          {/*   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}> */}
-          {/*     <Link href="/about">{t("nav.about")}</Link> */}
-          {/*   </NavigationMenuLink> */}
-          {/* </NavigationMenuItem> */}
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/blog">{t("nav.blog")}</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         </>
       )}
     </>
@@ -93,13 +93,13 @@ export default function Header() {
           >
             {t("nav.services")}
           </a>
-          {/* <Link */}
-          {/*   href="/about" */}
-          {/*   className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium" */}
-          {/*   onClick={() => setIsMobileMenuOpen(false)} */}
-          {/* > */}
-          {/*   {t("nav.about")} */}
-          {/* </Link> */}
+          <Link
+            href="/blog"
+            className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t("nav.blog")}
+          </Link>
           <a
             href="#contact"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
@@ -118,11 +118,11 @@ export default function Header() {
             {t("nav.home")}
           </Link>
           <Link
-            href="/about"
+            href="/blog"
             className="block px-4 py-3 text-foreground hover:bg-muted hover:text-foreground rounded-lg transition-all duration-200 text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            {t("nav.about")}
+            {t("nav.blog")}
           </Link>
         </>
       )}
