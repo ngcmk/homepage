@@ -65,5 +65,9 @@
     "tailwindcss": "^4.1.10",
     "typescript": "^5"
   },
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
