@@ -198,6 +198,162 @@ ceoPhone: {
     },
   },
 
+  // Project Initialization
+  project: {
+    initialize: {
+      title: "Start Your Project",
+      subtitle:
+        "Tell us about your project and we'll get back to you with a customized quote",
+
+      steps: {
+        step1: "Project Basics",
+        step2: "Project Details",
+        step3: "Timeline & Budget",
+        step4: "Contact Info",
+        step5: "Review & Submit",
+      },
+
+      fields: {
+        name: "Project Name",
+        description: "Project Description",
+        type: "Project Type",
+        urgency: "Project Urgency",
+        industry: "Industry/Business Type",
+        targetAudience: "Target Audience",
+        existingWebsite: "Existing Website URL",
+        goals: "Project Goals",
+        features: "Desired Features",
+        timeline: "Timeline",
+        budget: "Budget",
+        hasContent: "Do you have content?",
+        designPreferences: "Design Preferences",
+        contactName: "Contact Name",
+        contactEmail: "Contact Email",
+        contactPhone: "Contact Phone",
+        company: "Company",
+        preferredContact: "Preferred Contact Method",
+        additionalInfo: "Additional Information",
+        projectFiles: "Project Files",
+      },
+
+      placeholders: {
+        name: "Enter project name",
+        description: "Describe your project and what you want to achieve",
+        type: "Select project type",
+        urgency: "How urgent is your project?",
+        industry: "Which industry are you in?",
+        targetAudience: "Who is your target market?",
+        existingWebsite: "https://your-site.com",
+        timeline: "When does the project need to be completed?",
+        budget: "What's your approximate budget?",
+        hasContent: "Do you have text, images, etc. prepared?",
+        designPreferences: "Share your design preferences",
+        contactName: "Your name",
+        contactEmail: "your-email@example.com",
+        contactPhone: "+1 234 567 890",
+        company: "Your company name",
+        preferredContact: "How would you prefer we contact you?",
+        additionalInfo:
+          "Any additional details, special requirements, or questions you'd like to share?",
+      },
+
+      buttons: {
+        next: "Next Step",
+        previous: "Previous Step",
+        submit: "Submit Project",
+        chooseFiles: "Choose Files",
+        startFresh: "Start fresh",
+        back: "Back",
+        continue: "Continue",
+      },
+
+      progress: {
+        step: "Step {current} of {total}",
+        percentage: "{percentage}% Complete",
+      },
+
+      labels: {
+        characters: "characters",
+      },
+
+      descriptions: {
+        urgency:
+          "Select the timeline that best matches your project needs",
+        industry: "Select the industry your company operates in",
+        goals: "Select all goals that apply to your project",
+        features: "Select all features you'd like in your project",
+        targetAudience: "Describe who will use your website or application",
+        existingWebsite:
+          "If you have an existing website, please provide the URL",
+      },
+
+      types: {
+        "website-redesign": "Website Redesign",
+        "new-website": "New Website",
+        ecommerce: "E-commerce",
+        "web-app": "Web Application",
+        "mobile-app": "Mobile Application",
+        branding: "Branding",
+      },
+
+      urgencyLevels: {
+        low: "Low - No rush",
+        medium: "Medium - Flexible",
+        high: "High - Important",
+        urgent: "Urgent - As soon as possible",
+      },
+
+      budgetRanges: {
+        "under-1k": "Under €1,000",
+        "1k-5k": "€1,000 - €5,000",
+        "5k-10k": "€5,000 - €10,000",
+        "10k-25k": "€10,000 - €25,000",
+        "25k-50k": "€25,000 - €50,000",
+        "over-50k": "Over €50,000",
+        "not-sure": "Not sure yet",
+      },
+
+      hasContentOptions: {
+        yes: "Yes, I have all content ready",
+        partially: "Partially - need some help",
+        no: "No - need help creating content",
+      },
+
+      yesNoOptions: {
+        yes: "Yes",
+        no: "No",
+      },
+
+      contactMethods: {
+        email: "Email",
+        phone: "Phone Call",
+        "video-call": "Video Call",
+        "any-method": "Any method is fine",
+      },
+
+      messages: {
+        success: "Project submitted successfully!",
+        error: "Failed to submit project. Please try again.",
+        required: "This field is required",
+        invalidEmail: "Please enter a valid email",
+      },
+    },
+    thankYou: {
+      title: "Thank You!",
+      subtitle: "Your project request has been submitted.",
+      whatHappensNext: "What happens next?",
+      nextSteps: [
+        "We will review your request and get back to you shortly.",
+        "Our team will analyze your requirements and contact you to discuss next steps.",
+        "In the meantime, you can explore our services or contact us directly.",
+      ],
+      actions: {
+        returnHome: "Return to Home",
+        exploreServices: "Explore Our Services",
+      },
+    },
+  },
+
   about: {
     title: "About Us",
     subtitle: `NGC – Next Generation Code is a digital agency specialized in crafting modern, fast, and functional websites and applications. We are a team of young, creative, and experienced developers and designers focused on quality, performance, and unique user experiences.
