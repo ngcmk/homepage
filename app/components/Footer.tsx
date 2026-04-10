@@ -63,7 +63,7 @@ const FooterLink = ({
   </li>
 );
 
-export default function Footer() {
+export default function Footer({ className = "" }: { className?: string }) {
   const { t } = useLanguage();
 
   // Social media links
@@ -137,7 +137,7 @@ export default function Footer() {
   // ];
 
   return (
-    <footer className="bg-neutral-900 text-white py-16">
+    <footer className={`bg-neutral-900 text-white py-16 ${className}`}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand and description */}
