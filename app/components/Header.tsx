@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function Header() {
+export default function Header({ className = "" }: { className?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -131,7 +131,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${className} ${scrolled
           ? "bg-background/95 backdrop-blur-sm shadow-sm border-b py-3"
           : "bg-transparent py-6"
         }`}
