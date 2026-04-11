@@ -100,7 +100,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
       action: t("contact.hub.methods.call.action", {
         default: "Schedule Call",
       }),
-      href: "/book-consultation",
+      href: "#contact-form",
       color: "from-green-500/20 to-emerald-500/20",
       borderColor: "border-green-500/30",
       badge: t("contact.hub.methods.call.badge", {
@@ -384,7 +384,7 @@ export default function ContactHub({ className = "" }: ContactHubProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="lg:col-span-2"
           >
-            <Card className="border-2 border-border/50 bg-card/80 backdrop-blur-sm">
+            <Card id="contact-form" className="border-2 border-border/50 bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center space-x-2 mb-2">
                   <Send className="w-5 h-5 text-primary" />
