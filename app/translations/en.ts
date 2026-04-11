@@ -288,11 +288,11 @@ ceoPhone: {
       },
 
       types: {
-        "website-redesign": "Website Redesign",
-        "new-website": "New Website",
+        websiteRedesign: "Website Redesign",
+        newWebsite: "New Website",
         ecommerce: "E-commerce",
-        "web-app": "Web Application",
-        "mobile-app": "Mobile Application",
+        webApp: "Web Application",
+        mobileApp: "Mobile Application",
         branding: "Branding",
       },
 

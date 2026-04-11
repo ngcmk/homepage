@@ -284,11 +284,11 @@ const mk: Translation = {
       },
 
       types: {
-        "website-redesign": "Редизајн на веб-страница",
-        "new-website": "Нова веб-страница",
+        websiteRedesign: "Редизајн на веб-страница",
+        newWebsite: "Нова веб-страница",
         ecommerce: "Е-трговија",
-        "web-app": "Веб апликација",
-        "mobile-app": "Мобилна апликација",
+        webApp: "Веб апликација",
+        mobileApp: "Мобилна апликација",
         branding: "Брендинг",
       },
 
