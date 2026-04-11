@@ -44,13 +44,26 @@ export default function AdminPage() {
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
   
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [viewingProjectId, setViewingProjectId] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [projectDetails, setProjectDetails] = useState<ProjectConsultation | null>(null);
 
   const projects = useProjectConsultations({ limit: 100 });
-  const selectedProject = useProjectConsultation(selectedProjectId as Id<"projectConsultations">);
   const deleteProject = useDeleteProjectConsultation();
   const loading = projects === undefined;
+
+  const handleViewDetails = (projectId: string) => {
+    const project = projects?.find(p => p._id === projectId);
+    if (project) {
+      setViewingProjectId(projectId);
+      setProjectDetails(project);
+    }
+  };
+
+  const handleCloseDetails = () => {
+    setViewingProjectId(null);
+    setProjectDetails(null);
+  };
 
   useEffect(() => {
     const storedAuth = localStorage.getItem('admin_auth');
@@ -266,7 +279,7 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <button
-                          onClick={() => setSelectedProjectId(project._id)}
+                          onClick={() => handleViewDetails(project._id)}
                           className="text-blue-600 hover:text-blue-900 mr-3"
                         >
                           <Eye className="w-5 h-5" />
@@ -288,13 +301,13 @@ export default function AdminPage() {
       </main>
 
       {/* View Details Modal */}
-      {selectedProjectId && selectedProject && (
+      {viewingProjectId && projectDetails && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b flex justify-between items-center">
               <h3 className="text-lg font-semibold">Project Details</h3>
               <button
-                onClick={() => setSelectedProjectId(null)}
+                onClick={() => setProjectDetails(null)}
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="w-6 h-6" />
@@ -304,60 +317,60 @@ export default function AdminPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Project Name</label>
-                  <p className="text-gray-900">{selectedProject.name || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.name || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Type</label>
-                  <p className="text-gray-900">{selectedProject.type?.replace('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.type?.replace('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Status</label>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedProject.status)}`}>
-                    {selectedProject.status?.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'New'}
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(projectDetails.status)}`}>
+                    {projectDetails.status?.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'New'}
                   </span>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Urgency</label>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getUrgencyColor(selectedProject.urgency)}`}>
-                    {selectedProject.urgency?.replace(/\b\w/g, (c) => c.toUpperCase()) || 'Medium'}
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getUrgencyColor(projectDetails.urgency)}`}>
+                    {projectDetails.urgency?.replace(/\b\w/g, (c) => c.toUpperCase()) || 'Medium'}
                   </span>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Industry</label>
-                  <p className="text-gray-900">{selectedProject.industry || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.industry || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Budget</label>
-                  <p className="text-gray-900">{selectedProject.budget || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.budget || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Timeline</label>
-                  <p className="text-gray-900">{selectedProject.timeline || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.timeline || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Has Content</label>
-                  <p className="text-gray-900">{selectedProject.hasContent || 'N/A'}</p>
+                  <p className="text-gray-900">{projectDetails.hasContent || 'N/A'}</p>
                 </div>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Description</label>
-                <p className="text-gray-900">{selectedProject.description || 'N/A'}</p>
+                <p className="text-gray-900">{projectDetails.description || 'N/A'}</p>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Target Audience</label>
-                <p className="text-gray-900">{selectedProject.targetAudience || 'N/A'}</p>
+                <p className="text-gray-900">{projectDetails.targetAudience || 'N/A'}</p>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Design Preferences</label>
-                <p className="text-gray-900">{selectedProject.designPreferences || 'N/A'}</p>
+                <p className="text-gray-900">{projectDetails.designPreferences || 'N/A'}</p>
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-500">Existing Website</label>
-                <p className="text-gray-900">{selectedProject.existingWebsite || 'N/A'}</p>
+                <p className="text-gray-900">{projectDetails.existingWebsite || 'N/A'}</p>
               </div>
 
               <div className="border-t pt-4">
@@ -365,36 +378,36 @@ export default function AdminPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-500">Name</label>
-                    <p className="text-gray-900">{selectedProject.contactName || 'N/A'}</p>
+                    <p className="text-gray-900">{projectDetails.contactName || 'N/A'}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Email</label>
-                    <p className="text-gray-900">{selectedProject.contactEmail || 'N/A'}</p>
+                    <p className="text-gray-900">{projectDetails.contactEmail || 'N/A'}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Phone</label>
-                    <p className="text-gray-900">{selectedProject.contactPhone || 'N/A'}</p>
+                    <p className="text-gray-900">{projectDetails.contactPhone || 'N/A'}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Company</label>
-                    <p className="text-gray-900">{selectedProject.company || 'N/A'}</p>
+                    <p className="text-gray-900">{projectDetails.company || 'N/A'}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Preferred Contact</label>
-                    <p className="text-gray-900">{selectedProject.preferredContact || 'N/A'}</p>
+                    <p className="text-gray-900">{projectDetails.preferredContact || 'N/A'}</p>
                   </div>
                 </div>
               </div>
 
-              {selectedProject.additionalInfo && (
+              {projectDetails.additionalInfo && (
                 <div>
                   <label className="text-sm font-medium text-gray-500">Additional Information</label>
-                  <p className="text-gray-900">{selectedProject.additionalInfo}</p>
+                  <p className="text-gray-900">{projectDetails.additionalInfo}</p>
                 </div>
               )}
 
               <div className="text-sm text-gray-500">
-                Created: {formatDate(selectedProject.createdAt)}
+                Created: {formatDate(projectDetails.createdAt)}
               </div>
             </div>
           </div>
