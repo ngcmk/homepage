@@ -299,6 +299,29 @@ const mk: Translation = {
         urgent: "Ургентно - Што побрзо",
       },
 
+      projectGoals: {
+        "increase-traffic": "Зголеми сообраќај на веб-страницата",
+        "increase-conversions": "Зголеми конверзии",
+        "improve-ux": "Подобри корисничко искуство",
+        rebrand: "Ребрендирај/Освежи дизајн",
+        "add-features": "Додади нови функционалности",
+        "mobile-friendly": "Направи страницата прилагодена за мобилни",
+        seo: "Подобри SEO",
+      },
+
+      commonFeatures: {
+        responsive: "Responsive дизајн",
+        cms: "CMS интеграција",
+        ecommerce: "E-commerce функционалност",
+        blog: "Блог",
+        contactForm: "Контакт форма",
+        seo: "SEO оптимизација",
+        analytics: "Аналитика/Следење",
+        socialMedia: "Интеграција со социјални мрежи",
+        login: "Автентикација на корисници",
+        multiLanguage: "Повеќејазична поддршка",
+      },
+
       budgetRanges: {
         "under-1k": "Помалку од €1.000",
         "1k-5k": "€1.000 - €5.000",

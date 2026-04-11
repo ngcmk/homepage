@@ -290,6 +290,29 @@ const sr: Translation = {
         asap: "Vrlo hitno (1-2 nedelje)",
       },
 
+      projectGoals: {
+        "increase-traffic": "Povećaj saobraćaj sajta",
+        "increase-conversions": "Povećaj konverzije",
+        "improve-ux": "Poboljšaj korisničko iskustvo",
+        rebrand: "Rebrendiraj/Osveži dizajn",
+        "add-features": "Dodaj nove funkcionalnosti",
+        "mobile-friendly": "Prilagodi sajt za mobilne uređaje",
+        seo: "Poboljšaj SEO",
+      },
+
+      commonFeatures: {
+        responsive: "Responzivan dizajn",
+        cms: "CMS integracija",
+        ecommerce: "E-commerce funkcionalnost",
+        blog: "Blog",
+        contactForm: "Kontakt forma",
+        seo: "SEO optimizacija",
+        analytics: "Analitika/Praćenje",
+        socialMedia: "Integracija sa društvenim mrežama",
+        login: "Autentifikacija korisnika",
+        multiLanguage: "Višejezična podrška",
+      },
+
       // Timelines
       timelines: {
         urgent: "Hitno (što pre)",

@@ -303,6 +303,29 @@ ceoPhone: {
         urgent: "Urgent - As soon as possible",
       },
 
+      projectGoals: {
+        "increase-traffic": "Increase Website Traffic",
+        "increase-conversions": "Increase Conversions",
+        "improve-ux": "Improve User Experience",
+        rebrand: "Rebrand/Refresh Design",
+        "add-features": "Add New Features",
+        "mobile-friendly": "Make Site Mobile-Friendly",
+        seo: "Improve SEO",
+      },
+
+      commonFeatures: {
+        responsive: "Responsive Design",
+        cms: "CMS Integration",
+        ecommerce: "E-commerce Functionality",
+        blog: "Blog",
+        contactForm: "Contact Form",
+        seo: "SEO Optimization",
+        analytics: "Analytics/Tracking",
+        socialMedia: "Social Media Integration",
+        login: "User Authentication",
+        multiLanguage: "Multi-language Support",
+      },
+
       budgetRanges: {
         "under-1k": "Under €1,000",
         "1k-5k": "€1,000 - €5,000",

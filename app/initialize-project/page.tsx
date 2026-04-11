@@ -1075,6 +1075,8 @@ export default function InitializeProject() {
                       placeholders={placeholders}
                       t={t}
                       industries={industries}
+                      projectGoals={projectGoals}
+                      commonFeatures={commonFeatures}
                     />
                   )}
                   {currentStep === 3 && (

@@ -23,6 +23,8 @@ interface ProjectFormStep2Props {
   placeholders: any;
   t: (key: string, params?: Record<string, any>) => string;
   industries: { value: string; label: string }[];
+  projectGoals: { value: string; label: string }[];
+  commonFeatures: { value: string; label: string }[];
 }
 
 const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
@@ -31,14 +33,11 @@ const ProjectFormStep2: React.FC<ProjectFormStep2Props> = ({
   placeholders,
   t,
   industries,
+  projectGoals,
+  commonFeatures,
 }) => {
-  const getTranslatedArray = (key: string) => {
-    const arr = t(key);
-    if (Array.isArray(arr)) return arr;
-    return [];
-  };
-  const goals = getTranslatedArray("project.initialize.projectGoals");
-  const features = getTranslatedArray("project.initialize.commonFeatures");
+  const goals = projectGoals;
+  const features = commonFeatures;
 
   return (
     <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
