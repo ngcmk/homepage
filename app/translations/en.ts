@@ -178,6 +178,11 @@ ceoPhone: {
         sales: "Sales Question",
         support: "Technical Support",
         other: "Other",
+        project: "New Project",
+        design: "Design Services",
+        development: "Development Services",
+        mobile: "Mobile App",
+        ai: "AI Solutions",
       },
       budgets: {
         under5k: "Under $5,000",

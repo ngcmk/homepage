@@ -398,32 +398,32 @@ export default function ContactForm({ onSubmit, className }: ContactFormProps) {
     },
     {
       value: "project",
-      label: t("contact.form.contactTypes.business", {
-        default: "Business Opportunity",
+      label: t("contact.form.contactTypes.project", {
+        default: "New Project",
       }),
     },
     {
       value: "design",
-      label: t("contact.form.contactTypes.business", {
-        default: "Business Opportunity",
+      label: t("contact.form.contactTypes.design", {
+        default: "Design Services",
       }),
     },
     {
       value: "development",
-      label: t("contact.form.contactTypes.business", {
-        default: "Business Opportunity",
+      label: t("contact.form.contactTypes.development", {
+        default: "Development Services",
       }),
     },
     {
       value: "mobile",
-      label: t("contact.form.contactTypes.business", {
-        default: "Business Opportunity",
+      label: t("contact.form.contactTypes.mobile", {
+        default: "Mobile App",
       }),
     },
     {
       value: "ai",
-      label: t("contact.form.contactTypes.business", {
-        default: "Business Opportunity",
+      label: t("contact.form.contactTypes.ai", {
+        default: "AI Solutions",
       }),
     },
     {

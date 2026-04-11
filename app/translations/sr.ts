@@ -144,6 +144,18 @@ const sr: Translation = {
       form: {
         title: "Pošaljite poruku",
         subtitle: "Odgovorićemo vam što je pre moguće.",
+        contactTypes: {
+          general: "Opšti upit",
+          business: "Poslovna prilika",
+          sales: "Prodajno pitanje",
+          support: "Tehnička podrška",
+          other: "Drugo",
+          project: "Novi projekat",
+          design: "Dizajn usluge",
+          development: "Razvojne usluge",
+          mobile: "Mobilna aplikacija",
+          ai: "AI rešenja",
+        },
       },
       status: {
         connected: "Aktivna veza",

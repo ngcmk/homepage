@@ -102,6 +102,11 @@ const mk: Translation = {
         sales: "Продажно прашање",
         support: "Техничка поддршка",
         other: "Друго",
+        project: "Нов проект",
+        design: "Услуги за дизајн",
+        development: "Услуги за развој",
+        mobile: "Мобилна апликација",
+        ai: "AI решенија",
       },
       errors: {
         submissionError:
