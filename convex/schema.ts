@@ -139,9 +139,9 @@ export default defineSchema({
     details: v.optional(v.string()),
     metadata: v.optional(
       v.object({
-        previousValue: v.any(),
-        newValue: v.any(),
         field: v.optional(v.string()),
+        newValue: v.optional(v.any()),
+        previousValue: v.optional(v.any()),
       }),
     ),
     timestamp: v.number(),
