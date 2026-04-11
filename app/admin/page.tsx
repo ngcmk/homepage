@@ -7,8 +7,9 @@ import {
   useDeleteProjectConsultation,
   useProjectConsultation 
 } from '../hooks/use-project-consultations';
+import { useContacts, useDeleteContact } from '../hooks/use-contacts';
 import { Id } from '@/convex/_generated/dataModel';
-import { Eye, Trash2, X } from 'lucide-react';
+import { Eye, Trash2, X, MessageSquare, Mail, Phone, Building } from 'lucide-react';
 
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'ngcmk7654321';
@@ -37,6 +38,19 @@ interface ProjectConsultation {
   createdAt: number;
 }
 
+interface Contact {
+  _id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  subject?: string;
+  message?: string;
+  contactType?: string;
+  status?: string;
+  createdAt: number;
+}
+
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
@@ -49,7 +63,9 @@ export default function AdminPage() {
   const [projectDetails, setProjectDetails] = useState<ProjectConsultation | null>(null);
 
   const projects = useProjectConsultations({ limit: 100 });
+  const contacts = useContacts({ limit: 100 });
   const deleteProject = useDeleteProjectConsultation();
+  const deleteContact = useDeleteContact();
   const loading = projects === undefined;
 
   const handleViewDetails = (projectId: string) => {
@@ -89,12 +105,17 @@ export default function AdminPage() {
     localStorage.removeItem('admin_auth');
   };
 
-  const handleDelete = async (projectId: string) => {
+  const handleDelete = async (itemId: string) => {
     try {
-      await deleteProject({ id: projectId as Id<"projectConsultations"> });
+      if (itemId.startsWith('contact-')) {
+        const contactId = itemId.replace('contact-', '');
+        await deleteContact({ id: contactId as Id<"contacts"> });
+      } else {
+        await deleteProject({ id: itemId as Id<"projectConsultations"> });
+      }
       setShowDeleteConfirm(null);
     } catch (err) {
-      console.error('Failed to delete project:', err);
+      console.error('Failed to delete:', err);
     }
   };
 
@@ -286,6 +307,89 @@ export default function AdminPage() {
                         </button>
                         <button
                           onClick={() => setShowDeleteConfirm(project._id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Contact Messages Section */}
+        <div className="bg-white rounded-lg shadow overflow-hidden mt-8">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Contact Messages ({contacts?.length || 0})
+            </h2>
+          </div>
+
+          {!contacts || contacts.length === 0 ? (
+            <div className="p-6 text-center text-gray-500">
+              No contact messages yet.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Contact
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Type
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Subject
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Message
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {contacts.map((contact) => (
+                    <tr key={contact._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatDate(contact.createdAt)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {contact.name || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {contact.email}
+                        </div>
+                        {contact.phone && (
+                          <div className="text-sm text-gray-500">
+                            {contact.phone}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                          {contact.contactType?.replace(/\b\w/g, (c) => c.toUpperCase()) || 'General'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                        {contact.subject || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                        {contact.message || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          onClick={() => setShowDeleteConfirm(`contact-${contact._id}`)}
                           className="text-red-600 hover:text-red-900"
                         >
                           <Trash2 className="w-5 h-5" />
