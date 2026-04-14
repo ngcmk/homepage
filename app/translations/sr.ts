@@ -35,6 +35,11 @@ const sr: Translation = {
     customSolutionDescription: "Ne možete pronaći ono što tražite? Hajde da razgovaramo o vašim jedinstvenim zahtevima i kreiramo prilagođeno rešenje za vaš posao.",
     startCustomProject: "Započnite prilagođeni projekat",
     scheduleConsultation: "Zakažite konsultaciju",
+    allServices: "Sve usluge",
+    technical: "Tehnički",
+    creative: "Kreativno",
+    innovation: "Inovacija",
+    socialImpact: "Socijalni uticaj",
     development: {
       title: "Web razvoj",
       description:

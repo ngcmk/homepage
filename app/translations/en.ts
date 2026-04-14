@@ -30,6 +30,11 @@ const en: Translation = {
     customSolutionDescription: "Can't find exactly what you're looking for? Let's discuss your unique requirements and create a tailored solution for your business.",
     startCustomProject: "Start Custom Project",
     scheduleConsultation: "Schedule Consultation",
+    allServices: "All Services",
+    technical: "Technical",
+    creative: "Creative",
+    innovation: "Innovation",
+    socialImpact: "Social Impact",
     development: {
       title: "Web Development",
       description:

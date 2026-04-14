@@ -33,6 +33,11 @@ const mk: Translation = {
     customSolutionDescription: "Не можете да го најдете она што го барате? Ајде да ги разговараме вашите уникатни барања и да создадемо прилагодено решение за вашиот бизнис.",
     startCustomProject: "Започнете прилагоден проект",
     scheduleConsultation: "Закажете консултација",
+    allServices: "Сите услуги",
+    technical: "Технички",
+    creative: "Креативност",
+    innovation: "Иновација",
+    socialImpact: "Социјален impact",
     development: {
       title: "Веб развој",
       description:

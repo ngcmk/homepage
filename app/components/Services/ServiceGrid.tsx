@@ -160,7 +160,9 @@ export default function ServiceGrid({
                     value={category}
                     className="text-sm capitalize"
                   >
-                    {category === "all" ? "All Services" : category}
+                    {category === "all" 
+                      ? t("services.allServices") 
+                      : t(`services.${category.toLowerCase().replace(" ", "")}`) || category}
                   </TabsTrigger>
                 ))}
               </TabsList>
