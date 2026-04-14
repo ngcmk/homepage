@@ -162,7 +162,11 @@ export default function ServiceGrid({
                   >
                     {category === "all" 
                       ? t("services.allServices") 
-                      : t(`services.${category.toLowerCase().replace(" ", "")}`) || category}
+                      : category === "Technical" ? t("services.technical") 
+                      : category === "Creative" ? t("services.creative")
+                      : category === "Innovation" ? t("services.innovation")
+                      : category === "Social Impact" ? t("services.socialImpact")
+                      : category}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -293,8 +297,12 @@ export default function ServiceGrid({
                     <div className="text-2xl font-bold text-foreground">
                       {categoryServices.length}
                     </div>
-                    <div className="text-sm text-muted-foreground capitalize">
-                      {category}
+                    <div className="text-sm text-muted-foreground">
+                      {category === "Technical" ? t("services.technical") 
+                      : category === "Creative" ? t("services.creative")
+                      : category === "Innovation" ? t("services.innovation")
+                      : category === "Social Impact" ? t("services.socialImpact")
+                      : category}
                     </div>
                   </div>
                 </motion.div>
