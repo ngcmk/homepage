@@ -29,6 +29,12 @@ const sr: Translation = {
     pageTitle: "Naše usluge",
     pageDescription:
       "Sveobuhvatna digitalna rešenja prilagođena vašim potrebama",
+    serviceCategories: "Kategorije usluga",
+    exploreServices: "Istražite naš sveobuhvatan opseg digitalnih rešenja",
+    needCustomSolution: "Potrebno vam je prilagođeno rešenje?",
+    customSolutionDescription: "Ne možete pronaći ono što tražite? Hajde da razgovaramo o vašim jedinstvenim zahtevima i kreiramo prilagođeno rešenje za vaš posao.",
+    startCustomProject: "Započnite prilagođeni projekat",
+    scheduleConsultation: "Zakažite konsultaciju",
     development: {
       title: "Web razvoj",
       description:

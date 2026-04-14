@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ServiceCard, { ServiceCardCompact } from "./ServiceCard";
 import { Filter, Grid, List, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/app/contexts/language-context";
 
 interface ServiceGridProps {
   services: Array<{
@@ -36,6 +37,7 @@ export default function ServiceGrid({
   subtitle = "Comprehensive solutions for your digital needs",
   className = "",
 }: ServiceGridProps) {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -250,9 +252,9 @@ export default function ServiceGrid({
           className="mt-20"
         >
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-4">Service Categories</h3>
+            <h3 className="text-2xl font-bold mb-4">{t("services.serviceCategories")}</h3>
             <p className="text-muted-foreground">
-              Explore our comprehensive range of digital solutions
+              {t("services.exploreServices")}
             </p>
           </div>
 
@@ -307,18 +309,16 @@ export default function ServiceGrid({
           className="text-center mt-16"
         >
           <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-2xl p-8 border border-border/50">
-            <h3 className="text-2xl font-bold mb-4">Need a Custom Solution?</h3>
+            <h3 className="text-2xl font-bold mb-4">{t("services.needCustomSolution")}</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Can't find exactly what you're looking for? Let's discuss your
-              unique requirements and create a tailored solution for your
-              business.
+              {t("services.customSolutionDescription")}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild size="lg" className="px-8">
-                <a href="/initialize-project">Start Custom Project</a>
+                <a href="/initialize-project">{t("services.startCustomProject")}</a>
               </Button>
               <Button asChild variant="outline" size="lg" className="px-8">
-                <a href="#contact">Schedule Consultation</a>
+                <a href="#contact">{t("services.scheduleConsultation")}</a>
               </Button>
             </div>
           </div>

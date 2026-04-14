@@ -27,6 +27,12 @@ const mk: Translation = {
     pageTitle: "Нашите услуги",
     pageDescription:
       "Сеопфатни дигитални решенија прилагодени на вашите потреби",
+    serviceCategories: "Категории на услуги",
+    exploreServices: "Истражете го нашиот сеопфатен опсег на дигитални решенија",
+    needCustomSolution: "Ви треба прилагодено решение?",
+    customSolutionDescription: "Не можете да го најдете она што го барате? Ајде да ги разговараме вашите уникатни барања и да создадемо прилагодено решение за вашиот бизнис.",
+    startCustomProject: "Започнете прилагоден проект",
+    scheduleConsultation: "Закажете консултација",
     development: {
       title: "Веб развој",
       description:

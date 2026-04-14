@@ -24,6 +24,12 @@ const en: Translation = {
   services: {
     pageTitle: "Our Services",
     pageDescription: "Comprehensive digital solutions tailored to your needs",
+    serviceCategories: "Service Categories",
+    exploreServices: "Explore our comprehensive range of digital solutions",
+    needCustomSolution: "Need a Custom Solution?",
+    customSolutionDescription: "Can't find exactly what you're looking for? Let's discuss your unique requirements and create a tailored solution for your business.",
+    startCustomProject: "Start Custom Project",
+    scheduleConsultation: "Schedule Consultation",
     development: {
       title: "Web Development",
       description:
