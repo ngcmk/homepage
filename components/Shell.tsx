@@ -1,0 +1,2 @@
+import {LanguageProvider} from "./Language";import Header from "./Header";import Footer from "./Footer";
+export default function Shell({children}:{children:React.ReactNode}){return <LanguageProvider><Header/>{children}<Footer/></LanguageProvider>}

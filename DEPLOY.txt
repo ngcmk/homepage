@@ -1,0 +1,7 @@
+NGC FINAL VERIFIED READY
+
+Local verification before deployment:
+1. npm install
+2. npm run build
+
+Then deploy the same source if the build completes successfully.
