@@ -59,3 +59,5 @@ Before replacing the GitHub main branch:
 - Large headings now visibly transition blue → violet → pink
 - Why NGC card titles use the same proper text-width gradient
 - No layout/content/backend/language/header changes
+
+##
