@@ -1357,3 +1357,5 @@ header .officialLogo img{
 .blogList h2{
   vertical-align:top!important;
 }
+
+.businessCheckGlowCard{transition:transform .3s ease,box-shadow .3s ease;cursor:default}.businessCheckGlowCard:hover{transform:translateY(-8px);box-shadow:0 0 48px rgba(102,116,255,.4),0 25px 70px rgba(109,85,220,.25)!important}@media(prefers-reduced-motion:reduce){.businessCheckGlowCard{transition:none}.businessCheckGlowCard:hover{transform:none}}

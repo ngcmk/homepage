@@ -49,6 +49,18 @@ export default function Home(){
  <div className="heroCurve"/>
 </section>
 
+<section className="section cont" style={{paddingTop:64,paddingBottom:64}}>
+ <div className="businessCheckGlowCard" style={{position:"relative",overflow:"hidden",borderRadius:28,padding:"clamp(24px,3.5vw,44px)",textAlign:"center",background:"linear-gradient(135deg,#f8fbff,#eef0ff 55%,#f5efff)",color:"#17234b",border:"1px solid rgba(109,114,255,.22)",boxShadow:"0 0 35px rgba(102,116,255,.22),0 18px 60px rgba(109,85,220,.16)"}}>
+  <div style={{position:"absolute",width:240,height:240,borderRadius:"50%",background:"rgba(93,102,255,.30)",filter:"blur(65px)",top:-100,right:-50,pointerEvents:"none"}}/>
+  <div style={{position:"relative",zIndex:1}}>
+   <small style={{color:"#6151d4",fontWeight:700,letterSpacing:2}}>NGC BUSINESS CHECK</small>
+   <h2 style={{fontSize:"clamp(25px,3vw,38px)",lineHeight:1.2,margin:"20px auto",maxWidth:850}}>{lang==="mk"?"Што му недостига на твојот бизнис?":lang==="sr"?"Šta nedostaje tvom biznisu?":"Discover how your business can work smarter, faster and more successfully."}</h2>
+   <p style={{maxWidth:710,margin:"0 auto 28px",color:"#475477",fontSize:17,lineHeight:1.7}}>{lang==="mk"?"Откриј што можеш да подобриш со бесплатна бизнис анализа.":lang==="sr"?"Otkrij šta možeš da poboljšaš uz besplatnu analizu biznisa.":"Get a free business assessment in just 2 minutes, with tailored recommendations for digitalization, automation and growth."}</p>
+   <Link href="/business-check" style={{display:"inline-block",padding:"16px 28px",borderRadius:14,background:"linear-gradient(90deg,#426bff,#8052f5)",color:"#fff",fontWeight:700,textDecoration:"none",boxShadow:"0 8px 30px rgba(83,93,255,.4)"}}>{lang==="mk"?"Започнете бесплатна анализа":lang==="sr"?"Pokrenite besplatnu analizu":"Start your free assessment"} →</Link>
+   <p style={{marginTop:18,fontSize:13,color:"#687396"}}>{lang==="mk"?"Без регистрација • Без обврски • Резултати веднаш":lang==="sr"?"Bez registracije • Bez obaveza • Rezultati odmah":"No registration • No obligation • Instant results"}</p>
+  </div>
+ </div>
+</section>
 <section id="services" className="section cont">
  <div className="head"><div><small>{t.servicesTag}</small><h2>{t.servicesTitle}</h2></div><p>{t.servicesText}</p></div>
  <div className="services">{t.services.map((s:any,i:number)=>{const I=icons[i];return <article key={s[0]}><div className={"ico i"+i}><I/></div><h3>{s[0]}</h3><p>{s[1]}</p><b>{s[2]}</b></article>})}</div>
@@ -80,3 +92,7 @@ export default function Home(){
 
 <section className="cta cont"><div><small><span className="ngcGradientText">NGC</span> · NEXT GENERATION CODE</small><h2>{t.cta}</h2><p>{t.ctaText}</p></div><Link href="/start-project">{t.start} →</Link></section>
 </main>}
+
+
+
+

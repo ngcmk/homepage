@@ -1,68 +1,1160 @@
 "use client";
-import {useMemo,useState} from "react";
+import {convexHttpUrl} from "@/lib/convexHttpUrl";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import {ArrowLeft,ArrowRight,CheckCircle2,RotateCcw,Sparkles,ShieldCheck,Lightbulb} from "lucide-react";
-import {useLanguage} from "@/components/Language";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  RotateCcw,
+  Sparkles,
+  ShieldCheck,
+  Lightbulb,
+} from "lucide-react";
+import { useLanguage } from "@/components/Language";
 import "./business-check.css";
-type L="mk"|"sr"|"en";
-type T=Record<L,string>;
-const t=(mk:string,sr:string,en:string):T=>({mk,sr,en});
-const ui={
- headline:t("Откријте што го кочи вашиот бизнис — и како NGC може да помогне.","Otkrijte šta koči vaše poslovanje — i kako NGC može da pomogne.","Find what's holding your business back — and how NGC can help."),
- intro:t("5 основни + 3 насочени прашања. Добијте конкретен предлог: што е проблемот, што ќе изработиме и што добивате.","5 osnovnih + 3 ciljna pitanja. Dobijate konkretan predlog: problem, rešenje i korist.","5 core + 3 tailored questions. Get a concrete proposal: the problem, what we'll build, and the benefit."),
- free:t("Бесплатно", "Besplatno", "Free"), eight:t("8 кратки прашања","8 kratkih pitanja","8 short questions"), solutions:t("Конкретни NGC решенија","Konkretna NGC rešenja","Concrete NGC solutions"),
- question:t("Прашање","Pitanje","Question"),of:t("од","od","of"),next:t("Продолжи","Nastavi","Continue"),back:t("Назад","Nazad","Back"),
- industry:t("Внесете ја вашата дејност","Unesite svoju delatnost","Enter your industry"),industryExample:t("Пр. земјоделска аптека, транспорт...","Npr. poljoprivredna apoteka, transport...","E.g. agricultural supply store, logistics..."),
- last:t("Последен чекор","Poslednji korak","Final step"),ready:t("Вашата анализа е подготвена!","Vaša analiza je spremna!","Your assessment is ready!"),optional:t("Овие полиња се незадолжителни.","Ova polja nisu obavezna.","These fields are optional."),company:t("Име на фирма / бизнис","Naziv firme / poslovanja","Company / business name"),detail:t("Дополнителен проблем","Dodatni problem","Additional challenge"),detailExample:t("Опишете со неколку зборови...","Opišite ukratko...","Describe briefly..."),privacy:t("Ништо не се испраќа автоматски. Дополнителниот опис не влијае на автоматската анализа, но влегува во барањето за понуда.","Ništa se ne šalje automatski. Opis ne menja analizu, ali ulazi u zahtev za ponudu.","Nothing is sent automatically. The note does not change the assessment, but is included in your quote request."),show:t("Прикажи анализа","Prikaži analizu","Show assessment"),done:t("ВАШАТА АНАЛИЗА Е ПОДГОТВЕНА","VAŠA ANALIZA JE SPREMNA","YOUR ASSESSMENT IS READY"),forBusiness:t("NGC решенија за вашиот бизнис","NGC rešenja za vaše poslovanje","NGC solutions for your business"),forName:t("NGC препораки за","NGC preporuke za","NGC recommendations for"),summary:t("Врз основа на вашите одговори, ова се најрелевантните можности. Ова е почетна проценка, не целосна ревизија.","Na osnovu odgovora, ovo su najrelevantnije mogućnosti. Ovo je početna procena, ne potpuna revizija.","Based on your answers, these are the most relevant opportunities. This is an initial assessment, not a full audit."),priority:t("Прв приоритет","Prvi prioritet","Top priority"),otherPriority:t("Дополнителна можност","Dodatna mogućnost","Additional opportunity"),problem:t("Што ве кочи","Šta vas koči","What's holding you back"),offer:t("Што ќе направи NGC","Šta će NGC uraditi","What NGC will build"),scenario:t("Како би работело","Kako bi funkcionisalo","How it would work"),benefits:t("Што добивате","Šta dobijate","What you gain"),nextstep:t("Следен чекор","Sledeći korak","Next step"),contactTitle:t("Да го претвориме предлогот во конкретно решение?","Da pretvorimo predlog u konkretno rešenje?","Ready to turn this proposal into a solution?"),contactText:t("Побарајте понуда за вашите препорачани решенија. Ќе се отвори е-пошта со подготвена порака — ништо не се испраќа автоматски.","Zatražite ponudu. Otvoriće se e-pošta sa pripremljenom porukom — ništa se ne šalje automatski.","Request a quote. Your email app opens with a prepared message — nothing is sent automatically."),contact:t("Сакам конкретна понуда од NGC","Želim konkretnu ponudu od NGC","Request my NGC proposal"),new:t("Нова анализа","Nova analiza","New assessment"),disclaimer:t("Ориентациона анализа базирана на правила, без AI. Предложените функции се можности за изработка, а не гаранција дека се веќе достапни. Опсегот, цената и ефектот се потврдуваат со NGC.","Orijentaciona analiza po pravilima, bez AI. Funkcije su predlozi za izradu, ne tvrdnja da već postoje. Obim, cena i efekat se potvrđuju sa NGC.","Rule-based initial assessment, without AI. Suggested features are possible deliverables, not claims that they already exist. Scope, pricing and impact require NGC confirmation."),home:t("Назад на NGC","Nazad na NGC","Back to NGC"),
+
+type Lang = "mk" | "sr" | "en";
+type Tr = Record<Lang, string>;
+type Option = { id: string; label: Tr };
+type Question = { title: Tr; options: Option[]; multiple: boolean };
+type Answer = string[];
+
+const t = (mk: string, sr: string, en: string): Tr => ({ mk, sr, en });
+const opt = (id: string, mk: string, sr: string, en: string): Option => ({
+  id,
+  label: t(mk, sr, en),
+});
+const question = (title: Tr, options: Option[], multiple = true): Question => ({
+  title,
+  options,
+  multiple,
+});
+
+const ui = {
+  headline: t(
+    "Што му недостига на твојот бизнис?",
+    "Šta nedostaje tvom biznisu?",
+    "What is your business missing?"
+  ),
+  intro: t(
+    "Откриј каде губиш време и можности за раст. Добиј бесплатна анализа и конкретни решенија.",
+    "Otkrij gde gubiš vreme i prilike za rast. Dobij besplatnu analizu i konkretna rešenja.",
+    "Discover where your business loses time and growth opportunities. Get a free assessment and practical solutions."
+  ),
+  free: t("Бесплатно", "Besplatno", "Free"),
+  five: t("5 кратки прашања", "5 kratkih pitanja", "5 short questions"),
+  solutions: t("Конкретни решенија", "Konkretna rešenja", "Practical solutions"),
+  question: t("Прашање", "Pitanje", "Question"),
+  of: t("од", "od", "of"),
+  choose: t(
+    "Избери ги сите одговори што важат за твојот бизнис.",
+    "Izaberi sve odgovore koji važe za tvoj biznis.",
+    "Select all answers that apply to your business."
+  ),
+  chooseOne: t(
+    "Избери ја твојата дејност.",
+    "Izaberi svoju delatnost.",
+    "Choose your industry."
+  ),
+  next: t("Продолжи", "Nastavi", "Continue"),
+  back: t("Назад", "Nazad", "Back"),
+  other: t("Внеси ја дејноста", "Unesi delatnost", "Enter your industry"),
+  otherPlaceholder: t(
+    "Пр. земјоделска аптека",
+    "Npr. poljoprivredna apoteka",
+    "E.g. agricultural supply store"
+  ),
+  finalStep: t("Последен чекор", "Poslednji korak", "Final step"),
+  ready: t("Подготвени сме за твојата анализа", "Spremni smo za tvoju analizu", "Your assessment is ready"),
+  optional: t(
+    "Додај име на фирма или дополнителен проблем, ако сакаш.",
+    "Dodaj naziv firme ili dodatni problem, ako želiš.",
+    "Optionally add your company name or another challenge."
+  ),
+  company: t("Име на бизнис", "Naziv biznisa", "Business name"),
+  note: t("Дополнителен проблем", "Dodatni problem", "Additional challenge"),
+  notePlaceholder: t(
+    "Што друго би сакал да подобриш?",
+    "Šta još želiš da poboljšaš?",
+    "What else would you like to improve?"
+  ),
+  privacy: t(
+    "Ништо не се испраќа автоматски. Дополнителниот опис ќе биде вклучен во барањето за понуда, но не влијае на автоматската анализа.",
+    "Ništa se ne šalje automatski. Dodatni opis ulazi u zahtev za ponudu, ali ne utiče na automatsku analizu.",
+    "Nothing is sent automatically. Your note is included in the proposal request but does not affect the automatic assessment."
+  ),
+  show: t("Откриј го решението", "Otkrij rešenje", "Discover your solution"),
+  done: t("NGC BUSINESS ANALYSIS", "NGC BUSINESS ANALYSIS", "NGC BUSINESS ANALYSIS"),
+  title: t(
+    "Твојот бизнис може да работи попаметно.",
+    "Tvoj biznis može da radi pametnije.",
+    "Your business can work smarter."
+  ),
+  for: t("Анализа за", "Analiza za", "Assessment for"),
+  summary: t(
+    "Ги анализиравме твоите одговори и го издвоивме најважниот простор за подобрување.",
+    "Analizirali smo tvoje odgovore i izdvojili najvažniju priliku za poboljšanje.",
+    "We analyzed your answers and identified the strongest opportunity for improvement."
+  ),
+  priority: t("ТВОЈОТ ПРВ ПРИОРИТЕТ", "TVOJ PRVI PRIORITET", "YOUR TOP PRIORITY"),
+  problem: t(
+    "Каде твојот бизнис губи потенцијал?",
+    "Gde tvoj biznis gubi potencijal?",
+    "Where is your business losing potential?"
+  ),
+  vision: t(
+    "Замисли поинаков начин на работа",
+    "Zamisli drugačiji način rada",
+    "Imagine a better way of working"
+  ),
+  offer: t(
+    "Како NGC ќе ти помогне?",
+    "Kako će ti NGC pomoći?",
+    "How can NGC help?"
+  ),
+  benefits: t(
+    "Што добива твојот бизнис?",
+    "Šta dobija tvoj biznis?",
+    "What does your business gain?"
+  ),
+  nextStep: t(
+    "Следниот чекор кон подобар бизнис",
+    "Sledeći korak ka boljem biznisu",
+    "Your next step toward a better business"
+  ),
+  contactTitle: t(
+    "Подготвен си да го претвориш потенцијалот во резултати?",
+    "Spreman si da potencijal pretvoriš u rezultate?",
+    "Ready to turn potential into results?"
+  ),
+  contactText: t(
+    "NGC може да ти подготви конкретен план: што да изградиме, како ќе функционира и од каде е најпаметно да започнеме.",
+    "NGC može da pripremi konkretan plan: šta da izgradimo, kako će funkcionisati i odakle je najbolje početi.",
+    "NGC can prepare a concrete plan: what to build, how it will work and where to start."
+  ),
+  contact: t(
+    "Сакам конкретен план од NGC",
+    "Želim konkretan plan od NGC",
+    "Get my NGC action plan"
+  ),
+  restart: t("Нова анализа", "Nova analiza", "New assessment"),
+  home: t("Назад на NGC", "Nazad na NGC", "Back to NGC"),
+  disclaimer: t(
+    "Ова е почетна анализа базирана на твоите одговори и однапред дефинирани правила, не целосна ревизија или AI дијагноза. Точниот опсег, инвестицијата и очекуваните резултати се утврдуваат по консултација.",
+    "Ovo je početna analiza zasnovana na odgovorima i pravilima, ne potpuna revizija niti AI dijagnoza. Tačan obim, investicija i očekivani rezultati utvrđuju se nakon konsultacije.",
+    "This is a rule-based initial assessment, not a full audit or AI diagnosis. Scope, investment and expected outcomes are confirmed during consultation."
+  ),
 };
-type O={v:string;l:T};type Q={title:T;hint:T;multiple?:boolean;options:O[]};
-const o=(v:string,mk:string,sr:string,en:string):O=>({v,l:t(mk,sr,en)});
-const q=(title:T,multiple:boolean,options:O[]):Q=>({title,multiple,hint:multiple?t("Изберете сè што важи.","Izaberite sve što važi.","Select all that apply."):t("Изберете еден одговор.","Izaberite jedan odgovor.","Choose one answer."),options});
-const core:Q[]=[
- q(t("Со која дејност се занимавате?","Kojom delatnošću se bavite?","What industry are you in?"),false,[o("fitness","Фитнес / спорт","Fitnes / sport","Fitness / sports"),o("hospitality","Ресторан / угостителство","Restoran / ugostiteljstvo","Restaurant / hospitality"),o("retail","Трговија / продавница","Trgovina / prodavnica","Retail / store"),o("services","Услуги / салон / ординација","Usluge / salon / ordinacija","Services / salon / clinic"),o("production","Производство / дистрибуција","Proizvodnja / distribucija","Manufacturing / distribution"),o("other","Друга дејност","Druga delatnost","Other industry")]),
- q(t("Како доаѓате до нови клиенти?","Kako dolazite do novih klijenata?","How do you acquire customers?"),true,[o("referrals","Препораки","Preporuke","Referrals"),o("social","Социјални мрежи","Društvene mreže","Social media"),o("web","Google / веб-страница","Google / sajt","Google / website"),o("location","Физичка локација","Fizička lokacija","Physical location"),o("hard","Тешко доаѓаме до нови клиенти","Teško dolazimo do novih klijenata","We struggle to get new customers")]),
- q(t("Како ја организирате работата?","Kako organizujete rad?","How do you manage operations?"),true,[o("manual","Рачно, телефон и пораки","Ručno, telefon i poruke","Manually, calls and messages"),o("sheets","Excel / табели","Excel / tabele","Spreadsheets"),o("fragmented","Неколку неповрзани апликации","Više nepovezanih aplikacija","Disconnected apps"),o("integrated","Еден поврзан систем","Jedan povezan sistem","One integrated system")]),
- q(t("Кои проблеми сакате да ги решите?","Koje probleme želite da rešite?","Which problems do you want to solve?"),true,[o("sales","Недоволно клиенти и продажба","Nedovoljno klijenata i prodaje","Not enough customers or sales"),o("automation","Премногу администрација","Previše administracije","Too much admin work"),o("orders","Рачни нарачки или резервации","Ručne porudžbine ili rezervacije","Manual orders or bookings"),o("communication","Тешко следење клиенти","Teško praćenje klijenata","Hard to track customers"),o("reporting","Немаме јасни извештаи","Nemamo jasne izveštaje","No clear reports")]),
- q(t("Што ви е приоритет во моментов?","Šta vam je trenutno prioritet?","What's your priority right now?"),false,[o("free","Прво бесплатни подобрувања","Prvo besplatna poboljšanja","Start with free improvements"),o("small","Мало решение за почеток","Manje rešenje za početak","Start with a small solution"),o("ready","Подготвени сме за инвестиција","Spremni smo za ulaganje","Ready to invest"),o("exploring","Истражуваме можности","Istražujemo mogućnosti","Exploring options")])
-];
-const extras:Record<string,Q[]>={
- fitness:[q(t("Како ги следите членарините?","Kako pratite članarine?","How do you track memberships?"),false,[o("manual","Рачно / Excel","Ručno / Excel","Manual / Excel"),o("software","Преку апликација","Kroz aplikaciju","Using software"),o("none","Немаме евиденција","Nemamo evidenciju","No tracking")]),q(t("Како се закажуваат тренинзи?","Kako se zakazuju treninzi?","How are sessions booked?"),false,[o("manual","Пораки / телефон","Poruke / telefon","Messages / calls"),o("online","Онлајн","Onlajn","Online"),o("none","Не закажуваме","Ne zakazujemo","No bookings")]),q(t("Што ви одзема најмногу време?","Šta vam oduzima najviše vremena?","What takes most time?"),true,[o("members","Членарини","Članarine","Memberships"),o("schedule","Распореди","Rasporedi","Schedules"),o("communication","Комуникација","Komunikacija","Communication"),o("none","Ништо од ова","Ništa od ovoga","None of these")])],
- hospitality:[q(t("Како примате нарачки?","Kako primate porudžbine?","How do you take orders?"),false,[o("manual","Рачно / хартија","Ručno / papir","Paper / manually"),o("pos","Каса / POS","Kasa / POS","POS terminal"),o("online","Поврзан систем","Povezan sistem","Connected system")]),q(t("Каде се создава застој?","Gde nastaje zastoj?","Where are the bottlenecks?"),true,[o("kitchen","Келнери и кујна","Konobari i kuhinja","Waiters and kitchen"),o("booking","Резервации","Rezervacije","Reservations"),o("reporting","Извештаи","Izveštaji","Reporting"),o("none","Нема застои","Nema zastoja","No bottlenecks")]),q(t("Дали ви треба подобра контрола на нарачки?","Treba li bolja kontrola porudžbina?","Need better order tracking?"),false,[o("yes","Да","Da","Yes"),o("later","Можеби подоцна","Možda kasnije","Maybe later"),o("no","Веќе имаме систем","Već imamo sistem","Already covered")])],
- retail:[q(t("Како ги следите залихите?","Kako pratite zalihe?","How do you track stock?"),false,[o("manual","Рачно / Excel","Ručno / Excel","Manual / Excel"),o("software","Софтвер","Softver","Software"),o("none","Без прецизна евиденција","Bez precizne evidencije","No accurate tracking")]),q(t("Како примате нарачки?","Kako primate porudžbine?","How do you receive orders?"),true,[o("store","Во продавница","U prodavnici","In store"),o("manual","Пораки / телефон","Poruke / telefon","Messages / calls"),o("online","Онлајн","Onlajn","Online")]),q(t("Што сакате да подобрите?","Šta želite da poboljšate?","What needs improvement?"),false,[o("stock","Залихи","Zalihe","Inventory"),o("sales","Продажни канали","Prodajni kanali","Sales channels"),o("integration","Продажба + магацин","Prodaja + magacin","Sales + warehouse")])],
- general:[q(t("Каде губите време?","Gde gubite vreme?","Where do you lose time?"),true,[o("manual","Документи / евиденција","Dokumenti / evidencija","Documents / records"),o("booking","Закажување","Zakazivanje","Scheduling"),o("communication","Клиентски пораки","Poruke klijenata","Customer messages"),o("none","Ништо од ова","Ništa od ovoga","None of these")]),q(t("Како чувате деловни податоци?","Kako čuvate poslovne podatke?","How do you store business data?"),false,[o("manual","Хартија / табели","Papir / tabele","Paper / spreadsheets"),o("fragmented","Различни апликации","Različite aplikacije","Multiple apps"),o("integrated","Поврзан систем","Povezan sistem","Connected system")]),q(t("Што ви е најкорисно?","Šta bi vam najviše koristilo?","What would help most?"),false,[o("automation","Автоматизација","Automatizacija","Automation"),o("crm","Евиденција на клиенти","Evidencija klijenata","Customer tracking"),o("sales","Повеќе продажба","Više prodaje","More sales"),o("reporting","Извештаи","Izveštaji","Reporting")])]
+
+const industryQuestion = question(
+  t(
+    "Со која дејност се занимава твојот бизнис?",
+    "Kojom delatnošću se bavi tvoj biznis?",
+    "What industry is your business in?"
+  ),
+  [
+    opt("fitness", "Фитнес и спорт", "Fitnes i sport", "Fitness and sports"),
+    opt("hospitality", "Ресторан / угостителство", "Restoran / ugostiteljstvo", "Hospitality"),
+    opt("retail", "Трговија", "Trgovina", "Retail"),
+    opt("services", "Професионални услуги", "Profesionalne usluge", "Professional services"),
+    opt("production", "Производство и дистрибуција", "Proizvodnja i distribucija", "Manufacturing and distribution"),
+    opt("health", "Здравство и убавина", "Zdravstvo i lepota", "Healthcare and beauty"),
+    opt("logistics", "Транспорт и логистика", "Transport i logistika", "Transport and logistics"),
+    opt("other", "Друга дејност", "Druga delatnost", "Other industry"),
+  ],
+  false
+);
+
+const industries: Record<string, Question[]> = {
+  fitness: [
+    question(t("Како го водиш фитнес-центарот?", "Kako vodiš fitnes centar?", "How do you manage your gym?"), [
+      opt("manual", "Рачна евиденција / Excel", "Ručna evidencija / Excel", "Manual records / Excel"),
+      opt("messages", "Пораки и телефон", "Poruke i telefon", "Messages and calls"),
+      opt("software", "Користиме софтвер", "Koristimo softver", "We use software"),
+      opt("disconnected", "Имаме повеќе неповрзани алатки", "Imamo nepovezane alate", "We use disconnected tools"),
+    ]),
+    question(t("Каде губиш најмногу време?", "Gde gubiš najviše vremena?", "Where do you lose the most time?"), [
+      opt("members", "Членарини и евиденција", "Članarine i evidencija", "Memberships and records"),
+      opt("schedule", "Распореди и тренери", "Rasporedi i treneri", "Schedules and trainers"),
+      opt("communication", "Комуникација со членови", "Komunikacija sa članovima", "Member communication"),
+      opt("reporting", "Извештаи и контрола", "Izveštaji i kontrola", "Reporting and control"),
+    ]),
+    question(t("Што го ограничува растот?", "Šta ograničava rast?", "What limits your growth?"), [
+      opt("retention", "Тешко задржуваме членови", "Teško zadržavamo članove", "Member retention"),
+      opt("sales", "Недоволно нови членови", "Nedovoljno novih članova", "Not enough new members"),
+      opt("automation", "Премногу администрација", "Previše administracije", "Too much administration"),
+      opt("experience", "Недоволно дигитално искуство", "Slabo digitalno iskustvo", "Limited digital experience"),
+    ]),
+    question(t("Што сакаш да постигнеш?", "Šta želiš da postigneš?", "What do you want to achieve?"), [
+      opt("automation", "Помалку рачна работа", "Manje ručnog rada", "Less manual work"),
+      opt("retention", "Повеќе лојални членови", "Više lojalnih članova", "More loyal members"),
+      opt("sales", "Повеќе нови членови", "Više novih članova", "More new members"),
+      opt("members", "Целосна контрола на работењето", "Potpuna kontrola poslovanja", "Full operational visibility"),
+    ]),
+  ],
+
+  hospitality: [
+    question(t("Како функционира услугата?", "Kako funkcioniše usluga?", "How does your service operate?"), [
+      opt("manual", "Рачни нарачки", "Ručne porudžbine", "Manual orders"),
+      opt("pos", "Каса / POS", "Kasa / POS", "POS system"),
+      opt("messages", "Резервации преку телефон", "Rezervacije telefonom", "Phone reservations"),
+      opt("software", "Имаме дигитален систем", "Imamo digitalni sistem", "We use a digital system"),
+    ]),
+    question(t("Каде настануваат застои?", "Gde nastaju zastoji?", "Where do bottlenecks occur?"), [
+      opt("orders", "Нарачки и кујна", "Porudžbine i kuhinja", "Orders and kitchen"),
+      opt("booking", "Резервации", "Rezervacije", "Reservations"),
+      opt("schedule", "Организација на персонал", "Organizacija osoblja", "Staff organization"),
+      opt("reporting", "Контрола и извештаи", "Kontrola i izveštaji", "Control and reporting"),
+    ]),
+    question(t("Што најмногу ти пречи во работењето?", "Šta ti najviše smeta u radu?", "What hurts your operations most?"), [
+      opt("orders", "Бавна услуга", "Spora usluga", "Slow service"),
+      opt("automation", "Премногу рачни задачи", "Previše ručnih zadataka", "Too much manual work"),
+      opt("sales", "Недоволно гости", "Nedovoljno gostiju", "Not enough guests"),
+      opt("communication", "Недоразбирања во тимот", "Nesporazumi u timu", "Team miscommunication"),
+    ]),
+    question(t("Што сакаш да подобриш?", "Šta želiš da poboljšaš?", "What would you improve?"), [
+      opt("orders", "Побрза услуга", "Brža usluga", "Faster service"),
+      opt("booking", "Полесни резервации", "Lakše rezervacije", "Easier reservations"),
+      opt("sales", "Повеќе гости", "Više gostiju", "More guests"),
+      opt("schedule", "Подобра организација", "Bolja organizacija", "Better organization"),
+    ]),
+  ],
+
+  retail: [
+    question(t("Како продаваш?", "Kako prodaješ?", "How do you sell?"), [
+      opt("store", "Физичка продавница", "Fizička prodavnica", "Physical store"),
+      opt("online", "Онлајн", "Onlajn", "Online"),
+      opt("messages", "Преку пораки", "Preko poruka", "Through messages"),
+      opt("wholesale", "Големопродажба", "Veleprodaja", "Wholesale"),
+    ]),
+    question(t("Каде губиш време?", "Gde gubiš vreme?", "Where do you lose time?"), [
+      opt("stock", "Залихи и магацин", "Zalihe i magacin", "Inventory and warehouse"),
+      opt("orders", "Нарачки и испораки", "Porudžbine i isporuke", "Orders and deliveries"),
+      opt("manual", "Рачно внесување", "Ručni unos", "Manual data entry"),
+      opt("reporting", "Извештаи", "Izveštaji", "Reporting"),
+    ]),
+    question(t("Што ја кочи продажбата?", "Šta koči prodaju?", "What limits sales?"), [
+      opt("sales", "Недоволно купувачи", "Nedovoljno kupaca", "Not enough customers"),
+      opt("stock", "Неточни залихи", "Netačne zalihe", "Inaccurate inventory"),
+      opt("orders", "Бавна обработка на нарачки", "Spora obrada porudžbina", "Slow order processing"),
+      opt("crm", "Слабо следење купувачи", "Slabo praćenje kupaca", "Weak customer follow-up"),
+    ]),
+    question(t("Што сакаш да постигнеш?", "Šta želiš da postigneš?", "What do you want to achieve?"), [
+      opt("sales", "Повеќе продажба", "Više prodaje", "More sales"),
+      opt("stock", "Точна контрола на залихи", "Tačna kontrola zaliha", "Accurate inventory control"),
+      opt("orders", "Побрзи нарачки", "Brže porudžbine", "Faster orders"),
+      opt("reporting", "Подобри деловни одлуки", "Bolje poslovne odluke", "Better business decisions"),
+    ]),
+  ],
+
+  services: [
+    question(t("Како работиш со клиентите?", "Kako radiš sa klijentima?", "How do you work with clients?"), [
+      opt("messages", "Телефон и пораки", "Telefon i poruke", "Calls and messages"),
+      opt("manual", "Рачна евиденција", "Ručna evidencija", "Manual records"),
+      opt("software", "Софтвер", "Softver", "Software"),
+      opt("web", "Преку веб-страница", "Preko sajta", "Through a website"),
+    ]),
+    question(t("Каде губиш време?", "Gde gubiš vreme?", "Where do you lose time?"), [
+      opt("crm", "Следење клиенти", "Praćenje klijenata", "Customer tracking"),
+      opt("booking", "Термини", "Termini", "Appointments"),
+      opt("automation", "Администрација", "Administracija", "Administration"),
+      opt("schedule", "Задачи и проекти", "Zadaci i projekti", "Tasks and projects"),
+    ]),
+    question(t("Што го ограничува растот?", "Šta ograničava rast?", "What limits growth?"), [
+      opt("sales", "Недоволно нови клиенти", "Nedovoljno novih klijenata", "Not enough new clients"),
+      opt("crm", "Пропуштени барања", "Propušteni upiti", "Missed inquiries"),
+      opt("automation", "Премногу рачна работа", "Previše ručnog rada", "Too much manual work"),
+      opt("reporting", "Нема јасен преглед", "Nema jasnog pregleda", "Limited business visibility"),
+    ]),
+    question(t("Што сакаш да подобриш?", "Šta želiš da poboljšaš?", "What would you improve?"), [
+      opt("sales", "Повеќе клиенти", "Više klijenata", "More clients"),
+      opt("crm", "Подобра комуникација", "Bolja komunikacija", "Better communication"),
+      opt("automation", "Автоматизација", "Automatizacija", "Automation"),
+      opt("booking", "Онлајн закажување", "Onlajn zakazivanje", "Online appointments"),
+    ]),
+  ],
+
+  production: [
+    question(t("Како го водиш производството?", "Kako vodiš proizvodnju?", "How do you manage production?"), [
+      opt("manual", "Рачно / Excel", "Ručno / Excel", "Manual / Excel"),
+      opt("software", "Преку софтвер", "Preko softvera", "Using software"),
+      opt("disconnected", "Неповрзани системи", "Nepovezani sistemi", "Disconnected systems"),
+      opt("messages", "Телефон и е-пошта", "Telefon i e-pošta", "Calls and email"),
+    ]),
+    question(t("Каде губиш најмногу време?", "Gde gubiš najviše vremena?", "Where do you lose the most time?"), [
+      opt("automation", "Производни процеси", "Proizvodni procesi", "Production processes"),
+      opt("stock", "Материјали и залихи", "Materijali i zalihe", "Materials and inventory"),
+      opt("orders", "Нарачки", "Porudžbine", "Orders"),
+      opt("reporting", "Извештаи", "Izveštaji", "Reporting"),
+    ]),
+    question(t("Што создава најголем проблем?", "Šta stvara najveći problem?", "What causes the biggest challenge?"), [
+      opt("stock", "Недостаток на материјали", "Nedostatak materijala", "Material shortages"),
+      opt("automation", "Повторувачки задачи", "Ponavljajući zadaci", "Repetitive tasks"),
+      opt("orders", "Доцнење на нарачки", "Kašnjenje porudžbina", "Delayed orders"),
+      opt("reporting", "Недоволна контрола на трошоци", "Slaba kontrola troškova", "Limited cost visibility"),
+    ]),
+    question(t("Што сакаш да постигнеш?", "Šta želiš da postigneš?", "What do you want to achieve?"), [
+      opt("automation", "Поефикасни процеси", "Efikasniji procesi", "More efficient processes"),
+      opt("stock", "Контрола на материјали", "Kontrola materijala", "Material control"),
+      opt("orders", "Подобро следење нарачки", "Bolje praćenje porudžbina", "Better order tracking"),
+      opt("reporting", "Контрола на трошоци", "Kontrola troškova", "Cost visibility"),
+    ]),
+  ],
+
+  health: [
+    question(t("Како работиш со термините?", "Kako radiš sa terminima?", "How do you handle appointments?"), [
+      opt("messages", "Телефон / пораки", "Telefon / poruke", "Calls / messages"),
+      opt("manual", "Рачен календар", "Ručni kalendar", "Manual calendar"),
+      opt("software", "Онлајн систем", "Onlajn sistem", "Online system"),
+      opt("disconnected", "Повеќе различни алатки", "Više različitih alata", "Multiple tools"),
+    ]),
+    question(t("Каде губиш време?", "Gde gubiš vreme?", "Where do you lose time?"), [
+      opt("booking", "Закажување", "Zakazivanje", "Scheduling"),
+      opt("crm", "Евиденција на клиенти", "Evidencija klijenata", "Client records"),
+      opt("automation", "Потсетници и администрација", "Podsetnici i administracija", "Reminders and administration"),
+      opt("reporting", "Извештаи", "Izveštaji", "Reporting"),
+    ]),
+    question(t("Што ти создава најмногу проблеми?", "Šta ti stvara najviše problema?", "What creates the most problems?"), [
+      opt("booking", "Пропуштени термини", "Propušteni termini", "Missed appointments"),
+      opt("crm", "Тешко следење клиенти", "Teško praćenje klijenata", "Difficult client tracking"),
+      opt("sales", "Недоволно нови клиенти", "Nedovoljno novih klijenata", "Not enough new clients"),
+      opt("automation", "Премногу администрација", "Previše administracije", "Too much administration"),
+    ]),
+    question(t("Што сакаш да подобриш?", "Šta želiš da poboljšaš?", "What would you improve?"), [
+      opt("booking", "Онлајн термини", "Onlajn termini", "Online bookings"),
+      opt("crm", "Подобра грижа за клиенти", "Bolja briga o klijentima", "Better client experience"),
+      opt("automation", "Автоматски потсетници", "Automatski podsetnici", "Automated reminders"),
+      opt("sales", "Повеќе клиенти", "Više klijenata", "More clients"),
+    ]),
+  ],
+
+  logistics: [
+    question(t("Како ги организираш испораките?", "Kako organizuješ isporuke?", "How do you organize deliveries?"), [
+      opt("manual", "Рачно / Excel", "Ručno / Excel", "Manual / Excel"),
+      opt("messages", "Телефон и пораки", "Telefon i poruke", "Calls and messages"),
+      opt("software", "Преку софтвер", "Preko softvera", "Using software"),
+      opt("disconnected", "Неповрзани системи", "Nepovezani sistemi", "Disconnected systems"),
+    ]),
+    question(t("Каде губиш најмногу време?", "Gde gubiš najviše vremena?", "Where do you lose the most time?"), [
+      opt("tracking", "Следење испораки", "Praćenje isporuka", "Delivery tracking"),
+      opt("schedule", "Распоред на возила и тимови", "Raspored vozila i timova", "Fleet and team scheduling"),
+      opt("automation", "Документација", "Dokumentacija", "Documentation"),
+      opt("reporting", "Извештаи", "Izveštaji", "Reporting"),
+    ]),
+    question(t("Што го кочи работењето?", "Šta koči poslovanje?", "What holds operations back?"), [
+      opt("tracking", "Недоволна видливост", "Nedovoljna vidljivost", "Limited visibility"),
+      opt("schedule", "Доцнења и лош распоред", "Kašnjenja i loš raspored", "Delays and poor scheduling"),
+      opt("automation", "Рачно префрлање податоци", "Ručno prepisivanje podataka", "Manual data transfer"),
+      opt("communication", "Лоша координација", "Loša koordinacija", "Poor coordination"),
+    ]),
+    question(t("Што сакаш да подобриш?", "Šta želiš da poboljšaš?", "What would you improve?"), [
+      opt("tracking", "Следење во реално време", "Praćenje u realnom vremenu", "Real-time tracking"),
+      opt("schedule", "Подобро планирање", "Bolje planiranje", "Better planning"),
+      opt("automation", "Автоматизација", "Automatizacija", "Automation"),
+      opt("reporting", "Контролна табла", "Kontrolna tabla", "Dashboard"),
+    ]),
+  ],
+
+  other: [
+    question(t("Како го водиш бизнисот?", "Kako vodiš biznis?", "How do you run your business?"), [
+      opt("manual", "Рачно", "Ručno", "Manually"),
+      opt("messages", "Телефон и пораки", "Telefon i poruke", "Calls and messages"),
+      opt("software", "Преку софтвер", "Preko softvera", "Using software"),
+      opt("disconnected", "Неповрзани алатки", "Nepovezani alati", "Disconnected tools"),
+    ]),
+    question(t("Каде губиш најмногу време?", "Gde gubiš najviše vremena?", "Where do you lose the most time?"), [
+      opt("automation", "Рачни задачи", "Ručni zadaci", "Manual tasks"),
+      opt("crm", "Комуникација со клиенти", "Komunikacija sa klijentima", "Customer communication"),
+      opt("orders", "Нарачки и барања", "Porudžbine i upiti", "Orders and inquiries"),
+      opt("reporting", "Извештаи", "Izveštaji", "Reporting"),
+    ]),
+    question(t("Што го ограничува растот?", "Šta ograničava rast?", "What limits growth?"), [
+      opt("sales", "Недоволно клиенти", "Nedovoljno klijenata", "Not enough customers"),
+      opt("automation", "Премногу администрација", "Previše administracije", "Too much administration"),
+      opt("crm", "Пропуштени барања", "Propušteni upiti", "Missed inquiries"),
+      opt("reporting", "Недоволна контрола", "Nedovoljna kontrola", "Limited visibility"),
+    ]),
+    question(t("Што сакаш да постигнеш?", "Šta želiš da postigneš?", "What do you want to achieve?"), [
+      opt("sales", "Повеќе продажба", "Više prodaje", "More sales"),
+      opt("automation", "Помалку рачна работа", "Manje ručnog rada", "Less manual work"),
+      opt("crm", "Подобра организација", "Bolja organizacija", "Better organization"),
+      opt("reporting", "Подобри одлуки", "Bolje odluke", "Better decisions"),
+    ]),
+  ],
 };
-type Offer={id:string;name:T;problem:T;build:T;scene:T;benefits:T[];caution:T};
-const offers:Record<string,Offer>={
- fitness:{id:"fitness",name:t("NextForm AI – дигитален фитнес систем","NextForm AI – digitalni fitnes sistem","NextForm AI – fitness management solution"),problem:t("Членарини, распоред и комуникација ви одземаат време.","Članarine, raspored i komunikacija troše vreme.","Memberships, schedules and messages take up your time."),build:t("Ќе предложиме поставување или прилагодување на NextForm AI за евиденција на членови, членарини и организација на тренинзи.","Predložićemo postavljanje ili prilagođavanje NextForm AI za članove, članarine i treninge.","We'll propose configuring or adapting NextForm AI for members, memberships and session scheduling."),scene:t("На рецепција го отворате системот и проверувате членство и распоред, наместо да пребарувате пораки и табели.","Na recepciji otvorite sistem i proverite članstvo i raspored, umesto poruka i tabela.","Front desk staff check membership and schedules in one place instead of searching messages and sheets."),benefits:[t("Помалку рачно следење на членарини","Manje ručnog praćenja članarina","Less manual membership tracking"),t("Попрегледна организација на тренинзи","Preglednija organizacija treninga","Clearer session organization"),t("Повеќе време за членовите","Više vremena za članove","More time for members")],caution:t("Точните модули ги потврдуваме на демонстрација.","Tačne module potvrđujemo na demonstraciji.","Exact modules are confirmed during a demo.")},
- hospitality:{id:"hospitality",name:t("NGC TableFlow – дигитален тек на нарачки","NGC TableFlow – digitalni tok porudžbina","NGC TableFlow – digital order workflow"),problem:t("Нарачки и информации се губат меѓу келнерите и кујната.","Porudžbine i informacije se gube između konobara i kuhinje.","Orders and updates get lost between front-of-house and kitchen."),build:t("Ќе предложиме TableFlow за дигитално следење на нарачки и нивниот статус, според реалниот процес во локалот.","Predložićemo TableFlow za digitalno praćenje porudžbina i statusa, prema radu lokala.","We'll propose TableFlow to track orders and statuses digitally, tailored to your venue."),scene:t("Персоналот гледа кои нарачки се примени, во подготовка и завршени, без постојано усно проверување.","Osoblje vidi koje su porudžbine primljene, u pripremi i završene, bez stalnog zapitkivanja.","Staff can see orders received, in preparation and completed without constant verbal checks."),benefits:[t("Појасна комуникација со кујната","Jasnija komunikacija sa kuhinjom","Clearer kitchen communication"),t("Помал ризик од пропуштени нарачки","Manji rizik od propuštenih porudžbina","Lower risk of missed orders"),t("Подобра контрола во шпиц","Bolja kontrola u špicu","Better control during rush hours")],caution:t("Опсегот се договара по увид во процесот.","Obim se dogovara posle uvida u proces.","Scope is agreed after reviewing your workflow.")},
- stock:{id:"stock",name:t("NGC систем за залихи и нарачки","NGC sistem za zalihe i porudžbine","NGC inventory and orders system"),problem:t("Залихите и нарачките се следат рачно или во неповрзани табели.","Zalihe i porudžbine prate se ručno ili u nepovezanim tabelama.","Inventory and orders are tracked manually or in disconnected sheets."),build:t("Ќе изработиме решение по мерка за артикли, влез/излез на залихи, нарачки и преглед на статуси.","Izradićemo rešenje po meri za artikle, ulaz/izlaz zaliha, porudžbine i statuse.","We'll build a tailored solution for products, stock movements, orders and statuses."),scene:t("Кога ќе се обработи нарачка, одговорното лице веднаш гледа што е достапно и што треба да се набави.","Kad se obradi porudžbina, odgovorno lice vidi šta je dostupno i šta treba nabaviti.","When an order is processed, staff can see what's available and what needs replenishing."),benefits:[t("Помалку грешки во евиденцијата","Manje grešaka u evidenciji","Fewer record-keeping errors"),t("Полесно планирање набавки","Lakše planiranje nabavki","Easier purchasing decisions"),t("Попрегледни нарачки и залихи","Preglednije porudžbine i zalihe","Clearer stock and order visibility")],caution:t("Интеграција со постојна каса се проверува посебно.","Integracija sa kasom proverava se posebno.","POS integration requires a separate compatibility check.")},
- automation:{id:"automation",name:t("NGC автоматизација и софтвер по мерка","NGC automatizacija i softver po meri","NGC custom software and automation"),problem:t("Тимот повторува исти задачи и префрла податоци меѓу алатки.","Tim ponavlja zadatke i prepisuje podatke između alata.","Your team repeats tasks and copies data between tools."),build:t("Ќе мапираме еден конкретен процес и ќе предложиме апликација со задачи, статуси, известувања и автоматски чекори каде што е изводливо.","Mapiraćemo konkretan proces i predložiti aplikaciju sa zadacima, statusima, obaveštenjima i automatizacijom gde je moguće.","We'll map a specific workflow and propose an app with tasks, statuses, notifications and feasible automations."),scene:t("Наместо три пораки и две табели, вработениот внесува една задача и тимот го гледа нејзиниот статус.","Umesto tri poruke i dve tabele, zaposleni unosi zadatak i tim vidi njegov status.","Instead of three messages and two spreadsheets, staff enter one task and the team sees its status."),benefits:[t("Помалку двојно внесување","Manje duplog unosa","Less duplicate data entry"),t("Јасна одговорност за задачите","Jasna odgovornost za zadatke","Clear task ownership"),t("Повеќе време за важна работа","Više vremena za važan posao","More time for higher-value work")],caution:t("Автоматизираме само процеси каде што има реална корист.","Automatizujemo samo procese gde postoji stvarna korist.","We automate only where the benefit is real.")},
- crm:{id:"crm",name:t("NGC систем за клиенти и барања","NGC sistem za klijente i upite","NGC customer and lead management"),problem:t("Потенцијални клиенти остануваат во пораки и лесно се забораваат.","Potencijalni klijenti ostaju u porukama i lako se zaborave.","Leads are scattered across messages and follow-ups get missed."),build:t("Ќе изработиме систем со клиентски профили, барања, одговорни лица и потсетници за следен контакт.","Izradićemo sistem sa profilima klijenata, upitima, odgovornim licima i podsetnicima.","We'll build a system with customer records, inquiries, owners and follow-up reminders."),scene:t("Отворате табла и веднаш гледате на кого треба да одговорите и која понуда чека потврда.","Otvorite tablu i vidite kome treba odgovoriti i koja ponuda čeka potvrdu.","Open one dashboard to see who needs a reply and which quotes are pending."),benefits:[t("Помалку заборавени барања","Manje zaboravljenih upita","Fewer missed inquiries"),t("Побрзо организирање одговори","Brža organizacija odgovora","Better organized follow-ups"),t("Подобра прегледност на продажниот процес","Bolja preglednost prodaje","Clearer sales pipeline")],caution:t("Каналите за интеграција ги потврдуваме по проверка.","Kanale integracije potvrđujemo nakon provere.","Channel integrations require confirmation.")},
- web:{id:"web",name:t("NGC веб-страница и дигитален канал за продажба","NGC sajt i digitalni kanal prodaje","NGC website and digital sales channel"),problem:t("Луѓето тешко ве наоѓаат или не знаат како да побараат услуга.","Ljudi vas teško nalaze ili ne znaju kako da zatraže uslugu.","Prospects struggle to find you or request your services."),build:t("Ќе предложиме брза веб-страница со јасни услуги, контакт, формулар за барања и SEO основа; продавница само ако има деловна смисла.","Predložićemo brz sajt sa uslugama, kontaktom, upitima i SEO osnovom; prodavnicu samo ako ima smisla.","We'll propose a fast website with clear services, inquiries and SEO foundations; an online store only if justified."),scene:t("Клиентот ве наоѓа преку Google, гледа што нудите и ви испраќа конкретно барање од телефон.","Klijent vas pronađe na Google-u, vidi ponudu i pošalje upit sa telefona.","A customer finds you on Google, understands your offer and sends an inquiry from their phone."),benefits:[t("Појасна понуда за нови клиенти","Jasnija ponuda za nove klijente","Clearer offer for prospects"),t("Полесно собирање барања","Lakše prikupljanje upita","Easier inquiry collection"),t("Професионално онлајн присуство","Profesionalno onlajn prisustvo","Professional online presence")],caution:t("Посети и продажба не се гарантирани; зависат и од пазарот и маркетингот.","Posete i prodaja nisu garantovani; zavise od tržišta i marketinga.","Traffic and sales are not guaranteed; results depend on market and marketing.")},
- reporting:{id:"reporting",name:t("NGC контролна табла и извештаи","NGC kontrolna tabla i izveštaji","NGC reporting dashboard"),problem:t("Не гледате навреме што работи, а што создава загуби.","Ne vidite na vreme šta radi, a šta pravi gubitke.","You can't easily see what is working and what isn't."),build:t("Ќе направиме табла со најважните показатели од достапните извори на податоци.","Napravićemo tablu sa ključnim pokazateljima iz dostupnih podataka.","We'll build a dashboard showing key indicators from available data sources."),scene:t("На едно место ги гледате нарачките, активните барања и трендовите што се важни за вашиот бизнис.","Na jednom mestu vidite porudžbine, upite i trendove važne za posao.","See orders, open inquiries and relevant trends in one place."),benefits:[t("Побрзо откривање застои","Brže otkrivanje zastoja","Spot bottlenecks sooner"),t("Помалку рачни извештаи","Manje ručnih izveštaja","Less manual reporting"),t("Одлуки со подобри информации","Odluke sa boljim informacijama","Better-informed decisions")],caution:t("Точноста зависи од квалитетот на влезните податоци.","Tačnost zavisi od kvaliteta podataka.","Accuracy depends on data quality.")},
- booking:{id:"booking",name:t("NGC систем за онлајн термини и барања","NGC sistem za onlajn termine i upite","NGC online bookings and inquiries"),problem:t("Закажувањата ви се расфрлани низ повици и пораки.","Zakazivanja su rasuta kroz pozive i poruke.","Bookings are scattered across calls and messages."),build:t("Ќе предложиме форма за резервации со календар, потврди и преглед на термини, според потребите.","Predložićemo rezervacije sa kalendarom, potvrdama i pregledom termina.","We'll propose a booking flow with a calendar, confirmations and schedule overview."),scene:t("Клиентот испраќа барање за термин, а вашиот тим гледа што чека потврда.","Klijent šalje zahtev za termin, a tim vidi šta čeka potvrdu.","A customer requests a slot and staff can see what needs confirmation."),benefits:[t("Помалку телефонски договори","Manje telefonskih dogovora","Fewer scheduling calls"),t("Попрегледни слободни термини","Pregledniji slobodni termini","Clearer availability"),t("Подобро корисничко искуство","Bolje korisničko iskustvo","Smoother customer experience")],caution:t("Се проверуваат правилата за закажување и достапност.","Proveravaju se pravila zakazivanja i dostupnosti.","Booking rules and availability need confirmation.")},
- consult:{id:"consult",name:t("NGC дигитален план по мерка","NGC digitalni plan po meri","NGC tailored digital roadmap"),problem:t("Немаме доволно сигнали за да препорачаме конкретен производ.","Nema dovoljno signala za konkretan proizvod.","There isn't enough evidence to recommend a specific product."),build:t("Ќе ги разгледаме процесите и ќе издвоиме едно подобрување што вреди прво да се тестира.","Pregledaćemo procese i izdvojiti prvo poboljšanje za testiranje.","We'll review your processes and identify one practical improvement to test first."),scene:t("На кратка консултација ги дефинираме најскапите рачни чекори и следниот реален потег.","Na kratkoj konsultaciji definišemo najskuplje ručne korake i sledeći potez.","In a short consultation, we'll identify costly manual steps and the next sensible move."),benefits:[t("Јасен прв приоритет","Jasan prvi prioritet","A clear first priority"),t("Без непотребни инвестиции","Bez nepotrebnih ulaganja","Avoid unnecessary spending"),t("План со реален опсег","Plan sa realnim obimom","A realistic roadmap")],caution:t("Нема автоматска дијагноза без доволно информации.","Nema automatske dijagnoze bez dovoljno informacija.","No definitive diagnosis without enough information.")}
+
+type Solution = {
+  name: Tr;
+  problem: Tr;
+  vision: Tr;
+  build: Tr;
+  benefits: Tr[];
+  closing: Tr;
 };
-function pick(a:string[][],ex:string[][]):Offer[]{const industry=a[0][0],channels=a[1],ops=a[2],issues=a[3],extra=ex.flat();const manual=ops.some(x=>["manual","sheets","fragmented"].includes(x))||extra.some(x=>["manual","none","fragmented"].includes(x));const scored:{id:string;score:number}[]=[];const add=(id:string,score:number)=>scored.push({id,score});
- if(industry==="fitness"&&(manual||extra.some(x=>["members","schedule","communication"].includes(x))||issues.some(x=>["automation","orders","communication"].includes(x))))add("fitness",110);
- if(industry==="hospitality"&&(manual||extra.some(x=>["kitchen","booking","yes"].includes(x))||issues.includes("orders")))add("hospitality",110);
- if(industry==="retail"&&(manual||extra.some(x=>["stock","integration"].includes(x))))add("stock",105);
- if(issues.includes("automation")||manual||extra.includes("automation")||extra.includes("integration"))add("automation",75);
- if(issues.includes("communication")||extra.includes("crm")||extra.includes("communication"))add("crm",72);
- if(issues.includes("orders")||extra.includes("booking"))add(industry==="retail"?"stock":"booking",70);
- if(issues.includes("reporting")||extra.includes("reporting"))add("reporting",68);
- if(issues.includes("sales")||channels.includes("hard")||extra.includes("sales")||(!channels.includes("web")&&channels.includes("referrals")))add("web",70);
- const best=new Map<string,number>();for(const r of scored)best.set(r.id,Math.max(r.score,best.get(r.id)||0));return [...best].sort((x,y)=>y[1]-x[1]).slice(0,3).map(([id])=>offers[id]);}
-export default function BusinessCheck(){const {lang:rawLang}=useLanguage();const lang:L=rawLang==="sr"||rawLang==="en"?rawLang:"mk";const tr=(v:T)=>v[lang];
- const [step,setStep]=useState(0),[answers,setAnswers]=useState<string[][]>([[],[],[],[],[]]),[extra,setExtra]=useState<string[][]>([[],[],[]]),[customIndustry,setCustomIndustry]=useState(""),[business,setBusiness]=useState(""),[note,setNote]=useState(""),[result,setResult]=useState(false);
- const all=[...core,...(extras[answers[0][0]]||extras.general)];const offersList=useMemo(()=>answers.every(a=>a.length)&&extra.every(a=>a.length)?pick(answers,extra):[],[answers,extra]);const chosen=offersList.length?offersList:[offers.consult];const valid=answers.every(a=>a.length)&&extra.every(a=>a.length)&&(answers[0][0]!=="other"||!!customIndustry.trim());
- const select=(v:string)=>{const q=all[step];const update=(old:string[])=>q.multiple?(old.includes(v)?old.filter(x=>x!==v):[...old,v]):[v];if(step<5){setAnswers(old=>old.map((a,i)=>i===step?update(a):a));if(step===0)setExtra([[],[],[]]);}else setExtra(old=>old.map((a,i)=>i===step-5?update(a):a));if(!q.multiple&&!(step===0&&v==="other"))setStep(s=>s+1);};
- const reset=()=>{setStep(0);setAnswers([[],[],[],[],[]]);setExtra([[],[],[]]);setCustomIndustry("");setBusiness("");setNote("");setResult(false);};
- const industryLabel=answers[0][0]==="other"?customIndustry:(core[0].options.find(o=>o.v===answers[0][0])?.l[lang]||"");
- const emailBody=`NGC Business Check\nLanguage: ${lang}\nCompany: ${business||"—"}\nIndustry: ${industryLabel}\nProblems: ${answers[3].map(x=>core[3].options.find(o=>o.v===x)?.l[lang]||x).join(", ")}\nProposed solutions:\n${chosen.map((r,i)=>`${i+1}. ${tr(r.name)}`).join("\n")}\nAdditional note: ${note||"—"}\n\nPlease contact me to discuss a proposal.`;
- return <main className="bc"><section className="bc-hero"><div className="cont"><div className="bc-kicker"><Sparkles size={15}/> NGC BUSINESS CHECK</div><h1>{tr(ui.headline)}</h1><p>{tr(ui.intro)}</p><div className="bc-trust"><span><ShieldCheck size={16}/>{tr(ui.free)}</span><span><CheckCircle2 size={16}/>{tr(ui.eight)}</span><span><Lightbulb size={16}/>{tr(ui.solutions)}</span></div></div></section><section className="cont bc-main">
- {!result&&step<8&&<div className="bc-panel"><div className="bc-progress-top"><span>{tr(ui.question)} {step+1} {tr(ui.of)} 8</span><span>{Math.round(step/8*100)}%</span></div><div className="bc-progress"><i style={{width:`${step/8*100}%`}}/></div><h2>{tr(all[step].title)}</h2><p className="bc-muted">{tr(all[step].hint)}</p><div className="bc-options">{all[step].options.map(option=>{const selected=(step<5?answers[step]:extra[step-5]).includes(option.v);return <button type="button" key={option.v} aria-pressed={selected} className={selected?"bc-selected":""} onClick={()=>select(option.v)}><span>{tr(option.l)}</span>{all[step].multiple?<span className="bc-checkbox">{selected?"✓":""}</span>:<ArrowRight size={19}/>}</button>})}</div>{step===0&&answers[0][0]==="other"&&<label className="bc-label">{tr(ui.industry)}<input value={customIndustry} maxLength={100} onChange={e=>setCustomIndustry(e.target.value)} placeholder={tr(ui.industryExample)}/></label>}<div className="bc-actions">{step>0?<button className="bc-back" onClick={()=>setStep(s=>s-1)}><ArrowLeft size={16}/>{tr(ui.back)}</button>:<span/>}{(all[step].multiple||(step===0&&answers[0][0]==="other"))&&<button className="bc-cta" disabled={!(step<5?answers[step]:extra[step-5]).length||(step===0&&answers[0][0]==="other"&&!customIndustry.trim())} onClick={()=>setStep(s=>s+1)}>{tr(ui.next)} <ArrowRight size={17}/></button>}</div></div>}
- {!result&&step===8&&<div className="bc-panel"><div className="bc-progress-top"><span>{tr(ui.last)}</span><span>100%</span></div><div className="bc-progress"><i style={{width:"100%"}}/></div><h2>{tr(ui.ready)}</h2><p className="bc-muted">{tr(ui.optional)}</p><label className="bc-label">{tr(ui.company)}<input value={business} onChange={e=>setBusiness(e.target.value.slice(0,100))} maxLength={100}/></label><label className="bc-label">{tr(ui.detail)}<textarea value={note} onChange={e=>setNote(e.target.value.slice(0,600))} maxLength={600} rows={3} placeholder={tr(ui.detailExample)}/></label><p className="bc-privacy">{tr(ui.privacy)}</p><div className="bc-actions"><button className="bc-back" onClick={()=>setStep(7)}><ArrowLeft size={16}/>{tr(ui.back)}</button><button className="bc-cta" disabled={!valid} onClick={()=>setResult(true)}>{tr(ui.show)} <ArrowRight size={17}/></button></div></div>}
- {result&&<div className="bc-results"><div className="bc-result-head"><div className="bc-kicker"><CheckCircle2 size={17}/>{tr(ui.done)}</div><h2>{business?`${tr(ui.forName)} ${business}`:tr(ui.forBusiness)}</h2><p>{tr(ui.summary)}</p></div><div className="bc-recommendations">{chosen.map((r,i)=><article key={r.id}><div className="bc-number">0{i+1} <span>{tr(i===0?ui.priority:ui.otherPriority)}</span></div><h3>{tr(ui.problem)}</h3><p>{tr(r.problem)}</p><h3>{tr(ui.offer)}</h3><p><strong>{tr(r.name)}</strong></p><p>{tr(r.build)}</p><div className="bc-story"><strong>{tr(ui.scenario)}</strong><p>{tr(r.scene)}</p></div><h3>{tr(ui.benefits)}</h3><ul className="bc-benefits">{r.benefits.map((b,j)=><li key={j}>{tr(b)}</li>)}</ul><p className="bc-fit">{tr(r.caution)}</p></article>)}</div><div className="bc-contact"><h3>{tr(ui.contactTitle)}</h3><p>{tr(ui.contactText)}</p><a className="bc-cta" href={`mailto:contact@ngc.mk?subject=${encodeURIComponent("NGC Business Check – proposal request")}&body=${encodeURIComponent(emailBody)}`}>{tr(ui.contact)} <ArrowRight size={17}/></a></div><button className="bc-back" onClick={reset}><RotateCcw size={16}/>{tr(ui.new)}</button></div>}
- <p className="bc-disclaimer">{tr(ui.disclaimer)}</p><Link className="bc-home" href="/">← {tr(ui.home)}</Link></section></main>;
+
+const solutions: Record<string, Solution> = {
+  fitness: {
+    name: t("Паметен фитнес-центар со NextForm AI", "Pametan fitnes centar uz NextForm AI", "Smarter gym management with NextForm AI"),
+    problem: t(
+      "Кога членарините, тренинзите и комуникацијата се водат на повеќе места, администрацијата расте заедно со бројот на членови. Тоа ти одзема време од продажбата, тренерите и искуството на клиентите.",
+      "Kada se članarine, treninzi i komunikacija vode na više mesta, administracija raste zajedno sa brojem članova. To oduzima vreme od prodaje, trenera i iskustva klijenata.",
+      "When memberships, sessions and communication are scattered, administration grows alongside your membership base, taking time away from sales, trainers and customer experience."
+    ),
+    vision: t(
+      "Отвораш една контролна табла и веднаш гледаш активни членови, членарини, распореди и задачи. Тимот има јасна организација, а членовите добиваат попрофесионално искуство.",
+      "Otvaraš jednu kontrolnu tablu i odmah vidiš aktivne članove, članarine, rasporede i zadatke. Tim radi organizovanije, a članovi dobijaju profesionalnije iskustvo.",
+      "Open one dashboard to see active members, memberships, schedules and tasks. Your team stays organized while members enjoy a more professional experience."
+    ),
+    build: t(
+      "NGC ќе предложи дигитален систем прилагоден на твојот фитнес-центар, со можност за интеграција или прилагодување на NextForm AI. Ќе ги дефинираме потребните модули за членови, тренери, тренинзи и администрација.",
+      "NGC će predložiti digitalni sistem prilagođen tvom fitnes centru, uz mogućnost integracije ili prilagođavanja NextForm AI. Definisaćemo potrebne module za članove, trenere, treninge i administraciju.",
+      "NGC will propose a system tailored to your gym, potentially integrating or adapting NextForm AI. We'll define the modules needed for members, trainers, sessions and administration."
+    ),
+    benefits: [
+      t("Повеќе време за членовите и продажбата", "Više vremena za članove i prodaju", "More time for members and sales"),
+      t("Подобра контрола на членарини и распореди", "Bolja kontrola članarina i rasporeda", "Better control of memberships and schedules"),
+      t("Основа за раст без исто толку дополнителна администрација", "Osnova za rast bez proporcionalnog rasta administracije", "A foundation for growth without matching administrative overhead"),
+    ],
+    closing: t(
+      "Целта не е само дигитална евиденција. Целта е фитнес-центар што можеш полесно да го контролираш и развиваш.",
+      "Cilj nije samo digitalna evidencija. Cilj je fitnes centar koji lakše kontrolišeš i razvijaš.",
+      "The goal isn't just digital records. It's a gym you can manage and grow more effectively."
+    ),
+  },
+
+  orders: {
+    name: t("Побрзи нарачки. Подобра услуга.", "Brže porudžbine. Bolja usluga.", "Faster orders. Better service."),
+    problem: t(
+      "Кога нарачките се пренесуваат рачно или преку повеќе луѓе, секој дополнителен чекор може да создаде доцнење, грешка или недоразбирање. Во најголемата гужва тоа директно влијае на искуството на гостите.",
+      "Kada se porudžbine prenose ručno ili preko više ljudi, svaki dodatni korak može stvoriti kašnjenje, grešku ili nesporazum. U najvećoj gužvi to direktno utiče na iskustvo gostiju.",
+      "When orders pass manually between people, every extra step can cause delays, mistakes or confusion. During busy periods, that directly affects the guest experience."
+    ),
+    vision: t(
+      "Гостинот нарачува, тимот веднаш ја гледа нарачката, кујната го следи статусот, а персоналот знае што е подготвено. Помалку непотребно движење и повеќе фокус на услугата.",
+      "Gost poručuje, tim odmah vidi porudžbinu, kuhinja prati status, a osoblje zna šta je spremno. Manje nepotrebnog kretanja i više fokusa na uslugu.",
+      "A guest orders, staff see it immediately, the kitchen tracks progress and servers know what's ready. Less unnecessary back-and-forth, more focus on service."
+    ),
+    build: t(
+      "NGC може да изработи дигитален тек на нарачки, со QR мени, статуси и контролна табла за персоналот. Функциите ќе ги прилагодиме на начинот на кој работи твојот локал.",
+      "NGC može da izradi digitalni tok porudžbina sa QR menijem, statusima i kontrolnom tablom za osoblje. Funkcije prilagođavamo načinu rada tvog lokala.",
+      "NGC can build a digital order workflow with a QR menu, order statuses and a staff dashboard, tailored to how your venue operates."
+    ),
+    benefits: [
+      t("Побрз и појасен тек на нарачките", "Brži i jasniji tok porudžbina", "Faster and clearer order flow"),
+      t("Помал ризик од пропуштени информации", "Manji rizik od propuštenih informacija", "Lower risk of missed information"),
+      t("Подобро искуство за гостите", "Bolje iskustvo za goste", "Better guest experience"),
+    ],
+    closing: t(
+      "Твојот тим треба да се грижи за гостите, а системот да помага во организацијата.",
+      "Tvoj tim treba da brine o gostima, a sistem da pomaže u organizaciji.",
+      "Your team should focus on guests, while the system supports the workflow."
+    ),
+  },
+
+  stock: {
+    name: t("Контрола на залихи без хаос", "Kontrola zaliha bez haosa", "Inventory control without chaos"),
+    problem: t(
+      "Ако немаш точен преглед на артиклите и нарачките, потешко знаеш што да набавиш, што недостига и каде ти се врзани парите. Со растот на продажбата проблемот станува поголем.",
+      "Ako nemaš tačan pregled artikala i porudžbina, teže znaš šta treba nabaviti, šta nedostaje i gde je vezan novac. Sa rastom prodaje problem postaje veći.",
+      "Without reliable visibility into stock and orders, it's harder to know what to buy, what's missing and where cash is tied up. The challenge grows with sales."
+    ),
+    vision: t(
+      "На една контролна табла гледаш достапни артикли, нарачки и залихи што треба да се дополнат. Наместо да бараш информации, носиш одлуки со јасни податоци.",
+      "Na jednoj kontrolnoj tabli vidiš dostupne artikle, porudžbine i zalihe koje treba dopuniti. Umesto traženja informacija, donosiš odluke uz jasne podatke.",
+      "One dashboard shows available products, orders and stock that needs replenishment. Instead of chasing information, you make decisions using clear data."
+    ),
+    build: t(
+      "NGC може да изработи систем за магацин, артикли, влез и излез на залихи, нарачки и извештаи, со можни интеграции по проверка на постојната опрема.",
+      "NGC može da izradi sistem za magacin, artikle, ulaz i izlaz zaliha, porudžbine i izveštaje, uz moguće integracije nakon provere postojeće opreme.",
+      "NGC can build an inventory system for products, stock movements, orders and reporting, with integrations subject to compatibility checks."
+    ),
+    benefits: [
+      t("Подобра контрола на залихите", "Bolja kontrola zaliha", "Better stock control"),
+      t("Полесно планирање набавки", "Lakše planiranje nabavki", "Easier purchasing decisions"),
+      t("Помалку рачни проверки и грешки", "Manje ručnih provera i grešaka", "Fewer manual checks and errors"),
+    ],
+    closing: t(
+      "Добрата контрола не е само ред во магацинот. Таа е основа за попаметна продажба и планирање.",
+      "Dobra kontrola nije samo red u magacinu. Ona je osnova za pametniju prodaju i planiranje.",
+      "Good inventory control isn't just an organized warehouse. It's a foundation for smarter sales and planning."
+    ),
+  },
+
+  crm: {
+    name: t("Ниту еден важен клиент да не се изгуби во пораките", "Da se nijedan važan klijent ne izgubi u porukama", "Stop losing valuable leads in messages"),
+    problem: t(
+      "Кога барањата пристигнуваат преку телефон, е-пошта и социјални мрежи, лесно се пропушта следниот контакт. Тоа може да значи изгубени можности за продажба, дури и кога има интерес за твојата услуга.",
+      "Kada upiti stižu telefonom, e-poštom i društvenim mrežama, lako se propusti sledeći kontakt. To može značiti izgubljene prodajne prilike čak i kada postoji interesovanje.",
+      "When inquiries arrive through calls, email and social media, follow-ups can get missed. That can mean lost sales opportunities even when customers are interested."
+    ),
+    vision: t(
+      "Отвораш една табла и знаеш кој клиент чека одговор, која понуда е испратена и кој е следниот чекор. Секое барање има свој статус и одговорно лице.",
+      "Otvaraš jednu tablu i znaš koji klijent čeka odgovor, koja ponuda je poslata i koji je sledeći korak. Svaki upit ima status i odgovornu osobu.",
+      "Open one dashboard and see who needs a reply, which proposals were sent and what happens next. Every inquiry has a status and an owner."
+    ),
+    build: t(
+      "NGC може да изработи CRM решение со клиентски профили, барања, понуди, задачи и потсетници, прилагодено на твојот продажен процес.",
+      "NGC može da izradi CRM rešenje sa profilima klijenata, upitima, ponudama, zadacima i podsetnicima, prilagođeno tvom prodajnom procesu.",
+      "NGC can build a tailored CRM with customer profiles, inquiries, proposals, tasks and reminders."
+    ),
+    benefits: [
+      t("Помалку пропуштени барања", "Manje propuštenih upita", "Fewer missed inquiries"),
+      t("Побрзи и поорганизирани одговори", "Brži i organizovaniji odgovori", "Faster, more organized follow-ups"),
+      t("Подобра контрола на продажните можности", "Bolja kontrola prodajnih prilika", "Better sales pipeline visibility"),
+    ],
+    closing: t(
+      "Не ти треба само повеќе интерес. Треба подобро да го искористиш интересот што веќе го добиваш.",
+      "Ne treba ti samo više interesovanja. Treba bolje da iskoristiš interesovanje koje već dobijaš.",
+      "You don't only need more interest. You need to make better use of the interest you already receive."
+    ),
+  },
+
+  automation: {
+    name: t("Ослободи го тимот од повторувачка работа", "Oslobodi tim ponavljajućeg rada", "Free your team from repetitive work"),
+    problem: t(
+      "Ако вработените постојано препишуваат податоци, проверуваат статуси и испраќаат исти информации, бизнисот троши време на процеси наместо на вредност за клиентите.",
+      "Ako zaposleni stalno prepisuju podatke, proveravaju statuse i šalju iste informacije, biznis troši vreme na procese umesto na vrednost za klijente.",
+      "If employees repeatedly copy data, check statuses and send the same updates, your business spends time on processes instead of customer value."
+    ),
+    vision: t(
+      "Една задача се внесува еднаш. Информациите се достапни на вистинските луѓе, статусите се ажурираат, а тимот знае што следува.",
+      "Jedan zadatak se unosi jednom. Informacije su dostupne pravim ljudima, statusi se ažuriraju, a tim zna šta sledi.",
+      "Enter a task once. The right people can access the information, statuses stay updated and everyone knows what comes next."
+    ),
+    build: t(
+      "NGC ќе ги анализира клучните процеси и може да изработи софтвер по мерка со задачи, одобренија, известувања и автоматски чекори таму каде што носат реална корист.",
+      "NGC će analizirati ključne procese i može izraditi softver po meri sa zadacima, odobrenjima, obaveštenjima i automatizovanim koracima tamo gde donose stvarnu korist.",
+      "NGC can map your key processes and build custom software with tasks, approvals, notifications and automation where it provides measurable value."
+    ),
+    benefits: [
+      t("Помалку двојно внесување", "Manje duplog unosa", "Less duplicate data entry"),
+      t("Појасна одговорност и следење", "Jasnija odgovornost i praćenje", "Clearer accountability and tracking"),
+      t("Повеќе време за работа што носи вредност", "Više vremena za posao koji donosi vrednost", "More time for higher-value work"),
+    ],
+    closing: t(
+      "Целта е твојот бизнис да не зависи од бескрајни пораки, табели и рачни проверки.",
+      "Cilj je da tvoj biznis ne zavisi od beskrajnih poruka, tabela i ručnih provera.",
+      "The goal is a business that doesn't depend on endless messages, spreadsheets and manual checks."
+    ),
+  },
+
+  booking: {
+    name: t("Термини што се организираат полесно", "Termini koji se lakše organizuju", "Appointments made easier"),
+    problem: t(
+      "Резервациите преку телефон и пораки бараат постојана координација. Кога нема јасен распоред, се зголемува ризикот од пропуштени или преклопени термини.",
+      "Rezervacije telefonom i porukama zahtevaju stalnu koordinaciju. Bez jasnog rasporeda raste rizik od propuštenih ili preklopljenih termina.",
+      "Bookings through calls and messages require constant coordination. Without a clear schedule, missed or overlapping appointments become more likely."
+    ),
+    vision: t(
+      "Клиентот бара термин онлајн, тимот го потврдува, календарот е ажуриран, а потсетниците помагаат сите да знаат кога е следната посета.",
+      "Klijent traži termin onlajn, tim ga potvrđuje, kalendar je ažuriran, a podsetnici pomažu svima da znaju vreme sledeće posete.",
+      "Customers request appointments online, staff confirm them, the calendar stays current and reminders keep everyone informed."
+    ),
+    build: t(
+      "NGC може да изработи систем за онлајн термини со календар, достапност, потврди и потсетници, според правилата на твојот бизнис.",
+      "NGC može da izradi sistem za onlajn termine sa kalendarom, dostupnošću, potvrdama i podsetnicima, prema pravilima tvog biznisa.",
+      "NGC can build an online booking system with availability, confirmations, calendars and reminders tailored to your operations."
+    ),
+    benefits: [
+      t("Полесно закажување", "Lakše zakazivanje", "Easier scheduling"),
+      t("Попрегледен календар", "Pregledniji kalendar", "Clearer calendar"),
+      t("Подобро искуство за клиентите", "Bolje iskustvo klijenata", "Better customer experience"),
+    ],
+    closing: t(
+      "Олесни им на клиентите да закажат, а на тимот да ја организира работата.",
+      "Olakšaj klijentima zakazivanje, a timu organizaciju rada.",
+      "Make booking easier for customers and daily planning easier for your team."
+    ),
+  },
+
+  sales: {
+    name: t("Претвори го дигиталното присуство во продажна можност", "Pretvori digitalno prisustvo u prodajnu priliku", "Turn digital presence into sales opportunities"),
+    problem: t(
+      "Ако потенцијалните клиенти тешко те наоѓаат или не разбираат што нудиш, губиш можности уште пред да започне разговорот за продажба.",
+      "Ako te potencijalni klijenti teško pronalaze ili ne razumeju ponudu, gubiš prilike pre nego što prodajni razgovor počne.",
+      "If potential customers can't find you or understand your offer, opportunities may disappear before a sales conversation begins."
+    ),
+    vision: t(
+      "Клиентот те пронаоѓа, за неколку секунди разбира што нудиш, гледа зошто да ти верува и лесно испраќа барање.",
+      "Klijent te pronalazi, za nekoliko sekundi razume ponudu, vidi zašto da ti veruje i lako šalje upit.",
+      "Customers find you, quickly understand your value, see why they can trust you and easily send an inquiry."
+    ),
+    build: t(
+      "NGC може да изработи професионална веб-страница со јасна понуда, SEO основа, силни повици за акција и процес за собирање барања. Онлајн продавница се предлага само кога има деловна смисла.",
+      "NGC može da izradi profesionalni sajt sa jasnom ponudom, SEO osnovom, pozivima na akciju i procesom za upite. Onlajn prodavnica se predlaže samo kada ima poslovnog smisla.",
+      "NGC can build a professional website with clear positioning, SEO foundations, strong calls to action and lead capture. E-commerce is proposed only when commercially justified."
+    ),
+    benefits: [
+      t("Поубедливо претставување", "Ubedljivije predstavljanje", "More compelling positioning"),
+      t("Полесно добивање барања", "Lakše dobijanje upita", "Easier lead capture"),
+      t("Посилна основа за маркетинг", "Jača osnova za marketing", "Stronger marketing foundation"),
+    ],
+    closing: t(
+      "Веб-страницата не треба само да изгледа добро. Треба да му помогне на клиентот да го направи следниот чекор.",
+      "Sajt ne treba samo da izgleda dobro. Treba da pomogne klijentu da napravi sledeći korak.",
+      "A website shouldn't just look good. It should help customers take the next step."
+    ),
+  },
+
+  reporting: {
+    name: t("Носи одлуки со податоци, не со претпоставки", "Donosi odluke uz podatke, ne pretpostavke", "Make decisions with data, not guesswork"),
+    problem: t(
+      "Кога информациите се расфрлани низ табели и извештаи, тешко навреме гледаш што функционира и каде се создаваат трошоци или застои.",
+      "Kada su informacije rasute po tabelama i izveštajima, teško na vreme vidiš šta funkcioniše i gde nastaju troškovi ili zastoji.",
+      "When data is scattered across spreadsheets and reports, it's difficult to see what's working and where costs or delays arise."
+    ),
+    vision: t(
+      "Отвораш една табла и ги гледаш клучните показатели, активните процеси и трендовите што заслужуваат внимание.",
+      "Otvaraš jednu tablu i vidiš ključne pokazatelje, aktivne procese i trendove koji zahtevaju pažnju.",
+      "Open one dashboard to see your key indicators, active processes and trends that deserve attention."
+    ),
+    build: t(
+      "NGC може да изработи контролна табла што ги обединува достапните податоци и ги претвора во јасни извештаи и показатели.",
+      "NGC može da izradi kontrolnu tablu koja objedinjuje dostupne podatke i pretvara ih u jasne izveštaje i pokazatelje.",
+      "NGC can build a dashboard that consolidates available data into clear reports and business indicators."
+    ),
+    benefits: [
+      t("Подобра контрола на работењето", "Bolja kontrola poslovanja", "Better operational visibility"),
+      t("Помалку време за рачни извештаи", "Manje vremena za ručne izveštaje", "Less time spent on manual reports"),
+      t("Побрзо препознавање проблеми", "Brže prepoznavanje problema", "Earlier identification of problems"),
+    ],
+    closing: t(
+      "Кога ги гледаш вистинските бројки, полесно одлучуваш каде да вложиш време и пари.",
+      "Kada vidiš prave brojke, lakše odlučuješ gde da uložiš vreme i novac.",
+      "When you see the right numbers, it's easier to decide where to invest time and money."
+    ),
+  },
+
+  tracking: {
+    name: t("Целосно појасен тек на испораките", "Mnogo jasniji tok isporuka", "Clearer delivery operations"),
+    problem: t(
+      "Кога статусите на испораките се проверуваат преку повици и пораки, тимот губи време, а клиентите потешко добиваат точни информации.",
+      "Kada se statusi isporuka proveravaju pozivima i porukama, tim gubi vreme, a klijenti teže dobijaju tačne informacije.",
+      "When delivery statuses require calls and messages, your team loses time and customers struggle to get accurate updates."
+    ),
+    vision: t(
+      "На една табла гледаш активни испораки, одговорни лица, статуси и задачи што бараат внимание.",
+      "Na jednoj tabli vidiš aktivne isporuke, odgovorne osobe, statuse i zadatke koji zahtevaju pažnju.",
+      "One dashboard shows active deliveries, responsible staff, statuses and tasks requiring attention."
+    ),
+    build: t(
+      "NGC може да изработи систем за следење испораки, распределба на задачи, известувања и извештаи. Следење во реално време се планира според достапните податоци и интеграции.",
+      "NGC može da izradi sistem za praćenje isporuka, raspodelu zadataka, obaveštenja i izveštaje. Praćenje u realnom vremenu zavisi od dostupnih podataka i integracija.",
+      "NGC can build a delivery tracking, task assignment and reporting system. Real-time visibility depends on available data and integrations."
+    ),
+    benefits: [
+      t("Појасна координација", "Jasnija koordinacija", "Clearer coordination"),
+      t("Помалку рачни проверки", "Manje ručnih provera", "Fewer manual checks"),
+      t("Подобра видливост на испораките", "Bolja vidljivost isporuka", "Better delivery visibility"),
+    ],
+    closing: t(
+      "Кога информациите се на едно место, полесно управуваш со целиот процес.",
+      "Kada su informacije na jednom mestu, lakše upravljaš celim procesom.",
+      "When information lives in one place, the whole operation becomes easier to manage."
+    ),
+  },
+
+  schedule: {
+    name: t("Организиран тим без постојан хаос", "Organizovan tim bez stalnog haosa", "A coordinated team without constant chaos"),
+    problem: t(
+      "Рачните распореди, промените во последен момент и задачите без јасна одговорност создаваат недоразбирања и непотребни прекини.",
+      "Ručni rasporedi, promene u poslednjem trenutku i zadaci bez jasne odgovornosti stvaraju nesporazume i nepotrebne prekide.",
+      "Manual schedules, last-minute changes and unclear task ownership create confusion and unnecessary interruptions."
+    ),
+    vision: t(
+      "Секој член на тимот го гледа својот распоред, задачите и промените. Раководителот има преглед без постојани телефонски проверки.",
+      "Svaki član tima vidi svoj raspored, zadatke i promene. Menadžer ima pregled bez stalnih telefonskih provera.",
+      "Every team member sees their schedule, tasks and changes. Managers stay informed without constant phone calls."
+    ),
+    build: t(
+      "NGC може да изработи систем за распореди, задачи, замени, одобренија и известувања, прилагоден на твојата организација.",
+      "NGC može da izradi sistem za rasporede, zadatke, zamene, odobrenja i obaveštenja, prilagođen tvojoj organizaciji.",
+      "NGC can build a tailored system for schedules, tasks, replacements, approvals and notifications."
+    ),
+    benefits: [
+      t("Појасни распореди", "Jasniji rasporedi", "Clearer schedules"),
+      t("Подобра координација на тимот", "Bolja koordinacija tima", "Better team coordination"),
+      t("Помалку недоразбирања", "Manje nesporazuma", "Fewer misunderstandings"),
+    ],
+    closing: t(
+      "Добрата организација ти овозможува да управуваш со тимот, наместо постојано да решаваш ситни проблеми.",
+      "Dobra organizacija omogućava da vodiš tim umesto da stalno rešavaš sitne probleme.",
+      "Good organization lets you lead your team instead of constantly solving avoidable issues."
+    ),
+  },
+
+  retention: {
+    name: t("Создај причина членовите да останат", "Daj članovima razlog da ostanu", "Give members more reasons to stay"),
+    problem: t(
+      "Кога комуникацијата и напредокот на членовите не се следат систематски, потешко препознаваш кој губи мотивација и кому му треба дополнително внимание.",
+      "Kada se komunikacija i napredak članova ne prate sistematski, teže prepoznaješ ko gubi motivaciju i kome treba dodatna pažnja.",
+      "Without structured member communication and progress tracking, it's harder to spot disengagement and offer timely support."
+    ),
+    vision: t(
+      "Тренерите имаат подобар увид во активностите, членовите полесно ги следат плановите, а центарот гради поперсонализирано искуство.",
+      "Treneri imaju bolji uvid u aktivnosti, članovi lakše prate planove, a centar gradi personalizovanije iskustvo.",
+      "Trainers understand member activity better, members follow their plans more easily and the gym creates a more personalized experience."
+    ),
+    build: t(
+      "NGC може да предложи NextForm AI или прилагодена фитнес платформа со тренинг-планови, комуникација и преглед на активности.",
+      "NGC može da predloži NextForm AI ili prilagođenu fitnes platformu sa planovima treninga, komunikacijom i pregledom aktivnosti.",
+      "NGC can propose NextForm AI or a tailored fitness platform with training plans, communication and activity tracking."
+    ),
+    benefits: [
+      t("Подобро искуство за членовите", "Bolje iskustvo članova", "Better member experience"),
+      t("Поквалитетна комуникација со тренерите", "Kvalitetnija komunikacija sa trenerima", "Stronger trainer communication"),
+      t("Подобра основа за лојалност", "Bolja osnova za lojalnost", "Stronger foundation for loyalty"),
+    ],
+    closing: t(
+      "Растот не зависи само од нови членови. Важно е и постојните да имаат причина да продолжат.",
+      "Rast ne zavisi samo od novih članova. Važno je da i postojeći imaju razlog da ostanu.",
+      "Growth isn't only about attracting new members. It's also about giving existing members reasons to stay."
+    ),
+  },
+
+  consult: {
+    name: t("Прво откриј ја вистинската можност", "Prvo otkrij pravu priliku", "Identify the right opportunity first"),
+    problem: t(
+      "Од одговорите се гледаат повеќе можни насоки, но не и доволно јасен приоритет за конкретен систем. Избрзана инвестиција може да решава погрешен проблем.",
+      "Odgovori ukazuju na više mogućih pravaca, ali ne i dovoljno jasan prioritet za konkretan sistem. Preuranjena investicija može rešavati pogrešan problem.",
+      "Your answers point to several possible improvements, but not enough evidence for one specific system. Investing too early could solve the wrong problem."
+    ),
+    vision: t(
+      "Заедно го издвојуваме процесот што најмногу ти одзема време или ограничува раст, а потоа градиме јасен план за подобрување.",
+      "Zajedno izdvajamo proces koji oduzima najviše vremena ili ograničava rast, pa pravimo jasan plan poboljšanja.",
+      "Together, we identify the process consuming the most time or limiting growth, then create a focused improvement plan."
+    ),
+    build: t(
+      "NGC предлага кратка консултација и анализа на работниот процес пред да препорачаме конкретен софтвер.",
+      "NGC predlaže kratku konsultaciju i analizu procesa pre preporuke konkretnog softvera.",
+      "NGC proposes a short workflow review before recommending a specific software solution."
+    ),
+    benefits: [
+      t("Јасен прв приоритет", "Jasan prvi prioritet", "Clear first priority"),
+      t("Избегнување непотребни функции", "Izbegavanje nepotrebnih funkcija", "Avoid unnecessary features"),
+      t("План според реалните потреби", "Plan prema stvarnim potrebama", "A plan based on real needs"),
+    ],
+    closing: t(
+      "Најдобрата инвестиција започнува со правилно поставен проблем.",
+      "Najbolja investicija počinje pravilno postavljenim problemom.",
+      "The best investment starts with identifying the right problem."
+    ),
+  },
+};
+
+const solutionKeys = [
+  "fitness", "orders", "stock", "crm", "automation", "booking",
+  "sales", "reporting", "tracking", "schedule", "retention",
+] as const;
+
+const issueMap: Record<string, Record<string, string>> = {
+  fitness: {
+    members: "fitness", schedule: "schedule",
+    communication: "fitness", experience: "retention",
+    retention: "retention", sales: "sales",
+    automation: "fitness", reporting: "reporting",
+  },
+  hospitality: {
+    orders: "orders", booking: "booking", schedule: "schedule",
+    communication: "orders", automation: "orders",
+    sales: "sales", reporting: "reporting",
+  },
+  retail: {
+    stock: "stock", orders: "orders", sales: "sales",
+    crm: "crm", manual: "automation", reporting: "reporting",
+  },
+  services: {
+    crm: "crm", booking: "booking", automation: "automation",
+    schedule: "schedule", sales: "sales", reporting: "reporting",
+  },
+  production: {
+    automation: "automation", stock: "stock", orders: "orders",
+    reporting: "reporting",
+  },
+  health: {
+    booking: "booking", crm: "crm", automation: "automation",
+    sales: "sales", reporting: "reporting",
+  },
+  logistics: {
+    tracking: "tracking", schedule: "schedule",
+    automation: "automation", communication: "schedule",
+    reporting: "reporting",
+  },
+  other: {
+    automation: "automation", crm: "crm", orders: "orders",
+    sales: "sales", reporting: "reporting",
+  },
+};
+
+function analyze(industry: string, answers: Answer[]): string {
+  const map = issueMap[industry] || issueMap.other;
+  const scores: Record<string, number> = {};
+
+  const add = (value: string, weight: number) => {
+    const key = map[value] || value;
+    if (solutionKeys.some((id) => id === key)) {
+      scores[key] = (scores[key] || 0) + weight;
+    }
+  };
+
+  // Прашање 2: тековен начин на работа.
+  for (const value of answers[1] || []) {
+    if (value === "manual" || value === "disconnected") {
+      if (industry === "fitness") add("fitness", 2);
+      else if (industry === "hospitality") add("orders", 2);
+      else if (industry === "retail") add("stock", 2);
+      else if (industry === "health") add("booking", 2);
+      else if (industry === "logistics") add("tracking", 2);
+      else add("automation", 2);
+    }
+    if (value === "messages") {
+      if (industry === "hospitality" || industry === "health") add("booking", 1);
+      else if (industry === "logistics") add("schedule", 1);
+      else add("crm", 1);
+    }
+  }
+
+  // Прашање 3: каде се губи време.
+  for (const value of answers[2] || []) add(value, 3);
+
+  // Прашање 4: што го кочи бизнисот.
+  for (const value of answers[3] || []) add(value, 5);
+
+  // Прашање 5: што сака да постигне.
+  for (const value of answers[4] || []) add(value, 4);
+
+  const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+  if (!ranked.length || ranked[0][1] < 4) return "consult";
+
+  return ranked[0][0];
+}
+
+export default function BusinessCheck() {
+  const { lang: rawLang } = useLanguage();
+  const lang: Lang = rawLang === "sr" || rawLang === "en" ? rawLang : "mk";
+  const tr = (value: Tr) => value[lang];
+
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<Answer[]>([[], [], [], [], []]);
+  const [customIndustry, setCustomIndustry] = useState("");
+  const [business, setBusiness] = useState("");
+  const [note, setNote] = useState("");
+  const [result, setResult] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [leadOpen,setLeadOpen] = useState(false);
+  const [leadName,setLeadName] = useState("");
+  const [leadEmail,setLeadEmail] = useState("");
+  const [leadSent,setLeadSent] = useState(false);
+  const [assessmentId,setAssessmentId] = useState("");
+  const [assessmentToken,setAssessmentToken] = useState("");
+
+  const industry = answers[0][0] || "";
+  const allQuestions = [industryQuestion, ...(industries[industry] || industries.other)];
+  const current = allQuestions[step];
+  const selected = answers[step] || [];
+
+  const valid =
+    answers.every((answer) => answer.length > 0) &&
+    (industry !== "other" || customIndustry.trim().length > 0);
+
+  const recommendation = useMemo(
+    () => analyze(industry, answers),
+    [industry, answers]
+  );
+  const solution = solutions[recommendation] || solutions.consult;
+
+  const choose = (id: string) => {
+    if (step === 0) {
+      setAnswers([[id], [], [], [], []]);
+      setCustomIndustry("");
+      if (id !== "other") setStep(1);
+      return;
+    }
+
+    setAnswers((previous) =>
+      previous.map((answer, index) => {
+        if (index !== step) return answer;
+        return answer.includes(id)
+          ? answer.filter((value) => value !== id)
+          : [...answer, id];
+      })
+    );
+  };
+
+  const saveAssessment = async () => {
+    if (!valid || saving) return;
+    setSaving(true);setSaveError("");
+    try {
+      const response=await fetch(convexHttpUrl()+"/business-check",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({company:business,industry:industryName,language:lang,answers,answersText,note,
+          recommendation,solutionName:tr(solution.name),problem:tr(solution.problem),
+          proposedSolution:tr(solution.build),benefits:solution.benefits.map(tr)})
+      });
+      if(!response.ok) throw new Error("Save failed");
+      const saved = await response.json();
+      if (!saved.id || !saved.editToken) throw new Error("Missing saved assessment");
+      setAssessmentId(saved.id);
+      setAssessmentToken(saved.editToken);
+      setResult(true);
+    } catch(e){console.error(e);setSaveError(lang==="mk"?"Не успеавме да ја зачуваме анализата. Пробај повторно.":lang==="sr"?"Analiza nije sačuvana. Pokušaj ponovo.":"Could not save the analysis. Please try again.");}
+    finally{setSaving(false);}
+  };
+
+  const reset = () => {
+    setStep(0);
+    setAnswers([[], [], [], [], []]);
+    setCustomIndustry("");
+    setBusiness("");
+    setNote("");
+    setResult(false);
+    setSaveError("");
+    setLeadOpen(false);setLeadSent(false);setLeadName("");setLeadEmail("");
+    setAssessmentId("");setAssessmentToken("");
+  };
+
+  const industryName =
+    industry === "other"
+      ? customIndustry
+      : industryQuestion.options.find((item) => item.id === industry)?.label[lang] || "";
+
+  const answersText = allQuestions
+    .map((item, index) => {
+      const labels = answers[index]
+        .map((id) => item.options.find((option) => option.id === id)?.label[lang] || id)
+        .join(", ");
+      return `${index + 1}. ${tr(item.title)}\n${labels}`;
+    })
+    .join("\n\n");
+
+  const sendLead = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if(saving || !assessmentId || !assessmentToken) return;
+    if(leadEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadEmail.trim())) {
+      setSaveError(lang==="mk"?"Провери ја е-поштата.":lang==="sr"?"Proveri e-poštu.":"Check your email address.");return;
+    }
+    setSaving(true);setSaveError("");
+    try {
+      const response = await fetch(convexHttpUrl()+"/business-check/contact",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({id:assessmentId,editToken:assessmentToken,
+          contactName:leadName.trim(),contactEmail:leadEmail.trim()})
+      });
+      if(!response.ok) throw new Error("Lead save failed");
+      setLeadSent(true);
+    } catch(e){console.error(e);setSaveError(lang==="mk"?"Неуспешно испраќање. Обиди се повторно.":lang==="sr"?"Slanje nije uspelo. Pokušaj ponovo.":"Could not send. Please try again.");}
+    finally{setSaving(false);}
+  };
+
+  return (
+    <main className="bc">
+      <section className="bc-hero">
+        <div className="cont">
+          <div className="bc-kicker">
+            <Sparkles size={15} /> NGC BUSINESS CHECK
+          </div>
+          <h1>{tr(ui.headline)}</h1>
+          <p>{tr(ui.intro)}</p>
+          <div className="bc-trust">
+            <span><ShieldCheck size={16} />{tr(ui.free)}</span>
+            <span><CheckCircle2 size={16} />{tr(ui.five)}</span>
+            <span><Lightbulb size={16} />{tr(ui.solutions)}</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="cont bc-main">
+        {!result && step < 5 && (
+          <div className="bc-panel">
+            <div className="bc-progress-top">
+              <span>{tr(ui.question)} {step + 1} {tr(ui.of)} 5</span>
+              <span>{Math.round((step / 5) * 100)}%</span>
+            </div>
+            <div className="bc-progress">
+              <i style={{ width: `${(step / 5) * 100}%` }} />
+            </div>
+
+            <h2>{tr(current.title)}</h2>
+            <p className="bc-muted">
+              {tr(step === 0 ? ui.chooseOne : ui.choose)}
+            </p>
+
+            <div className="bc-options">
+              {current.options.map((option) => {
+                const active = selected.includes(option.id);
+                return (
+                  <button
+                    type="button"
+                    key={option.id}
+                    aria-pressed={active}
+                    className={active ? "bc-selected" : ""}
+                    onClick={() => choose(option.id)}
+                  >
+                    <span>{tr(option.label)}</span>
+                    {step === 0
+                      ? <ArrowRight size={19} />
+                      : <span className="bc-checkbox">{active ? "✓" : ""}</span>}
+                  </button>
+                );
+              })}
+            </div>
+
+            {step === 0 && industry === "other" && (
+              <label className="bc-label">
+                {tr(ui.other)}
+                <input
+                  value={customIndustry}
+                  maxLength={100}
+                  placeholder={tr(ui.otherPlaceholder)}
+                  onChange={(event) => setCustomIndustry(event.target.value)}
+                />
+              </label>
+            )}
+
+            <div className="bc-actions">
+              {step > 0 ? (
+                <button type="button" className="bc-back" onClick={() => setStep(step - 1)}>
+                  <ArrowLeft size={16} /> {tr(ui.back)}
+                </button>
+              ) : <span />}
+
+              {(step > 0 || industry === "other") && (
+                <button
+                  type="button"
+                  className="bc-cta"
+                  disabled={
+                    selected.length === 0 ||
+                    (step === 0 && industry === "other" && !customIndustry.trim())
+                  }
+                  onClick={() => setStep(step + 1)}
+                >
+                  {tr(ui.next)} <ArrowRight size={17} />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {!result && step === 5 && (
+          <div className="bc-panel">
+            <div className="bc-progress-top">
+              <span>{tr(ui.finalStep)}</span><span>100%</span>
+            </div>
+            <div className="bc-progress"><i style={{ width: "100%" }} /></div>
+            <h2>{tr(ui.ready)}</h2>
+            <p className="bc-muted">{tr(ui.optional)}</p>
+
+            <label className="bc-label">
+              {tr(ui.company)}
+              <input
+                value={business}
+                maxLength={100}
+                onChange={(event) => setBusiness(event.target.value)}
+              />
+            </label>
+
+            <label className="bc-label">
+              {tr(ui.note)}
+              <textarea
+                value={note}
+                rows={3}
+                maxLength={600}
+                placeholder={tr(ui.notePlaceholder)}
+                onChange={(event) => setNote(event.target.value)}
+              />
+            </label>
+
+            <p className="bc-privacy">{tr(ui.privacy)}</p>
+
+            <div className="bc-actions">
+              <button type="button" className="bc-back" onClick={() => setStep(4)}>
+                <ArrowLeft size={16} />{tr(ui.back)}
+              </button>
+              <button
+                type="button"
+                className="bc-cta"
+                disabled={!valid || saving}
+                onClick={() => void saveAssessment()}
+              >
+                {tr(ui.show)} <ArrowRight size={17} />
+              </button>
+            </div>
+            {saveError && <p role="alert" style={{color:"#b91c1c",marginTop:12}}>{saveError}</p>}
+          </div>
+        )}
+
+        {result && (
+          <div className="bc-results">
+            <div className="bc-result-head">
+              <div className="bc-kicker">
+                <CheckCircle2 size={17} /> {tr(ui.done)}
+              </div>
+              <h2>{business ? `${tr(ui.for)} ${business}` : tr(ui.title)}</h2>
+              <p>{tr(ui.summary)}</p>
+            </div>
+
+            <div className="bc-recommendations">
+              <article>
+                <div className="bc-number">
+                  01 <span>{tr(ui.priority)}</span>
+                </div>
+
+                <h2 style={{ marginTop: 18, marginBottom: 22 }}>
+                  {tr(solution.name)}
+                </h2>
+
+                <h3>{tr(ui.problem)}</h3>
+                <p>{tr(solution.problem)}</p>
+
+                <div className="bc-story">
+                  <strong>{tr(ui.vision)}</strong>
+                  <p>{tr(solution.vision)}</p>
+                </div>
+
+                <h3>{tr(ui.offer)}</h3>
+                <p>{tr(solution.build)}</p>
+
+                <h3>{tr(ui.benefits)}</h3>
+                <ul className="bc-benefits">
+                  {solution.benefits.map((benefit, index) => (
+                    <li key={index}>{tr(benefit)}</li>
+                  ))}
+                </ul>
+
+                <p className="bc-fit">
+                  <strong>{tr(solution.closing)}</strong>
+                </p>
+              </article>
+            </div>
+
+            <div className="bc-contact">
+              <h3>{tr(ui.contactTitle)}</h3>
+              <p>{tr(ui.contactText)}</p>
+              {!leadOpen && !leadSent && <button type="button" className="bc-cta" onClick={()=>window.location.assign("/start-project?"+new URLSearchParams({from:"business-check",service:tr(solution.name),industry:industryName,company:business,note:note}).toString())}>{tr(ui.contact)} <ArrowRight size={17}/></button>}
+              {leadOpen && !leadSent && <form onSubmit={sendLead} style={{maxWidth:460,margin:"24px auto",display:"grid",gap:12,textAlign:"left"}}>
+                <label>{lang==="mk"?"Име и презиме":lang==="sr"?"Ime i prezime":"Full name"}<input maxLength={100} value={leadName} onChange={e=>setLeadName(e.target.value)} style={{display:"block",width:"100%",padding:13,border:"1px solid #ccd5e7",borderRadius:10}} /></label>
+                <label>{lang==="mk"?"Е-пошта":lang==="sr"?"E-pošta":"Email"}<input type="email" maxLength={200} value={leadEmail} onChange={e=>setLeadEmail(e.target.value)} style={{display:"block",width:"100%",padding:13,border:"1px solid #ccd5e7",borderRadius:10}} /></label>
+                <p style={{fontSize:13,opacity:.8,margin:0}}>{lang==="mk"?"Полињата се незадолжителни. Анализата веќе е зачувана.":lang==="sr"?"Polja su opciona. Analiza je već sačuvana.":"Fields are optional. Your analysis is already saved."}</p>
+                <button type="button" className="bc-back" onClick={()=>setLeadOpen(false)}>{lang==="mk"?"Прескокни":lang==="sr"?"Preskoči":"Skip"}</button>
+                <button type="submit" className="bc-cta" disabled={saving}>{saving?"...":lang==="mk"?"Испрати барање":lang==="sr"?"Pošalji zahtev":"Send request"} <ArrowRight size={17}/></button>
+                {saveError && <p role="alert" style={{color:"#b91c1c"}}>{saveError}</p>}
+              </form>}
+              {leadSent && <p role="status" style={{color:"#16803d",fontWeight:700}}>{lang==="mk"?"Барањето е успешно испратено!":lang==="sr"?"Zahtev je uspešno poslat!":"Request sent successfully!"}</p>}
+            </div>
+
+            <button type="button" className="bc-back" onClick={reset}>
+              <RotateCcw size={16} />{tr(ui.restart)}
+            </button>
+          </div>
+        )}
+
+        <p className="bc-disclaimer">{tr(ui.disclaimer)}</p>
+        <Link className="bc-home" href="/">← {tr(ui.home)}</Link>
+      </section>
+    </main>
+  );
 }

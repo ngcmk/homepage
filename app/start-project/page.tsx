@@ -1,13 +1,15 @@
 "use client";
-import {FormEvent,useState} from "react";
+import {FormEvent,useState,useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {useLanguage} from "@/components/Language";
+import {convexHttpUrl} from "@/lib/convexHttpUrl";
 
 export default function Start(){
  const {lang,t}=useLanguage();
  const router=useRouter();
  const [sending,setSending]=useState(false);
  const [error,setError]=useState("");
+ const [suggestedServices,setSuggestedServices]=useState<string[]>([]); const [newService,setNewService]=useState(""); const [prefill,setPrefill]=useState({industry:"",company:"",note:""}); useEffect(()=>{const q=new URLSearchParams(window.location.search);if(q.get("from")!=="business-check")return;const service=q.get("service")?.trim();if(service)setSuggestedServices([service]);setPrefill({industry:q.get("industry")||"",company:q.get("company")||"",note:q.get("note")||""});},[]);
 
  async function submit(e:FormEvent<HTMLFormElement>){
   e.preventDefault();
@@ -32,12 +34,12 @@ export default function Start(){
    company:String(fd.get("company")||""),
    preferredContact:"email",
    goals:[],
-   features:[],
+   features:suggestedServices,
    source:"website"
   };
 
   try{
-   const base=process.env.NEXT_PUBLIC_CONVEX_HTTP_URL||"https://strong-meadowlark-984.convex.site";
+   const base=convexHttpUrl();
    const r=await fetch(base+"/project-consultations",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
@@ -65,7 +67,7 @@ export default function Start(){
    <form onSubmit={submit}>
     <label>{t.name}<input name="name" required/></label>
     <label>{t.email}<input name="email" type="email" required/></label>
-    <label>{t.company}<input name="company"/></label>
+    <label>{t.company}<input name="company" defaultValue={prefill.company} key={"company-"+prefill.company}/></label>
     <label>{t.phone}<input name="phone"/></label>
 
     <label>{t.projectName}<input name="projectName"/></label>
@@ -100,18 +102,19 @@ export default function Start(){
      </select>
     </label>
 
-    <label>{t.industry}<input name="industry"/></label>
+    <label>{t.industry}<input name="industry" defaultValue={prefill.industry} key={"industry-"+prefill.industry}/></label>
     <label>{t.timeline}<input name="timeline"/></label>
     <label className="full">{t.targetAudience}<input name="targetAudience"/></label>
 
     <label className="full">{t.message}
-     <textarea name="message" rows={6} required/>
+     <textarea name="message" rows={6} required defaultValue={prefill.note} key={"message-"+prefill.note}/>
     </label>
 
     <label className="full">{t.designPreferences}
      <textarea name="designPreferences" rows={3}/>
     </label>
 
+    {prefill.industry && <div className="full"><strong>{lang==="mk"?"Предложени услуги":lang==="sr"?"Predložene usluge":"Suggested services"}</strong>{suggestedServices.map((service,i)=><div key={i} style={{display:"flex",gap:10,marginTop:10}}><span style={{flex:1}}>{service}</span><button type="button" onClick={()=>setSuggestedServices(a=>a.filter((_,j)=>j!==i))}>×</button></div>)}<div style={{display:"flex",gap:10,marginTop:12}}><input value={newService} onChange={e=>setNewService(e.target.value)} placeholder={lang==="mk"?"Додај услуга":lang==="sr"?"Dodaj uslugu":"Add service"}/><button type="button" onClick={()=>{if(newService.trim()){setSuggestedServices(a=>[...a,newService.trim()]);setNewService("");}}}>+</button></div></div>}
     {error&&<p className="formError">{error}</p>}
 
     <button disabled={sending}>

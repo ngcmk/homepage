@@ -44,3 +44,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.env.local
+*.backup
+*.bak
+*.backup.tsx.txt
+*.backup.txt
+*.backup.tsx
