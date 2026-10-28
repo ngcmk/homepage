@@ -9,7 +9,6 @@ import {
   MapPin,
   Instagram,
   Linkedin,
-  Github,
 } from "lucide-react";
 import { useLanguage } from "./Language";
 
@@ -82,7 +81,6 @@ export default function Footer() {
 
   const instagram = "https://www.instagram.com/next.generation.code?igsh=MW54bjYyZjl5Z3k1eQ==";
   const linkedin = "https://linkedin.com/company/ngc-solutions";
-  const github = "https://github.com/ngcmk";
 
   return (
     <footer className="siteFooter">
@@ -105,9 +103,6 @@ export default function Footer() {
             </a>
             <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <Linkedin />
-            </a>
-            <a href={github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <Github />
             </a>
           </div>
         </div>
