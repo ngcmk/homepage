@@ -4,3 +4,6 @@
 .ngca-centered form input{width:100%;padding:12px 14px;border:1px solid #dce3f2;border-radius:9px;background:#fff;color:#19243c}
 .ngca-centered form button[type=submit]{border:0;background:#5369e7;color:white;padding:13px;border-radius:10px;font-weight:800;cursor:pointer}
 .ngca-centered form button:disabled{opacity:.65}
+.ngca-brand{flex-direction:column;align-items:center;gap:12px;padding:2px 0 28px;text-align:center}.ngca-brand>div:first-child{width:220px!important;height:140px!important;padding:0!important;overflow:hidden}.ngca-brand img{width:100%!important;height:100%!important;object-fit:cover!important}.ngca-brand strong{font-size:18px}.ngca-brand small{font-size:10px}
+
+.ngca-brand>div:first-child{background:transparent!important;width:230px!important;height:160px!important;padding:0!important;overflow:visible!important;border-radius:0!important}.ngca-brand img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important}

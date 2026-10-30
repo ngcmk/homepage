@@ -71,7 +71,7 @@ function AdminWorkspace() {
   const navigation = [{id:"overview" as Tab, icon:LayoutDashboard, label:t.overview}, {id:"projects" as Tab, icon:FolderKanban, label:t.projects}, {id:"contacts" as Tab, icon:Mail, label:t.contacts}, {id:"business" as Tab, icon:ClipboardCheck, label:t.business}];
   return <div className="ngca-app">
     <aside className={`ngca-sidebar ${mobileOpen ? "ngca-open" : ""}`}>
-      <div className="ngca-brand"><div style={{width:110,height:72,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#ffffff",borderRadius:14,padding:8}}><img src="/ngc-logo.png" alt="NGC Logo" style={{width:"100%",height:"auto",objectFit:"contain"}} /></div><div><strong>NGC Organizer</strong><small>ADMIN CONSOLE</small></div></div>
+      <div className="ngca-brand"><div style={{width:110,height:72,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#ffffff",borderRadius:14,padding:8}}><img src="/ngc-organizer-robot.png" alt="NGC Logo" style={{width:"100%",height:"auto",objectFit:"contain"}} /></div><div><strong>NGC Organizer</strong><small>ADMIN CONSOLE</small></div></div>
       <div className="ngca-section-label">{t.workspace}</div>
       <nav className="ngca-nav">{navigation.map(item => <button key={item.id} className={tab === item.id ? "active" : ""} onClick={() => changeTab(item.id)}><item.icon size={19}/><span>{item.label}</span>{item.id === "projects" && <em>{pList.length}</em>}{item.id === "contacts" && <em>{cList.length}</em>}</button>)}</nav>
       <div className="ngca-sidebar-bottom"><div className="ngca-online"><span className="ngca-dot"/> {t.admin}</div><button className="ngca-signout" onClick={() => void signOut({redirectUrl:"/admin"})}><LogOut size={17}/>{t.signout}</button></div>
@@ -206,3 +206,4 @@ function AdminWorkspace() {
 }
 
 function Stat({label,value,icon:Icon,tone,onClick}:{label:string;value:number;icon:typeof FolderKanban;tone:string;onClick:()=>void}) { return <button className="ngca-stat" onClick={onClick}><span className={`ngca-stat-icon ${tone}`}><Icon size={22}/></span><span className="ngca-stat-label">{label}</span><strong>{value}</strong><span className="ngca-stat-arrow"><ArrowUpRight size={17}/></span></button>; }
+
