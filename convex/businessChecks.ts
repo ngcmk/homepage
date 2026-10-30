@@ -13,8 +13,8 @@ export const submit = mutation({
     return await ctx.db.insert("businessChecks",{...args,status:"new",createdAt:Date.now()});
   }
 });
-export const list = query({args:{},handler:async ctx=>{await requireSuperAdmin(ctx);return await ctx.db.query("businessChecks").withIndex("by_created_at").order("desc").take(500);}});
-export const updateStatus = mutation({args:{id:v.id("businessChecks"),status:v.union(v.literal("new"),v.literal("in_progress"),v.literal("contacted"),v.literal("closed"))},handler:async(ctx,args)=>{await requireSuperAdmin(ctx);await ctx.db.patch(args.id,{status:args.status});}});
+export const list = query({args:{sessionToken:v.optional(v.string())},handler:async (ctx,args)=>{await requireSuperAdmin(ctx, args.sessionToken);return await ctx.db.query("businessChecks").withIndex("by_created_at").order("desc").take(500);}});
+export const updateStatus = mutation({args:{sessionToken:v.optional(v.string()),id:v.id("businessChecks"),status:v.union(v.literal("new"),v.literal("in_progress"),v.literal("contacted"),v.literal("closed"))},handler:async(ctx,args)=>{await requireSuperAdmin(ctx, args.sessionToken);await ctx.db.patch(args.id,{status:args.status});}});
 
 // A random per-assessment token is required to add optional contact details.
 // The public route cannot modify arbitrary assessments using just an ID.
@@ -28,3 +28,4 @@ export const addContact = mutation({
     await ctx.db.patch(args.id,{contactName:args.contactName,contactEmail:args.contactEmail});
   }
 });
+

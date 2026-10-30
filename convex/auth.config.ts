@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import type { AuthConfig } from "convex/server";
 
 export default {

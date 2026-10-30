@@ -93,6 +93,7 @@ export const createContact = mutation({
 // Get all contacts with optional filtering
 export const getContacts = query({
   args: {
+    sessionToken: v.optional(v.string()),
     status: v.optional(
       v.union(
         v.literal("new"),
@@ -123,7 +124,7 @@ export const getContacts = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     // Apply filters with proper type checking
     if (args.status) {
       const results = await ctx.db
@@ -192,6 +193,7 @@ export const getContact = query({
 // Update contact status
 export const updateContactStatus = mutation({
   args: {
+    sessionToken: v.optional(v.string()),
     id: v.id("contacts"),
     status: v.union(
       v.literal("new"),
@@ -204,7 +206,7 @@ export const updateContactStatus = mutation({
     notes: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     const existingContact = await ctx.db.get(args.id);
     if (!existingContact) {
       throw new Error("Contact not found");
@@ -438,12 +440,13 @@ export const getContactStats = query({
 // Delete contact (soft delete by marking as spam or hard delete)
 export const deleteContact = mutation({
   args: {
+    sessionToken: v.optional(v.string()),
     id: v.id("contacts"),
     permanent: v.optional(v.boolean()),
     userId: v.optional(v.id("users")),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     const contact = await ctx.db.get(args.id);
     if (!contact) {
       throw new Error("Contact not found");

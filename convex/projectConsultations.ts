@@ -320,6 +320,7 @@ export const createProjectConsultation = mutation({
 // Get all project consultations with optional filtering
 export const getProjectConsultations = query({
   args: {
+    sessionToken: v.optional(v.string()),
     status: v.optional(
       v.union(
         v.literal("new"),
@@ -354,7 +355,7 @@ export const getProjectConsultations = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     // Apply filters with proper type checking
     if (args.status) {
       const results = await ctx.db
@@ -421,6 +422,7 @@ export const getProjectConsultation = query({
 // Update project consultation status
 export const updateProjectStatus = mutation({
   args: {
+    sessionToken: v.optional(v.string()),
     id: v.id("projectConsultations"),
     status: v.union(
       v.literal("new"),
@@ -436,7 +438,7 @@ export const updateProjectStatus = mutation({
     notes: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     const existingProject = await ctx.db.get(args.id);
     if (!existingProject) {
       throw new Error("Project consultation not found");
@@ -727,12 +729,13 @@ export const getProjectStats = query({
 // Delete project consultation
 export const deleteProjectConsultation = mutation({
   args: {
+    sessionToken: v.optional(v.string()),
     id: v.id("projectConsultations"),
     permanent: v.optional(v.boolean()),
     userId: v.optional(v.id("users")),
   },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireSuperAdmin(ctx, args.sessionToken);
     const project = await ctx.db.get(args.id);
     if (!project) {
       throw new Error("Project consultation not found");

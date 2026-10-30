@@ -304,5 +304,6 @@ export default defineSchema({
       searchField: "contactName",
       filterFields: ["status", "type"],
     }),
+  adminSessions: defineTable({ token: v.string(), expiresAt: v.number() }).index("by_token", ["token"]),
+  adminLoginAttempts: defineTable({ username: v.string(), count: v.number(), blockedUntil: v.number() }).index("by_username", ["username"]),
 });
-
