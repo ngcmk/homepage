@@ -900,6 +900,10 @@ export default function BusinessCheck() {
       if (!saved.id || !saved.editToken) throw new Error("Missing saved assessment");
       setAssessmentId(saved.id);
       setAssessmentToken(saved.editToken);
+      if (leadName.trim() || leadEmail.trim()) {
+        const contactResponse = await fetch(convexHttpUrl()+"/business-check/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:saved.id,editToken:saved.editToken,contactName:leadName.trim(),contactEmail:leadEmail.trim()})});
+        if (!contactResponse.ok) console.error("Contact save failed");
+      }
       setResult(true);
     } catch(e){console.error(e);setSaveError(lang==="mk"?"Не успеавме да ја зачуваме анализата. Пробај повторно.":lang==="sr"?"Analiza nije sačuvana. Pokušaj ponovo.":"Could not save the analysis. Please try again.");}
     finally{setSaving(false);}
@@ -1068,6 +1072,14 @@ export default function BusinessCheck() {
               />
             </label>
 
+            <label className="bc-label">
+              {lang === "mk" ? "Вашето име (незадолжително)" : lang === "sr" ? "Vaše ime (opciono)" : "Your name (optional)"}
+              <input value={leadName} maxLength={100} onChange={(e) => setLeadName(e.target.value)} />
+            </label>
+            <label className="bc-label">
+              {lang === "mk" ? "Е-пошта (незадолжително)" : lang === "sr" ? "E-pošta (opciono)" : "Email (optional)"}
+              <input type="email" value={leadEmail} maxLength={200} onChange={(e) => setLeadEmail(e.target.value)} />
+            </label>
             <p className="bc-privacy">{tr(ui.privacy)}</p>
 
             <div className="bc-actions">
@@ -1146,7 +1158,7 @@ export default function BusinessCheck() {
               {leadSent && <p role="status" style={{color:"#16803d",fontWeight:700}}>{lang==="mk"?"Барањето е успешно испратено!":lang==="sr"?"Zahtev je uspešno poslat!":"Request sent successfully!"}</p>}
             </div>
 
-            <button type="button" className="bc-back" onClick={reset}>
+            <div className="bc-actions"><button type="button" className="bc-back" onClick={()=>{setResult(false);setStep(5);}}><ArrowLeft size={16} />{tr(ui.back)}</button><button type="button" className="bc-cta" onClick={reset}>{lang==="mk"?"Заврши":lang==="sr"?"Završi":"Finish"} <CheckCircle2 size={17}/></button></div><button type="button" className="bc-back" onClick={reset}>
               <RotateCcw size={16} />{tr(ui.restart)}
             </button>
           </div>
