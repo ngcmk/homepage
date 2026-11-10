@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import Script from "next/script";
 import "./globals.css";
 import Shell from "@/components/Shell";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata:Metadata={
   metadataBase:new URL("https://www.ngc.mk"),
@@ -86,7 +87,7 @@ export default function Layout({children}:{children:React.ReactNode}){
   return (
     <html lang="mk">
       <body>
-        <Shell>{children}</Shell>
+        <ClerkProvider><Shell>{children}</Shell></ClerkProvider>
 
         <Script
           id="ngc-organization-schema"
@@ -111,3 +112,4 @@ export default function Layout({children}:{children:React.ReactNode}){
     </html>
   );
 }
+

@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     if (!url) throw new Error("NEXT_PUBLIC_CONVEX_URL is missing");
     return new ConvexReactClient(url);
   });
-  return <ClerkProvider><ConvexProviderWithClerk client={client} useAuth={useAuth}><div className="ngc-admin">{children}</div></ConvexProviderWithClerk></ClerkProvider>;
+  return <ConvexProviderWithClerk client={client} useAuth={useAuth}><div className="ngc-admin">{children}</div></ConvexProviderWithClerk>;
 }
+
 
