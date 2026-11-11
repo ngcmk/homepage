@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/Language";
 import styles from "./products.module.css";
+import ProductLogo from "./ProductLogo";
 
 const products = [
   {
@@ -39,17 +40,20 @@ const products = [
 const copy = {
   mk: {
     title: "Софтвер што го движи вашиот бизнис",
-    intro: "Софтвер од NGC за планирање смени, угостителство, онлајн продажба и фитнес.",
+    lead: "Софтвер дизајниран за вашиот бренд и за начинот на кој работите.",
+    intro: "Секое NGC решение го дизајнираме околу вашиот бизнис. Вие одлучувате како ќе изгледа, а ние го обликуваме со вашето лого, бои, фотографии и содржини. Функциите, работните процеси и приказот на податоците ги приспособуваме на тоа како работи вашиот тим и што им треба на вашите клиенти. Така добивате софтвер што го носи вашиот бренд и се вклопува во вашата секојдневна работа.",
     contact: "Разговарајте со NGC", details: "Детали",
   },
   en: {
     title: "Software that moves your business forward",
-    intro: "NGC software for workforce scheduling, restaurants, e-commerce, and fitness.",
+    lead: "Software designed for your brand and the way you work.",
+    intro: "We design every NGC solution around your business. You decide how it should look, and we shape it around your logo, colors, photography and content. We tailor the features, workflows and presentation of your data to how your team works and what your customers need. You get software that carries your brand and fits into your day-to-day operations.",
     contact: "Talk to NGC", details: "Details",
   },
   sr: {
     title: "Softver koji pokreće vaše poslovanje",
-    intro: "NGC softver za planiranje smena, ugostiteljstvo, onlajn prodaju i fitnes.",
+    lead: "Softver dizajniran za vaš brend i način na koji radite.",
+    intro: "Svako NGC rešenje dizajniramo prema vašem poslovanju. Vi odlučujete kako će izgledati, a mi ga oblikujemo uz vaš logotip, boje, fotografije i sadržaj. Funkcije, radne procese i prikaz podataka prilagođavamo načinu rada vašeg tima i potrebama vaših klijenata. Tako dobijate softver koji nosi vaš brend i uklapa se u svakodnevni rad.",
     contact: "Razgovarajte sa NGC timom", details: "Detalji",
   },
 };
@@ -64,7 +68,7 @@ export default function ProductsPage() {
       <div className={styles.inner}>
         <div className={styles.hero}>
           <h1>{text.title}</h1>
-          <p>{text.intro}</p>
+          <p><strong>{text.lead}</strong><br />{text.intro}</p>
         </div>
 
         <div className={styles.grid}>
@@ -83,6 +87,16 @@ export default function ProductsPage() {
                     style={{ display: "block", width: "100%", height: "auto", borderRadius: 12, marginBottom: 20 }}
                   />
                 )}
+                {product.slug === "online-shop" && (
+                  <Image
+                    src="/products/online-shop-home.png"
+                    alt={locale === "en" ? "NextForm Nutrition storefront example" : locale === "sr" ? "Primer prodavnice NextForm Nutrition" : "Пример за продавница NextForm Nutrition"}
+                    width={1737}
+                    height={906}
+                    sizes="(max-width: 640px) 90vw, 520px"
+                    style={{ display: "block", width: "100%", height: "auto", borderRadius: 12, marginBottom: 20 }}
+                  />
+                )}
                 {product.slug === "tableflow" && (
                   <Image
                     src="/products/tableflow-guest.png"
@@ -93,7 +107,20 @@ export default function ProductsPage() {
                     style={{ display: "block", width: "100%", height: "auto", borderRadius: 12, marginBottom: 20 }}
                   />
                 )}
-                <h2>{product.name}</h2>
+                                {product.slug === "nextform-ai" && (
+                  <Image
+                    src="/products/nextform-workout.png"
+                    alt={locale === "en" ? "NextForm AI workout dashboard" : locale === "sr" ? "NextForm AI pregled treninga" : "Преглед на тренинг во NextForm AI"}
+                    width={1715}
+                    height={917}
+                    sizes="(max-width: 640px) 90vw, 520px"
+                    style={{ display: "block", width: "100%", height: "auto", borderRadius: 12, marginBottom: 20 }}
+                  />
+                )}
+                <div className={styles.productHeading}>
+                  <h2>{product.name}</h2>
+                  <ProductLogo slug={product.slug} />
+                </div>
                 <p className={styles.description}>{description}</p>
                 <div className={styles.actions}>
                   <Link className={styles.contact} href={`/products/${product.slug}`} aria-label={`${text.details} – ${product.name}`}>

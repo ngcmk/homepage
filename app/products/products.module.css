@@ -291,3 +291,47 @@
 .catalogPage .hero {
   max-width: 900px;
 }
+
+/* Product brand logos */
+.productHeading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-bottom: 16px;
+}
+
+.productHeading h1,
+.productHeading h2 {
+  margin: 0;
+}
+
+.productLogo {
+  position: relative;
+  display: block;
+  flex: none;
+  width: clamp(128px, 18vw, 176px);
+  height: 62px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.productLogo img {
+  object-fit: contain;
+}
+
+.productLogo[data-product="shiftmate"] {
+  background: #09182b;
+}
+
+.productLogo[data-product="nextform-ai"] {
+  width: 62px;
+}
+
+.hero .productLogo {
+  height: 76px;
+}
+
+.hero .productLogo[data-product="nextform-ai"] {
+  width: 76px;
+}

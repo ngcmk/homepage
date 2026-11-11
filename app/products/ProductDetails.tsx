@@ -4,9 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/Language";
 import styles from "./products.module.css";
+import ProductLogo from "./ProductLogo";
 import { productSales, salesLabels } from "./productSales";
-import { shiftMateSales } from "./shiftMateSales";
+import { shiftMateEmployeeExperience, shiftMateSales } from "./shiftMateSales";
 import { tableFlowSales } from "./tableFlowSales";
+import { onlineShopSales } from "./onlineShopSales";
+import { nextFormSales } from "./nextFormSales";
 
 const products = {
   shiftmate: {
@@ -63,6 +66,21 @@ const labels = {
   sr: { back: "Svi proizvodi", features: "Funkcije", contact: "Kontaktirajte NGC" },
 };
 
+const tableFlowOverview = {
+  mk: [
+    "TableFlow е систем за дигитално мени, нарачки од маса и управување со услугата во ресторани, кафулиња и барови. Гостите го скенираат QR-кодот на масата и можат да нарачаат или да побараат сметка штом се подготвени. Секоја нарачка пристигнува со бројот на масата, избраните ставки и забелешките за подготовка, па шанкот, кујната и келнерите имаат заеднички преглед.",
+    "Кога локалот е полн, персоналот троши помалку време на преземање и пренесување нарачки и може повеќе да се посвети на послужувањето. Управителот гледа кои маси се отворени, што е во подготовка и каде гостите побарале келнер или сметка.",
+  ],
+  en: [
+    "TableFlow is a digital menu, table ordering and service management system for restaurants, cafés and bars. Guests scan the table QR code and can order or request the bill as soon as they are ready. Each order arrives with its table number, selected items and preparation notes, giving the bar, kitchen and servers a shared view.",
+    "When the venue is full, staff spend less time taking and relaying orders and have more time to serve. Managers can see which tables are open, what is being prepared and where guests have called a server or requested the bill.",
+  ],
+  sr: [
+    "TableFlow je sistem za digitalni meni, poručivanje sa stola i upravljanje uslugom u restoranima, kafićima i barovima. Gosti skeniraju QR kod na stolu i mogu da poruče ili zatraže račun čim su spremni. Svaka porudžbina stiže sa brojem stola, izabranim stavkama i napomenama za pripremu, tako da šank, kuhinja i konobari imaju zajednički pregled.",
+    "Kada je lokal pun, osoblje troši manje vremena na primanje i prenošenje porudžbina i može više da se posveti posluživanju. Menadžer vidi koji su stolovi otvoreni, šta je u pripremi i gde su gosti pozvali konobara ili zatražili račun.",
+  ],
+} as const;
+
 export default function ProductDetails({ slug }: { slug: ProductSlug }) {
   const { lang } = useLanguage();
   const locale = lang === "en" ? "en" : lang === "sr" ? "sr" : "mk";
@@ -71,7 +89,7 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
   const workflow = product.workflow[locale];
   const [problem, outcome] = productSales[slug][locale];
   const salesText = salesLabels[locale];
-  const featuredSales = slug === "shiftmate" ? shiftMateSales[locale] : slug === "tableflow" ? tableFlowSales[locale] : null;
+  const featuredSales = slug === "shiftmate" ? shiftMateSales[locale] : slug === "tableflow" ? tableFlowSales[locale] : slug === "online-shop" ? onlineShopSales[locale] : slug === "nextform-ai" ? nextFormSales[locale] : null;
   const [intro, ...features] = product[locale];
 
   return (
@@ -82,7 +100,16 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
             <span aria-hidden="true">←</span>
             {locale === "en" ? "Back to products" : locale === "sr" ? "Nazad na proizvode" : "Назад до производи"}
           </Link>
-          <h1>{product.name}</h1>
+          <div className={styles.productHeading}>
+                  <h1>{product.name}</h1>
+                  <ProductLogo slug={slug} />
+                </div>
+          {slug === "tableflow" && (
+            <div style={{ display: "grid", gap: ".75rem", marginBottom: "1.5rem" }}>
+              {tableFlowOverview[locale].map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
+          )}
+          {slug === "shiftmate" && <p>{shiftMateEmployeeExperience[locale].overview}</p>}
           {featuredSales ? (
             <>
               <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", lineHeight: 1.2, marginBottom: "1rem" }}>
@@ -97,7 +124,7 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
         </div>
         {featuredSales ? (
           <div style={{ display: "grid", gap: "1rem", marginBottom: "2rem" }}>
-            {featuredSales.sections.map((section) => (
+            {(slug === "shiftmate" ? [...featuredSales.sections.slice(0, -1), shiftMateEmployeeExperience[locale], ...featuredSales.sections.slice(-1)] : featuredSales.sections).map((section) => (
               <section key={section.title} className={`${styles.card} ${styles.blue}`}>
                 <h2>{section.title}</h2>
                 {section.paragraphs.map((paragraph) => (
@@ -119,9 +146,26 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
           </div>
         )}
 
-        {(slug === "shiftmate" || slug === "tableflow") && (
+        {(slug === "nextform-ai" || slug === "shiftmate" || slug === "tableflow" || slug === "online-shop") && (
           <div className={styles.screenGrid}>
-            {(slug === "tableflow" ? [
+            {slug === "online-shop" && (
+              <h2 style={{ gridColumn: "1 / -1", margin: 0 }}>
+                {locale === "en" ? "Storefront example" : locale === "sr" ? "Primer prodavnice" : "Пример за продавница"} · NextForm Nutrition
+              </h2>
+            )}
+            {(slug === "online-shop" ? [
+              { file: "online-shop-home.png", width: 1737, height: 906, mk: "Почетна страница", en: "Storefront homepage", sr: "Početna stranica" },
+              { file: "online-shop-catalog.png", width: 1728, height: 912, mk: "Каталог со илустративни пакувања", en: "Catalog with illustrative packaging", sr: "Katalog sa ilustrativnim pakovanjima" },
+              { file: "online-shop-collection.png", width: 1716, height: 917, mk: "Колекција облека и додатоци", en: "Apparel and accessories", sr: "Kolekcija odeće i dodataka" },
+              { file: "online-shop-monthly.png", width: 1710, height: 920, mk: "Месечна нарачка", en: "Monthly ordering", sr: "Mesečna porudžbina" },
+            ] : slug === "nextform-ai" ? [
+              { file: "nextform-workout.png", width: 1715, height: 917, mk: "Денешен тренинг", en: "Today's workout", sr: "Današnji trening" },
+              { file: "nextform-ai-coach.png", width: 1714, height: 918, mk: "AI Coach · Демо дневна проверка", en: "AI Coach · Demo check-in", sr: "AI Coach · Demo dnevna provera" },
+              { file: "nextform-trainer.png", width: 1715, height: 917, mk: "Тренерски панел · Концептен приказ", en: "Trainer dashboard · Concept preview", sr: "Trenerski panel · Konceptni prikaz" },
+              { file: "nextform-gym.png", width: 1711, height: 919, mk: "Панел за теретани · Демо податоци", en: "Gym dashboard · Demo data", sr: "Panel za teretane · Demo podaci" },
+              { file: "nextform-daily.png", width: 1760, height: 894, mk: "Дневен преглед", en: "Daily overview", sr: "Dnevni pregled" },
+              { file: "nextform-progress.png", width: 1672, height: 941, mk: "AI препорака и неделна активност", en: "AI insight and weekly activity", sr: "AI preporuka i nedeljna aktivnost" },
+            ] : slug === "tableflow" ? [
               { file: "tableflow-guest.png", width: 1803, height: 872, mk: "Гостинска страница", en: "Guest page", sr: "Stranica za goste" },
               { file: "tableflow-menu.png", width: 1752, height: 897, mk: "Дигитално мени", en: "Digital menu", sr: "Digitalni meni" },
               { file: "tableflow-orders.png", width: 1756, height: 896, mk: "Нарачки во живо", en: "Live orders", sr: "Porudžbine uživo" },
@@ -171,7 +215,7 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
                   />
                 </dialog>
                 <figcaption className={styles.description} style={{ marginTop: 8 }}>
-                  {screen[locale]} · {locale === "en" ? "Demo data" : locale === "sr" ? "Demo podaci" : "Демо податоци"}
+                  {screen[locale]}{slug !== "online-shop" && slug !== "nextform-ai" && (locale === "en" ? " · Demo data" : locale === "sr" ? " · Demo podaci" : " · Демо податоци")}
                 </figcaption>
               </figure>
             ))}
@@ -180,7 +224,7 @@ export default function ProductDetails({ slug }: { slug: ProductSlug }) {
         <section className={`${styles.card} ${styles.blue}`}>
           <h2>{text.features}</h2>
           <ul className={styles.description}>
-            {features.map((feature) => <li key={feature}>{feature}</li>)}
+            {(slug === "shiftmate" ? shiftMateEmployeeExperience[locale].features : slug === "tableflow" ? tableFlowSales[locale].features : slug === "online-shop" ? onlineShopSales[locale].features : slug === "nextform-ai" ? nextFormSales[locale].features : features).map((feature) => <li key={feature}>{feature}</li>)}
           </ul>
         </section>
         {!featuredSales && (
